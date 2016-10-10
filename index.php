@@ -1,6 +1,7 @@
 <?php
 
 include 'content/header.html';
+include 'content/config.php';
 
 date_default_timezone_set('Europe/Amsterdam');
 session_set_cookie_params(0,'/','.'._Domain,true,true);
