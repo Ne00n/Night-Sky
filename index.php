@@ -2,6 +2,10 @@
 
 include 'content/header.html';
 
+date_default_timezone_set('Europe/Amsterdam');
+session_set_cookie_params(0,'/','.'._Domain,true,true);
+session_start();
+
 if (isset($_GET["page"])) {
   $page = $_GET["page"];
 }
@@ -14,8 +18,6 @@ if(!isset($page)) {
 
 <body>
 
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div class="container">
     <div class="row">
       <div class="one-half column" style="margin-top: 25%">
