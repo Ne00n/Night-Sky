@@ -7,3 +7,5 @@
 - Limit of 20 Users for the Start, 10 Ports for each User
 - EMail notifications via MXRoute
 - Block the current Thread if the previous one is still Running
+- Database Backend: MySQL
+- Frontend: PHP+HTML(skeleton)
