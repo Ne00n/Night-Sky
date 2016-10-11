@@ -3,44 +3,27 @@
 include 'content/header.html';
 include 'content/config.php';
 
-date_default_timezone_set('Europe/Amsterdam');
-session_set_cookie_params(0,'/','.'._Domain,true,true);
+function dat_loader($class) {
+    include 'class/' . $class . '.php';
+}
+
+spl_autoload_register('dat_loader');
 session_start();
 
-if (isset($_GET["page"])) {
-  $page = $_GET["page"];
+if (isset($_GET["p"])) {
+  $p = $_GET["p"];
 }
 
-if(!isset($page)) {
-  $page="login";
+if(!isset($p)) {
+  $p="login";
 }
 
-?>
+$DB = new Database;
+$DB->initDB();
 
-<body>
-
-  <div class="container">
-    <div class="row">
-      <div class="one-half column" style="margin-top: 25%">
-        <h4>Night Sky Monitoring</h4>
-        <form action="index.php?page=login" method="post">
-          <div class="row">
-            <div class="seven columns">
-              <label for="email">Username</label>
-              <input type="text" name="username" placeholder="User" required/>
-
-              <label for="password">Password</label>
-              <input type="password" name="password" required/>
-
-              <button type="submit" class="button-primary">Sign In</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-<?php
+if ($p == "login") {
+  include 'content/login.php';
+}
 
 include 'content/footer.html';
 
