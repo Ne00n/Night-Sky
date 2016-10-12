@@ -107,6 +107,7 @@ if ($Login->isLoggedIN()) {
           <tr>
             <th>IP</th>
             <th>Port</th>
+            <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -116,7 +117,7 @@ if ($Login->isLoggedIN()) {
 
         $USER_ID = $Login->getUserID();
 
-        $query = "SELECT ID,IP,PORT FROM checks WHERE USER_ID = ? ";
+        $query = "SELECT ID,IP,PORT,ENABLED FROM checks WHERE USER_ID = ? ";
         $stmt = $DB->GetConnection()->prepare($query);
         $stmt->bind_param('i', $USER_ID);
         $stmt->execute();
@@ -126,6 +127,7 @@ if ($Login->isLoggedIN()) {
           echo '<tr>';
           echo '<td class="text-left">'.Page::escape($row['IP']).'</td>';
           echo '<td class="text-left">'.Page::escape($row['PORT']).'</td>';
+          echo '<td class="text-left">'.($row['ENABLED'] ? 'Enabled' : 'Disabled').'</td>';
           echo '<td class="text-left"><a href="index.php?p=main?remove='.page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="glyphicon glyphicon-remove-circle"></i></button></a></td>';
           echo '</tr>';
 

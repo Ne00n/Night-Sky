@@ -1,7 +1,11 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
 CREATE TABLE `checks` (
   `ID` int(11) NOT NULL,
   `USER_ID` int(11) NOT NULL,
   `EMAIL_ID` int(11) NOT NULL,
+  `ENABLED` int(1) NOT NULL DEFAULT '1',
   `IP` varchar(50) NOT NULL,
   `PORT` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
