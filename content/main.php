@@ -7,7 +7,7 @@ if ($Login->isLoggedIN()) {
 
 <body>
 
-<?= include 'content/navbar.php'; ?>
+<?php include 'content/navbar.php'; ?>
 
   <div class="container page-style">
 

@@ -15,7 +15,7 @@
             <a href="index.php?p=main">Home</a>
           </li>
           <li>
-            <a href="index.php?p=contact">Contact</a>
+            <a href="index.php?p=contact">Contacts</a>
           </li>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="download">Sandstone <span class="caret"></span></a>
