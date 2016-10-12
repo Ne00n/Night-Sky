@@ -1,7 +1,16 @@
+CREATE TABLE `checks` (
+  `ID` int(11) NOT NULL,
+  `USER_ID` int(11) NOT NULL,
+  `EMAIL_ID` int(11) NOT NULL,
+  `IP` varchar(50) NOT NULL,
+  `PORT` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE `emails` (
   `ID` int(11) NOT NULL,
   `USER_ID` int(11) NOT NULL,
-  `EMail` varchar(50) NOT NULL
+  `EMail` varchar(50) NOT NULL,
+  `Status` int(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `users` (
@@ -13,6 +22,9 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
+ALTER TABLE `checks`
+  ADD PRIMARY KEY (`ID`);
+
 ALTER TABLE `emails`
   ADD PRIMARY KEY (`ID`),
   ADD UNIQUE KEY `EMail` (`EMail`);
@@ -22,6 +34,8 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `Username` (`Username`);
 
 
+ALTER TABLE `checks`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `emails`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `users`

@@ -84,7 +84,27 @@ class Verify {
       return false;
     }
 
-  }
+   }
+
+   public function checkCheckID($id) {
+     if(!preg_match("/^[0-9]+$/",$id)){ return false;}
+
+     $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM checks WHERE ID = ? LIMIT 1");
+     $stmt->bind_param('i', $id);
+     $rc = $stmt->execute();
+     if ( false===$rc ) { $this->error = "MySQL Error"; }
+     $stmt->bind_result($result);
+     $stmt->fetch();
+     $stmt->close();
+
+     if (isset($result)) {
+       return true;
+     } else {
+       return false;
+     }
+
+    }
+
 
   public function getLastError() {
     return $this->error;
