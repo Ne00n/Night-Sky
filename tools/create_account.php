@@ -17,7 +17,7 @@ $name = "Test"; $password = "1234567899"; $rank = 1;
 
 $hash = password_hash($password, PASSWORD_DEFAULT);
 
-$stmt = $DB->getConnection()->prepare("INSERT INTO users(Username,Password,Rank) VALUES (?, ?, ?)");
+$stmt = $DB->GetConnection()->prepare("INSERT INTO users(Username,Password,Rank) VALUES (?, ?, ?)");
 $stmt->bind_param('ssi', $name,$hash,$rank);
 $rc = $stmt->execute();
 if ( false===$rc ) { die("MySQL Error"); }
