@@ -5,6 +5,7 @@ class Verify {
   private $DB;
   private $error;
   private $user_id;
+  private $rank;
 
   public function __construct($DB) {
     $this->DB = $DB;
@@ -35,6 +36,33 @@ class Verify {
           $this->user_id = $db_id;
       }
 
+    }
+
+  }
+
+  public function isLoggedIN() {
+
+    if(preg_match("/^[0-9]+$/",$_SESSION['user_id'])){
+
+      $stmt = $this->DB->GetConnection()->prepare("SELECT Rank,ID FROM users WHERE ID = ? AND enabled = 1 LIMIT 1");
+      $stmt->bind_param('i', $_SESSION['user_id']);
+      $rc = $stmt->execute();
+      if ( false===$rc ) { $this->error = "MySQL Error"; }
+      $stmt->bind_result($db_rank,$db_id);
+      $stmt->fetch();
+      $stmt->close();
+
+      $this->rank = $db_rank;
+      $this->user_id = $db_id;
+
+      if ($db_id != "") {
+        return true;
+      } else {
+        return false;
+      }
+
+    } else {
+      return false;
     }
 
   }

@@ -1,21 +1,12 @@
-<div class="large-3 large-centered columns">
-  <div class="login-box">
-  <div class="row">
-  <div class="large-12 columns">
-    <form action="index.php?p=login" method="post">
-       <div class="row">
-         <div class="large-12 columns">
-             <input type="text" name="username" placeholder="Username" />
-         </div>
-       </div>
-      <div class="row">
-         <div class="large-12 columns">
-             <input type="password" name="password" placeholder="Password" />
-         </div>
-      </div>
+<div class="container">
 
+   <h2 class="form-signin-heading"><center>Night Sky Monitoring</center></h2>
+  <form class="form-signin" action="index.php?p=login" method="post">
+    <label class="sr-only">Username</label>
+    <input type="text" class="form-control" placeholder="Username" name="username" required>
+    <label class="sr-only">Password</label>
+    <input type="password" class="form-control" placeholder="Password" name="password" required>
       <?php
-
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
           $Verify = new Verify($DB);
@@ -31,14 +22,8 @@
         }
 
        ?>
+    <button type="submit" class="btn btn-lg btn-primary btn-block">Sign in</button>
+  </form>
+  <center><a href="index.php?p=register">Register</a></center>
 
-      <div class="row">
-        <div class="large-12 large-centered columns">
-          <input type="submit" class="button expand" value="Log In"/>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-</div>
 </div>

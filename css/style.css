@@ -1,0 +1,14 @@
+body {
+  padding-top: 50px;
+}
+.page-style {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+.navbar-nav > li > a, .navbar-brand {
+    padding-top:8px !important;
+    padding-bottom:0 !important;
+    height: 38px;
+}
+.navbar {min-height:38px !important;}
