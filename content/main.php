@@ -35,7 +35,7 @@ if ($Login->isLoggedIN()) {
 
           ?>
 
-            <p>Are you sure, that you want to delete this Contact?</p>
+            <p>Are you sure, that you want to delete this Check?</p>
 
             <form class="form-horizontal" action="index.php?p=main?remove=<?= page::escape($check_id) ?>" method="post">
               <div class="form-group">
