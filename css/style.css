@@ -12,3 +12,7 @@ body {
     height: 38px;
 }
 .navbar {min-height:38px !important;}
+
+body {
+  font-family: 'Raleway';
+}

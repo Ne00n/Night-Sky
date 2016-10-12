@@ -29,6 +29,12 @@ if ($p == "main") {
   include 'content/main.php';
 }
 
+if ($p=="logout") {
+  session_unset();
+  session_destroy();
+  header('Location: index.php?p=login');
+}
+
 include 'content/footer.html';
 
 ?>
