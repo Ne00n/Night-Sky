@@ -2,7 +2,7 @@
 
 class Database {
 
-  public function initDB() {
+  public function InitDB() {
 
     if (empty($this->database)) {
       $this->database = new mysqli(_db_host, _db_user, _db_password, _db_database);
@@ -16,7 +16,7 @@ class Database {
 
   }
 
-  public function getConnection() {
+  public function GetConnection() {
 
       return $this->database;
 

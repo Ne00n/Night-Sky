@@ -19,10 +19,14 @@ if(!isset($p)) {
 }
 
 $DB = new Database;
-$DB->initDB();
+$DB->InitDB();
 
 if ($p == "login") {
   include 'content/login.php';
+}
+
+if ($p == "main") {
+  include 'content/main.php';
 }
 
 include 'content/footer.html';
