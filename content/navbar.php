@@ -2,7 +2,7 @@
   <div class="navbar navbar-default navbar-xs navbar-fixed-top">
     <div class="container">
       <div class="navbar-header">
-        <a href="../" class="navbar-brand">Bootswatch</a>
+        <a href="index.php?p=main" class="navbar-brand">Night Sky</a>
         <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -12,10 +12,10 @@
       <div class="navbar-collapse collapse" id="navbar-main">
         <ul class="nav navbar-nav">
           <li>
-            <a href="../help/">Help</a>
+            <a href="index.php?p=main">Home</a>
           </li>
           <li>
-            <a href="http://news.bootswatch.com">Blog</a>
+            <a href="index.php?p=contact">Contact</a>
           </li>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="download">Sandstone <span class="caret"></span></a>

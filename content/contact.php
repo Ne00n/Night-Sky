@@ -44,7 +44,7 @@ if ($Login->isLoggedIN()) {
         </tbody>
       </table>
       <div class="form-group">
-        <a href="index.php?p=main?add"><button class="btn btn-primary" type="button">Add Check</button></a>
+        <a href="index.php?p=contact?add"><button class="btn btn-primary" type="button">Add Contact</button></a>
     </div>
       </div>
     </div>

@@ -25,9 +25,14 @@ if ($p == "login") {
   include 'content/login.php';
 }
 
-if ($p == "main") {
+if (Page::startsWith($p,"main")) {
   include 'content/main.php';
 }
+
+if (Page::startsWith($p,"contact")) {
+  include 'content/contact.php';
+}
+
 
 if ($p=="logout") {
   session_unset();
