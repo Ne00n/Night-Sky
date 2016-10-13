@@ -82,7 +82,7 @@ if ($Login->isLoggedIN()) {
                   <div class="col-sm-4">
                     <select class="form-control input-sm" name="email">
                       <?php
-                      $query = "SELECT ID,EMail FROM emails WHERE USER_ID = ? ORDER by id";
+                      $query = "SELECT ID,EMail FROM emails WHERE USER_ID = ? AND Status = 1 ORDER by id";
                       $USER_ID = $Login->getUserID();
                       $stmt = $DB->GetConnection()->prepare($query);
                       $stmt->bind_param('i', $USER_ID);

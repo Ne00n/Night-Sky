@@ -70,7 +70,7 @@ class Verify {
   public function checkContactID($id) {
     if(!preg_match("/^[0-9]+$/",$id)){ return false;}
 
-    $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM emails WHERE ID = ? LIMIT 1");
+    $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM emails WHERE ID = ? AND Status = 1 LIMIT 1");
     $stmt->bind_param('i', $id);
     $rc = $stmt->execute();
     if ( false===$rc ) { $this->error = "MySQL Error"; }
