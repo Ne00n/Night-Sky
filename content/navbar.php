@@ -11,12 +11,22 @@
       </div>
       <div class="navbar-collapse collapse" id="navbar-main">
         <ul class="nav navbar-nav">
-          <li>
-            <a href="index.php?p=main">Home</a>
-          </li>
-          <li>
-            <a href="index.php?p=contact">Contacts</a>
-          </li>
+          <?php
+
+          if (Page::startsWith($p,"main")) {
+             echo '<li class="active"><a href="index.php?p=main">Home</a></li>';
+          } else {
+            echo '<li><a href="index.php?p=main">Home</a></li>';
+          }
+
+          if (Page::startsWith($p,"contact")) {
+             echo '<li class="active"><a href="index.php?p=contact">Contacts</a></li>';
+          } else {
+            echo '<li><a href="index.php?p=contact">Contacts</a></li>';
+          }
+
+           ?>
+          <!--
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="download">Sandstone <span class="caret"></span></a>
             <ul class="dropdown-menu" aria-labelledby="download">
@@ -31,7 +41,7 @@
               <li><a href="./_variables.scss">_variables.scss</a></li>
               <li><a href="./_bootswatch.scss">_bootswatch.scss</a></li>
             </ul>
-          </li>
+          </li> -->
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
