@@ -39,7 +39,7 @@ if ($Login->isLoggedIN()) {
 
             <form class="form-horizontal" action="index.php?p=main?remove=<?= page::escape($check_id) ?>" method="post">
               <div class="form-group">
-                  <button type="submit" name="confirm" class="btn btn-danger">Yes</button><a href="index.php?p=contact"><button class="btn btn-primary" type="button">No</button></a>
+                  <button type="submit" name="confirm" class="btn btn-danger">Yes</button><a href="index.php?p=main"><button class="btn btn-primary" type="button">No</button></a>
               </div>
             </form>
 
