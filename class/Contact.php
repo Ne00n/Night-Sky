@@ -32,11 +32,19 @@ class Contact {
 
   public function removeContact() {
 
-      $stmt = $this->DB->GetConnection()->prepare("DELETE FROM emails WHERE ID = ?");
-      $stmt->bind_param('i', $this->id);
-      $rc = $stmt->execute();
-      if ( false===$rc ) { $this->error = "MySQL Error"; }
-      $stmt->close();
+      if ($this->CheckifContactIsInUse() === false) {
+
+        $stmt = $this->DB->GetConnection()->prepare("DELETE FROM emails WHERE ID = ?");
+        $stmt->bind_param('i', $this->id);
+        $rc = $stmt->execute();
+        if ( false===$rc ) { $this->error = "MySQL Error"; }
+        $stmt->close();
+
+      } else {
+
+        $this->error = "Contact still in use";
+
+      }
 
   }
 
@@ -48,6 +56,24 @@ class Contact {
       $this->id = $id;
     } else {
       $this->error = "Invalid ID";
+    }
+
+  }
+
+  public function CheckifContactIsInUse() {
+
+    $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM checks WHERE EMAIL_ID = ? LIMIT 1");
+    $stmt->bind_param('i', $this->id);
+    $rc = $stmt->execute();
+    if ( false===$rc ) { $this->error = "MySQL Error"; }
+    $stmt->bind_result($db_id);
+    $stmt->fetch();
+    $stmt->close();
+
+    if (isset($db_id)) {
+      return true;
+    } else {
+      return false;
     }
 
   }
