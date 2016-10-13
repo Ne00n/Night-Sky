@@ -102,7 +102,7 @@ if ($Login->isLoggedIN()) {
           echo '<tr>';
           echo '<td class="text-left">'.Page::escape($row['EMail']).'</td>';
           echo '<td class="text-left">'.($row['Status'] ? 'Enabled' : 'Disabled').'</td>';
-          echo '<td class="text-left"><a href="index.php?p=contact?remove='.page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="glyphicon glyphicon-remove-circle"></i></button></a></td>';
+          echo '<td class="text-left"><a href="index.php?p=contact?remove='.page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
           echo '</tr>';
 
         } ?>
