@@ -75,6 +75,9 @@ class CronjobServ extends Thread {
               if ( false===$rc ) { $this->error = "MySQL Error"; }
               $stmt->close();
 
+              $asynchMail = new AsyncMail($element['EMAIL'],'Night-Sky - Downtime Alert','Server went offline.');
+              $asynchMail->start();
+
             //Still Offine
             } elseif ($THREAD_ONLINE == 0) {
 
