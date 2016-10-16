@@ -50,14 +50,58 @@ class CronjobServ extends Thread {
         if ( false===$rc ) { $this->error = "MySQL Error"; }
         $stmt->close();
 
-        foreach ($this->Check as $element) {
+        foreach ($this->Check as $key => $element) {
           $fp = fsockopen($element['IP'],$element['PORT'], $errno, $errstr, 1.5);
 
+          $stmt = $DB->GetConnection()->prepare("SELECT ONLINE FROM checks WHERE ID = ?");
+          $stmt->bind_param('s', $key);
+          $rc = $stmt->execute();
+          if ( false===$rc ) { $this->error = "MySQL Error"; }
+          $stmt->bind_result($THREAD_ONLINE);
+          $stmt->fetch();
+          $stmt->close();
+
           if (!$fp) {
+
+            //Online => Offline
+            if ($THREAD_ONLINE == 1) {
+
+              $ONLINE = 0;
+
+              $stmt = $DB->GetConnection()->prepare("UPDATE checks SET ONLINE = ?  WHERE ID = ?");
+              $stmt->bind_param('ii', $ONLINE,$key);
+              $rc = $stmt->execute();
+              if ( false===$rc ) { $this->error = "MySQL Error"; }
+              $stmt->close();
+
+            //Still Offine
+            } elseif ($THREAD_ONLINE == 0) {
+
+
+
+            }
 
             printf("Check is offline\n");
 
           } else {
+
+            //Still Online
+            if ($THREAD_ONLINE == 1) {
+
+
+
+            //Offline => Online
+            } elseif ($THREAD_ONLINE == 0) {
+
+              $ONLINE = 1;
+
+              $stmt = $DB->GetConnection()->prepare("UPDATE checks SET ONLINE = ?  WHERE ID = ?");
+              $stmt->bind_param('ii', $ONLINE,$key);
+              $rc = $stmt->execute();
+              if ( false===$rc ) { $this->error = "MySQL Error"; }
+              $stmt->close();
+
+            }
 
             printf("Check is Online\n");
 
