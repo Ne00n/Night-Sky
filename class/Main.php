@@ -14,7 +14,7 @@ class Main {
 
   public function addCheck($IP,$PORT,$EMAIL_ID) {
 
-    if (!filter_var($IP, FILTER_VALIDATE_IP)) { $this->error = "Invalid IP."; }
+    if (!filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) { $this->error = "Invalid IP."; }
     if(!preg_match("/^[0-9]+$/",$PORT)){ $this->error = "Invalid Port.";}
     if ($this->Verify->checkContactID($EMAIL_ID) === false) { $this->error = "Invalid EMail";}
 
