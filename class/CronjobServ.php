@@ -100,11 +100,8 @@ class CronjobServ extends Thread {
               if ( false===$rc ) { $this->error = "MySQL Error"; }
               $stmt->close();
 
-              $mail_to_list = array('neo@tiefkuehler-madness.me');
-              foreach($mail_to_list as $mail_to) {
-                  $asynchMail = new AsyncMail($mail_to,'Hello World','Hello Neo');
-                  $asynchMail->start();
-              }
+              $asynchMail = new AsyncMail($element['EMAIL'],'Night-Sky - Uptime Alert','Server is back Online.');
+              $asynchMail->start();
 
             }
 
