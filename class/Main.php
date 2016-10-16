@@ -22,11 +22,20 @@ class Main {
 
       $USER_ID = $this->Verify->getUserID();
 
-      $stmt = $this->DB->GetConnection()->prepare("INSERT INTO checks(USER_ID,EMAIL_ID,IP,PORT) VALUES (?,?,?,?)");
-      $stmt->bind_param('iisi',$USER_ID, $EMAIL_ID, $IP, $PORT);
-      $rc = $stmt->execute();
-      if ( false===$rc ) { $this->error = "MySQL Error"; }
-      $stmt->close();
+      $L = new LoadBalancer($this->DB);
+      $SLOT = $L->balanceCheck();
+
+      if ($SLOT != false) {
+
+        $stmt = $this->DB->GetConnection()->prepare("INSERT INTO checks(USER_ID,EMAIL_ID,IP,PORT,SLOT) VALUES (?,?,?,?,?)");
+        $stmt->bind_param('iisii',$USER_ID, $EMAIL_ID, $IP, $PORT,$SLOT);
+        $rc = $stmt->execute();
+        if ( false===$rc ) { $this->error = "MySQL Error"; }
+        $stmt->close();
+
+      } else {
+        $this->error = "Unable to find free slot.";
+      }
 
     }
 

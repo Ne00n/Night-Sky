@@ -2,28 +2,44 @@
 
 if (php_sapi_name() == 'cli') {
 
-  class Night
-  {
-    public function __construct($threadId)
-    {
-        $this->threadId = $threadId;
-    }
+  include '../content/config.php';
 
-    public function run()
-    {
-        printf("T %s: Sleeping 3sec\n", $this->threadId);
-        sleep(3);
-        printf("T %s: Hello World\n", $this->threadId);
-    }
+  function dat_loader($class) {
+      include '../class/' . $class . '.php';
   }
 
-  $start = microtime(true);
-  for ($i = 1; $i <= 5; $i++) {
-      $t[$i] = new Night($i);
-      $t[$i]->run();
+  spl_autoload_register('dat_loader');
+
+  $DB = new Database;
+  $DB->InitDB();
+
+  $Checks = array();
+
+  $query = "SELECT SLOT,ID,IP,PORT FROM checks ORDER by ID";
+  $stmt = $DB->GetConnection()->prepare($query);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  while ($row = $result->fetch_assoc()) {
+
+    $Checks[$row['SLOT']][$row['ID']] = array("IP" => $row['IP'],"PORT" => $row['PORT']);
+
   }
-  echo microtime(true) - $start . "\n";
-  echo "end\n";
+
+  for ($i_out = 1; $i_out <= 6; $i_out++) {
+
+    for ($i = 1; $i <= 10; $i++) {
+
+        if (isset($Checks[$i])) {
+          printf("Night Base\n",$i);
+          $t[$i] = new CronjobBase($i,$Checks);
+          $t[$i]->run();
+        } else {
+          printf("Night Base No Job\n",$i);
+        }
+        sleep(1);
+    }
+
+  }
 
 }
 
