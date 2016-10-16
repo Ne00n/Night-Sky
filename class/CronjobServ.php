@@ -16,6 +16,7 @@ class CronjobServ extends Thread {
 
   public function run()
   {
+
       $DB = new Database;
       $DB->InitDB();
 
@@ -81,8 +82,6 @@ class CronjobServ extends Thread {
 
             }
 
-            printf("Check is offline\n");
-
           } else {
 
             //Still Online
@@ -101,15 +100,17 @@ class CronjobServ extends Thread {
               if ( false===$rc ) { $this->error = "MySQL Error"; }
               $stmt->close();
 
-            }
+              $mail_to_list = array('neo@tiefkuehler-madness.me');
+              foreach($mail_to_list as $mail_to) {
+                  $asynchMail = new AsyncMail($mail_to,'Hello World','Hello Neo');
+                  $asynchMail->start();
+              }
 
-            printf("Check is Online\n");
+            }
 
           }
 
         }
-
-        //printf("T %s: Hello World\n", $this->threadId);
 
         $THREAD_LOCK = 0;
 

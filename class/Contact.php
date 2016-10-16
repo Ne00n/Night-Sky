@@ -48,6 +48,20 @@ class Contact {
 
   }
 
+  public function getEMailbyID() {
+
+    $stmt = $this->DB->GetConnection()->prepare("SELECT EMail FROM emails WHERE ID = ? LIMIT 1");
+    $stmt->bind_param('i', $this->id);
+    $rc = $stmt->execute();
+    if ( false===$rc ) { $this->error = "MySQL Error"; }
+    $stmt->bind_result($db_email);
+    $stmt->fetch();
+    $stmt->close();
+
+    return $db_email;
+
+  }
+
   public function setID($id) {
 
     $Verify = new Verify($this->DB);

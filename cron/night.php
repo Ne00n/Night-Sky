@@ -13,15 +13,19 @@ if (php_sapi_name() == 'cli') {
   $DB = new Database;
   $DB->InitDB();
 
+  $C = new Contact($DB,NULL);
+
   $Checks = array();
 
-  $query = "SELECT SLOT,ID,IP,PORT FROM checks WHERE ENABLED = 1 ORDER by ID";
+  $query = "SELECT SLOT,ID,IP,PORT,EMAIL_ID FROM checks WHERE ENABLED = 1 ORDER by ID";
   $stmt = $DB->GetConnection()->prepare($query);
   $stmt->execute();
   $result = $stmt->get_result();
   while ($row = $result->fetch_assoc()) {
 
-    $Checks[$row['SLOT']][$row['ID']] = array("IP" => $row['IP'],"PORT" => $row['PORT']);
+    $C->setID($row['EMAIL_ID']);
+
+    $Checks[$row['SLOT']][$row['ID']] = array("IP" => $row['IP'],"PORT" => $row['PORT'],"EMAIL_ID" => $row['EMAIL_ID'],"EMAIL" => $C->getEMailbyID());
 
   }
 
