@@ -55,17 +55,17 @@ class CronjobServ extends Thread {
 
           if (!$fp) {
 
-            printf("Check is offline");
+            printf("Check is offline\n");
 
           } else {
 
-            printf("Check is Online");
+            printf("Check is Online\n");
 
           }
 
         }
 
-        printf("T %s: Hello World\n", $this->threadId);
+        //printf("T %s: Hello World\n", $this->threadId);
 
         $THREAD_LOCK = 0;
 

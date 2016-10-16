@@ -16,6 +16,7 @@ class CronjobBase {
   {
 
       printf("Cronjob Base\n",$this->threadId);
+      $start = microtime(true);
 
       for ($i = 0; $i <= count($this->Checks[$this->threadId]); $i = $i +5) {
 
@@ -26,15 +27,8 @@ class CronjobBase {
 
       }
 
-    //  $start = microtime(true);
-    //  for ($i = 1; $i <= 10; $i++) {
-  //        $t[$i] = new CronjobServ($i);
-    //      $t[$i]->start();
-          //$t[$i]->join();
-    //  }
-    //  echo microtime(true) - $start . "\n";
       echo "CronjobBase end\n";
-
+      echo microtime(true) - $start . "\n";
 
   }
 
