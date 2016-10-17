@@ -12,9 +12,10 @@ class Main {
     $this->Verify = $Verify;
   }
 
-  public function addCheck($IP,$PORT,$EMAIL_ID) {
+  public function addCheck($IP,$PORT,$EMAIL_ID,$NAME) {
 
     if (!filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) { $this->error = "Invalid IP."; }
+    if(!preg_match("/^[a-zA-Z0-9._\- ]+$/",$NAME)){ $this->error = "The Name contains invalid letters.";}
     if(!preg_match("/^[0-9]+$/",$PORT)){ $this->error = "Invalid Port.";}
     if ($this->Verify->checkContactID($EMAIL_ID) === false) { $this->error = "Invalid EMail";}
 
@@ -27,8 +28,8 @@ class Main {
 
       if ($SLOT != false) {
 
-        $stmt = $this->DB->GetConnection()->prepare("INSERT INTO checks(USER_ID,EMAIL_ID,IP,PORT,SLOT) VALUES (?,?,?,?,?)");
-        $stmt->bind_param('iisii',$USER_ID, $EMAIL_ID, $IP, $PORT,$SLOT);
+        $stmt = $this->DB->GetConnection()->prepare("INSERT INTO checks(USER_ID,EMAIL_ID,IP,PORT,SLOT,NAME) VALUES (?,?,?,?,?,?)");
+        $stmt->bind_param('iisiis',$USER_ID, $EMAIL_ID, $IP, $PORT,$SLOT,$NAME);
         $rc = $stmt->execute();
         if ( false===$rc ) { $this->error = "MySQL Error"; }
         $stmt->close();

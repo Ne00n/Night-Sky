@@ -5,6 +5,7 @@ CREATE TABLE `checks` (
   `ENABLED` int(1) NOT NULL DEFAULT '1',
   `SLOT` int(1) NOT NULL,
   `ONLINE` int(1) NOT NULL DEFAULT '0',
+  `NAME` varchar(50) NOT NULL,
   `IP` varchar(50) NOT NULL,
   `PORT` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
