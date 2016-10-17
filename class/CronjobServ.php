@@ -75,7 +75,7 @@ class CronjobServ extends Thread {
               if ( false===$rc ) { $this->error = "MySQL Error"; }
               $stmt->close();
 
-              $asynchMail = new AsyncMail($element['EMAIL'],'Night-Sky - Downtime Alert','Server '.page::escape($element['NAME']).' went offline. Detected: '.date("d.m.Y H:i",page::escape($time)));
+              $asynchMail = new AsyncMail($element['EMAIL'],'Night-Sky - Downtime Alert '.page::escape($element['NAME']),'Server '.page::escape($element['NAME']).' went offline. Detected: '.date("d.m.Y H:i:s",page::escape($time)));
               $asynchMail->start();
 
             //Still Offine
@@ -104,7 +104,7 @@ class CronjobServ extends Thread {
               $stmt->close();
 
               $time = time();
-              $asynchMail = new AsyncMail($element['EMAIL'],'Night-Sky - Uptime Alert','Server '.page::escape($element['NAME']).' is back Online. Detected: '.date("d.m.Y H:i",page::escape($time)));
+              $asynchMail = new AsyncMail($element['EMAIL'],'Night-Sky - Uptime Alert '.page::escape($element['NAME']),'Server '.page::escape($element['NAME']).' is back Online. Detected: '.date("d.m.Y H:i:s",page::escape($time)));
               $asynchMail->start();
 
             }
