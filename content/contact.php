@@ -66,9 +66,13 @@ if ($Login->isLoggedIN()) {
 
         <form class="form-horizontal" action="index.php?p=contact?add" method="post">
           <div class="form-group">
-            <label class="control-label col-sm-2">EMail:</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control input-sm" name="email" placeholder="alert@email.com">
+            <div class="col-sm-8 col-sm-offset-2">
+              <div class="input-group">
+               <div class="input-group-addon">
+              <span class="fa fa-envelope"></span>
+               </div>
+                <input type="text" class="form-control input-sm" name="email" placeholder="alert@email.com">
+              </div>
             </div>
           </div>
           <div class="form-group">
