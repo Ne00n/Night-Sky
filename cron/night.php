@@ -4,6 +4,7 @@ if (php_sapi_name() == 'cli') {
 
   include '../content/config.php';
   include '../class/AsyncMail.php';
+  include '../class/Page.php';
 
   function dat_loader($class) {
       include '../class/' . $class . '.php';
@@ -18,7 +19,7 @@ if (php_sapi_name() == 'cli') {
 
   $Checks = array();
 
-  $query = "SELECT SLOT,ID,IP,PORT,EMAIL_ID FROM checks WHERE ENABLED = 1 ORDER by ID";
+  $query = "SELECT SLOT,ID,IP,PORT,EMAIL_ID,NAME FROM checks WHERE ENABLED = 1 ORDER by ID";
   $stmt = $DB->GetConnection()->prepare($query);
   $stmt->execute();
   $result = $stmt->get_result();
@@ -26,7 +27,7 @@ if (php_sapi_name() == 'cli') {
 
     $C->setID($row['EMAIL_ID']);
 
-    $Checks[$row['SLOT']][$row['ID']] = array("IP" => $row['IP'],"PORT" => $row['PORT'],"EMAIL_ID" => $row['EMAIL_ID'],"EMAIL" => $C->getEMailbyID());
+    $Checks[$row['SLOT']][$row['ID']] = array("IP" => $row['IP'],"PORT" => $row['PORT'],"EMAIL_ID" => $row['EMAIL_ID'],"EMAIL" => $C->getEMailbyID(),"NAME" => $row['NAME']);
 
   }
 
