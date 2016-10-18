@@ -54,9 +54,7 @@ class Main {
 
   public function setID($id) {
 
-    $Verify = new Verify($this->DB);
-
-    if ($Verify->checkCheckID($id) === true) {
+    if ($this->Verify->checkCheckID($id) === true) {
       $this->id = $id;
     } else {
       $this->error = "Invalid ID";

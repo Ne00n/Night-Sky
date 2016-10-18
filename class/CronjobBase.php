@@ -2,7 +2,6 @@
 
 class CronjobBase {
 
-  private $DB;
   private $threadId;
   private $Checks;
 
