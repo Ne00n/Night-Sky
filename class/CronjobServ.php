@@ -1,4 +1,6 @@
-<?php
+ <?php
+
+include 'CronjobServ/ThreadLock.php';
 
 class CronjobServ extends Thread {
 
@@ -17,39 +19,25 @@ class CronjobServ extends Thread {
   public function run()
   {
 
+      #Create a new Database Object
       $DB = new Database;
       $DB->InitDB();
 
+      #Create a new ThreadLock Object
+      $T = new ThreadLock($DB);
+
+      #Generate the ThreadID
       $THREAD_ID = $this->slot.'_'.$this->threadId;
       $THREAD_LOCK = 0;
 
-      $stmt = $DB->GetConnection()->prepare("SELECT THREAD_LOCK FROM threads WHERE THREAD_ID = ?");
-      $stmt->bind_param('s', $THREAD_ID);
-      $rc = $stmt->execute();
-      if ( false===$rc ) { $this->error = "MySQL Error"; }
-      $stmt->bind_result($THREAD_LOCK);
-      $stmt->fetch();
-      $stmt->close();
+      #Set ThreadID
+      $T->setThreadLock($THREAD_ID);
 
-      if (empty($THREAD_LOCK)) {
+      #Check if Thread is locked
+      if ($T->getThreadLock() === 0) {
 
-        $THREAD_LOCK_IN = 1;
-
-        $stmt = $DB->GetConnection()->prepare("INSERT INTO threads(THREAD_ID,THREAD_LOCK) VALUES (?,?)");
-        $stmt->bind_param('si',$THREAD_ID,$THREAD_LOCK_IN);
-        $rc = $stmt->execute();
-        if ( false===$rc ) { $this->error = "MySQL Error"; }
-        $stmt->close();
-
-      }
-
-      if ($THREAD_LOCK == 0) {
-
-        $stmt = $DB->GetConnection()->prepare("UPDATE threads SET THREAD_LOCK = ?  WHERE THREAD_ID = ?");
-        $stmt->bind_param('is', $THREAD_LOCK,$THREAD_ID);
-        $rc = $stmt->execute();
-        if ( false===$rc ) { $this->error = "MySQL Error"; }
-        $stmt->close();
+        #Lock the Thread
+        $T->setThreadLock();
 
         foreach ($this->Check as $key => $element) {
           $fp = fsockopen($element['IP'],$element['PORT'], $errno, $errstr, 1.5);
@@ -114,13 +102,8 @@ class CronjobServ extends Thread {
 
         }
 
-        $THREAD_LOCK = 0;
-
-        $stmt = $DB->GetConnection()->prepare("UPDATE threads SET THREAD_LOCK = ?  WHERE THREAD_ID = ?");
-        $stmt->bind_param('is', $THREAD_LOCK,$THREAD_ID);
-        $rc = $stmt->execute();
-        if ( false===$rc ) { $this->error = "MySQL Error"; }
-        $stmt->close();
+        #Unlock the Thread
+        $T->setUnlock();
 
       }
 
