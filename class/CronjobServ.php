@@ -1,6 +1,7 @@
  <?php
 
 include 'CronjobServ/ThreadLock.php';
+include 'CronjobServ/Status.php';
 
 class CronjobServ extends Thread {
 
@@ -23,6 +24,9 @@ class CronjobServ extends Thread {
       $DB = new Database;
       $DB->InitDB();
 
+      #Create a new Status Object
+      $S = new Status($DB);
+
       #Create a new ThreadLock Object
       $T = new ThreadLock($DB);
 
@@ -37,38 +41,28 @@ class CronjobServ extends Thread {
       if ($T->getThreadLock() === 0) {
 
         #Lock the Thread
-        $T->setThreadLock();
+        $T->setLock();
 
         foreach ($this->Check as $key => $element) {
+
           $fp = fsockopen($element['IP'],$element['PORT'], $errno, $errstr, 1.5);
 
-          $stmt = $DB->GetConnection()->prepare("SELECT ONLINE FROM checks WHERE ID = ?");
-          $stmt->bind_param('s', $key);
-          $rc = $stmt->execute();
-          if ( false===$rc ) { $this->error = "MySQL Error"; }
-          $stmt->bind_result($THREAD_ONLINE);
-          $stmt->fetch();
-          $stmt->close();
+          $S->setID($key);
+          $S->getOnlineStatus();
 
           if (!$fp) {
 
             //Online => Offline
-            if ($THREAD_ONLINE == 1) {
+            if ($S->getStatus() === 1) {
 
-              $ONLINE = 0;
-
-              $stmt = $DB->GetConnection()->prepare("UPDATE checks SET ONLINE = ?  WHERE ID = ?");
-              $stmt->bind_param('ii', $ONLINE,$key);
-              $rc = $stmt->execute();
-              if ( false===$rc ) { $this->error = "MySQL Error"; }
-              $stmt->close();
+              $S->setStatus(0);
 
               $time = time();
               $asynchMail = new AsyncMail($element['EMAIL'],'Night-Sky - Downtime Alert '.page::escape($element['NAME']),'Server '.page::escape($element['NAME']).' went offline. Detected: '.date("d.m.Y H:i:s",page::escape($time)));
               $asynchMail->start();
 
             //Still Offine
-            } elseif ($THREAD_ONLINE == 0) {
+            } elseif ($S->getStatus() === 0) {
 
 
 
@@ -77,20 +71,14 @@ class CronjobServ extends Thread {
           } else {
 
             //Still Online
-            if ($THREAD_ONLINE == 1) {
+            if ($S->getStatus() === 1) {
 
 
 
             //Offline => Online
-            } elseif ($THREAD_ONLINE == 0) {
+            } elseif ($S->getStatus() === 0) {
 
-              $ONLINE = 1;
-
-              $stmt = $DB->GetConnection()->prepare("UPDATE checks SET ONLINE = ?  WHERE ID = ?");
-              $stmt->bind_param('ii', $ONLINE,$key);
-              $rc = $stmt->execute();
-              if ( false===$rc ) { $this->error = "MySQL Error"; }
-              $stmt->close();
+              $S->setStatus(1);
 
               $time = time();
               $asynchMail = new AsyncMail($element['EMAIL'],'Night-Sky - Uptime Alert '.page::escape($element['NAME']),'Server '.page::escape($element['NAME']).' is back Online. Detected: '.date("d.m.Y H:i:s",page::escape($time)));

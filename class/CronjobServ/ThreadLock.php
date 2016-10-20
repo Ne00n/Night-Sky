@@ -19,12 +19,12 @@ class ThreadLock {
     $stmt = $this->DB->GetConnection()->prepare("SELECT THREAD_LOCK FROM threads WHERE THREAD_ID = ?");
     $stmt->bind_param('s', $THREAD_ID_IN);
     $rc = $stmt->execute();
-    if ( false===$rc ) { $this->error = "MySQL Error"; }
+    if ( false===$rc ) { $this->error = $stmt->error; }
     $stmt->bind_result($DB_THREAD_LOCK);
     $stmt->fetch();
     $stmt->close();
 
-    if (!empty($DB_THREAD_LOCK)) {
+    if (isset($DB_THREAD_LOCK)) {
       $this->THREAD_LOCK = $DB_THREAD_LOCK;
     } else {
 
@@ -33,7 +33,7 @@ class ThreadLock {
       $stmt = $this->DB->GetConnection()->prepare("INSERT INTO threads(THREAD_ID,THREAD_LOCK) VALUES (?,?)");
       $stmt->bind_param('si',$THREAD_ID_IN,$THREAD_LOCK_IN);
       $rc = $stmt->execute();
-      if ( false===$rc ) { $this->error = "MySQL Error"; }
+      if ( false===$rc ) { $this->error = $stmt->error; }
       $stmt->close();
 
     }
