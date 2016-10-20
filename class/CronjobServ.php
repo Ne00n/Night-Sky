@@ -2,6 +2,7 @@
 
 include 'CronjobServ/ThreadLock.php';
 include 'CronjobServ/Status.php';
+include 'CronjobServ/CheckServ.php';
 
 class CronjobServ extends Thread {
 
@@ -27,6 +28,9 @@ class CronjobServ extends Thread {
       #Create a new Status Object
       $S = new Status($DB);
 
+      #Create a new Checkserv Object
+      $CS = new Checkserv();
+
       #Create a new ThreadLock Object
       $T = new ThreadLock($DB);
 
@@ -45,12 +49,12 @@ class CronjobServ extends Thread {
 
         foreach ($this->Check as $key => $element) {
 
-          $fp = fsockopen($element['IP'],$element['PORT'], $errno, $errstr, 1.5);
+          $CS->checkAvailability($element['IP'],$element['PORT']);
 
           $S->setID($key);
           $S->getOnlineStatus();
 
-          if (!$fp) {
+          if ($CS->getStatus() === false) {
 
             //Online => Offline
             if ($S->getStatus() === 1) {
@@ -68,7 +72,7 @@ class CronjobServ extends Thread {
 
             }
 
-          } else {
+          } elseif ($CS->getStatus() === true) {
 
             //Still Online
             if ($S->getStatus() === 1) {

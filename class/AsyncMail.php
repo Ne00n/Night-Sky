@@ -1,5 +1,6 @@
 <?php
 class AsyncMail extends Thread{
+
     private $_mail_from = 'From: noreply@night.x8e.ru' . "\r\n";
     private $_mail_to;
     private $_subject;
