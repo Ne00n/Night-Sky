@@ -1,4 +1,5 @@
 <?php
+
 class AsyncMail extends Thread{
 
     private $_mail_from = 'From: noreply@night.x8e.ru' . "\r\n";
@@ -16,4 +17,5 @@ class AsyncMail extends Thread{
         mail($this->_mail_to,$this->_subject,$this->_text,$this->_mail_from);
     }
 }
+
 ?>
