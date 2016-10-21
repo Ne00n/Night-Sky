@@ -25,6 +25,10 @@ if ($p == "login") {
   include 'content/login.php';
 }
 
+if (Page::startsWith($p,"register")) {
+  include 'content/register.php';
+}
+
 if (Page::startsWith($p,"main")) {
   include 'content/main.php';
 }
