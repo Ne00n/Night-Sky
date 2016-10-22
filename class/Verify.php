@@ -68,8 +68,9 @@ class Verify {
   }
 
   public function checkHash($key) {
-      if(!preg_match("/^[a-zA-Z0-9]+$/",$key)){ return false;}
-      if (strlen($key) > 40) {return false;}
+    
+    if(!preg_match("/^[a-zA-Z0-9]+$/",$key)){ return false;}
+    if (strlen($key) > 40) {return false;}
 
     $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM users WHERE activation_hash = ? AND enabled = 0 LIMIT 1");
     $stmt->bind_param('i', $key);
