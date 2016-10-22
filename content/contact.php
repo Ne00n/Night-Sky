@@ -58,6 +58,7 @@ if ($Login->isLoggedIN()) {
           $CT->addContact($_POST['email']);
            if ($CT->getlastError() == "") {
              echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
+             $_POST = array();
            } else {
              echo '<div class="alert alert-danger" role="alert"><center>'.$CT->getLastError().'</center></div>';
            }
@@ -71,7 +72,7 @@ if ($Login->isLoggedIN()) {
                <div class="input-group-addon">
               <span class="fa fa-envelope"></span>
                </div>
-                <input type="text" class="form-control input-sm" name="email" placeholder="alert@email.com">
+                <input value="<?php echo page::escape($_POST['email']); ?>" type="text" class="form-control input-sm" name="email" placeholder="alert@email.com">
               </div>
             </div>
           </div>
