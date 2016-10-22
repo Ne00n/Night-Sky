@@ -69,9 +69,7 @@ class Contact {
 
   public function setID($id) {
 
-    $Verify = new Verify($this->DB);
-
-    if ($Verify->checkContactID($id,0) === true) {
+    if ($this->Verify->checkContactID($id,0) === true) {
       $this->id = $id;
     } else {
       $this->error = "Invalid ID";
