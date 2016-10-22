@@ -47,14 +47,16 @@
         $user_id = $stmt->insert_id;
         $stmt->close();
 
-        $stmt = $this->DB->GetConnection()->prepare("INSERT INTO emails(USER_ID,EMail) VALUES (?, ?)");
-        $stmt->bind_param('is', $user_id,$email);
-        $rc = $stmt->execute();
-        if ( false===$rc ) { $this->error = "MySQL Error"; }
-        $stmt->close();
+        if (empty($this->error)) {
+          $stmt = $this->DB->GetConnection()->prepare("INSERT INTO emails(USER_ID,EMail) VALUES (?, ?)");
+          $stmt->bind_param('is', $user_id,$email);
+          $rc = $stmt->execute();
+          if ( false===$rc ) { $this->error = "MySQL Error"; }
+          $stmt->close();
 
-        $Mail = new Mail($email,'Night-Sky - Registration','Activate your Account: https://night.x8e.ru/index.php?key='.$activation_hash);
-        $Mail->run();
+          $Mail = new Mail($email,'Night-Sky - Registration','Activate your Account: https://night.x8e.ru/index.php?key='.$activation_hash);
+          $Mail->run();
+        }
 
       }
 
