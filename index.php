@@ -8,7 +8,13 @@ function dat_loader($class) {
 }
 
 spl_autoload_register('dat_loader');
+
 session_start();
+
+#CSRF token
+if (!isset($_SESSION['Token'])) {
+    $_SESSION['Token'] = bin2hex(random_bytes(40));
+}
 
 if (isset($_GET["p"])) {
   $p = $_GET["p"];

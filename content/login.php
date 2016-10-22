@@ -6,6 +6,7 @@
     <input type="text" class="form-control" placeholder="Username" name="username" required>
     <label class="sr-only">Password</label>
     <input type="password" class="form-control" placeholder="Password" name="password" required>
+    <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>"\>
       <?php
 
         if (isset($k)) {
@@ -30,14 +31,20 @@
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-          $Verify = new Verify($DB);
-          $Verify->ValidateLogin($_POST['username'],$_POST['password']);
-          if ($Verify->getLastError() == "") {
-            $_SESSION['logged_in'] = 1;
-            $_SESSION['user_id'] = $Verify->getUserID();
-            header('Location: index.php?p=main');
+          if ($_POST['Token'] == $_SESSION['Token']) {
+
+            $Verify = new Verify($DB);
+            $Verify->ValidateLogin($_POST['username'],$_POST['password']);
+            if ($Verify->getLastError() == "") {
+              $_SESSION['logged_in'] = 1;
+              $_SESSION['user_id'] = $Verify->getUserID();
+              header('Location: index.php?p=main');
+            } else {
+              echo '<div class="alert alert-danger" role="alert"><center>'.$Verify->getLastError().'</center></div>';
+            }
+
           } else {
-            echo '<div class="alert alert-danger" role="alert"><center>'.$Verify->getLastError().'</center></div>';
+              echo '<div class="alert alert-danger" role="alert"><center>Token Verification Failed</center></div>';
           }
 
         }

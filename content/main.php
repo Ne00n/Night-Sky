@@ -22,13 +22,21 @@ if ($Login->isLoggedIN()) {
 
           if ($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['confirm'])) {
 
-            $M = new Main($DB,$Login);
-            $M->setID($check_id);
-            $M->removeCheck();
-            if ($M->getLastError() == "") {
-              echo '<div class="alert alert-success" role="alert"><center>Success.</center></div>';
+            if ($_POST['Token'] == $_SESSION['Token']) {
+
+              $M = new Main($DB,$Login);
+              $M->setID($check_id);
+              $M->removeCheck();
+              if ($M->getLastError() == "") {
+                echo '<div class="alert alert-success" role="alert"><center>Success.</center></div>';
+              } else {
+                echo '<div class="alert alert-danger" role="alert"><center>'.$M->getLastError().'</center></div>';
+              }
+
             } else {
-              echo '<div class="alert alert-danger" role="alert"><center>'.$M->getLastError().'</center></div>';
+
+                echo '<div class="alert alert-danger" role="alert"><center>Token Verification Failed</center></div>';
+
             }
 
           } else {
@@ -38,6 +46,7 @@ if ($Login->isLoggedIN()) {
             <p>Are you sure, that you want to delete this Check?</p>
 
             <form class="form-horizontal" action="index.php?p=main?remove=<?= page::escape($check_id) ?>" method="post">
+              <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>"\>
               <div class="form-group">
                   <button type="submit" name="confirm" class="btn btn-danger">Yes</button><a href="index.php?p=main"><button class="btn btn-primary" type="button">No</button></a>
               </div>
@@ -53,15 +62,23 @@ if ($Login->isLoggedIN()) {
 
           if ($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['confirm'])) {
 
-            $M = new Main($DB,$Login);
-            $M->addCheck($_POST['ip'],$_POST['port'],$_POST['email'],$_POST['name']);
+            if ($_POST['Token'] == $_SESSION['Token']) {
 
-             if ($M->getlastError() == "") {
-               echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
-               $_POST = array();
-             } else {
-               echo '<div class="alert alert-danger" role="alert"><center>'.$M->getLastError().'</center></div>';
-             }
+              $M = new Main($DB,$Login);
+              $M->addCheck($_POST['ip'],$_POST['port'],$_POST['email'],$_POST['name']);
+
+               if ($M->getlastError() == "") {
+                 echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
+                 $_POST = array();
+               } else {
+                 echo '<div class="alert alert-danger" role="alert"><center>'.$M->getLastError().'</center></div>';
+               }
+
+            } else {
+
+                echo '<div class="alert alert-danger" role="alert"><center>Token Verification Failed</center></div>';
+
+            }
 
           } ?>
 
@@ -94,6 +111,7 @@ if ($Login->isLoggedIN()) {
                 </div>
               </div>
             </div>
+            <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>"\>
 
             <div class="form-group">
                   <div class="col-sm-5 col-sm-offset-2">

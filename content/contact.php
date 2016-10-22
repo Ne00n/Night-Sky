@@ -24,12 +24,20 @@ if ($Login->isLoggedIN()) {
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['confirm'])) {
 
-          $CT->setID($contact_id);
-          $CT->removeContact();
-          if ($CT->getLastError() == "") {
-            echo '<div class="alert alert-success" role="alert"><center>Success.</center></div>';
+          if ($_POST['Token'] == $_SESSION['Token']) {
+
+            $CT->setID($contact_id);
+            $CT->removeContact();
+            if ($CT->getLastError() == "") {
+              echo '<div class="alert alert-success" role="alert"><center>Success.</center></div>';
+            } else {
+              echo '<div class="alert alert-danger" role="alert"><center>'.$CT->getLastError().'</center></div>';
+            }
+
           } else {
-            echo '<div class="alert alert-danger" role="alert"><center>'.$CT->getLastError().'</center></div>';
+
+              echo '<div class="alert alert-danger" role="alert"><center>Token Verification Failed</center></div>';
+
           }
 
         } else {
@@ -39,6 +47,7 @@ if ($Login->isLoggedIN()) {
           <p>Are you sure, that you want to delete this Contact?</p>
 
           <form class="form-horizontal" action="index.php?p=contact?remove=<?= page::escape($contact_id) ?>" method="post">
+            <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>"\>
             <div class="form-group">
                 <button type="submit" name="confirm" class="btn btn-danger">Yes</button><a href="index.php?p=contact"><button class="btn btn-primary" type="button">No</button></a>
             </div>
@@ -55,13 +64,21 @@ if ($Login->isLoggedIN()) {
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['confirm'])) {
 
-          $CT->addContact($_POST['email']);
-           if ($CT->getlastError() == "") {
-             echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
-             $_POST = array();
-           } else {
-             echo '<div class="alert alert-danger" role="alert"><center>'.$CT->getLastError().'</center></div>';
-           }
+          if ($_POST['Token'] == $_SESSION['Token']) {
+
+            $CT->addContact($_POST['email']);
+             if ($CT->getlastError() == "") {
+               echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
+               $_POST = array();
+             } else {
+               echo '<div class="alert alert-danger" role="alert"><center>'.$CT->getLastError().'</center></div>';
+             }
+
+          } else {
+
+              echo '<div class="alert alert-danger" role="alert"><center>Token Verification Failed</center></div>';
+
+          }
 
         } ?>
 
@@ -76,6 +93,7 @@ if ($Login->isLoggedIN()) {
               </div>
             </div>
           </div>
+          <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>"\>
           <div class="form-group">
               <button type="submit" name="confirm" class="btn btn-primary">Save</button>
           </div>
@@ -107,7 +125,7 @@ if ($Login->isLoggedIN()) {
           echo '<tr>';
           echo '<td class="text-left">'.Page::escape($row['EMail']).'</td>';
           echo '<td class="text-left">'.($row['Status'] ? 'Enabled' : 'Disabled').'</td>';
-          echo '<td class="text-left"><a href="index.php?p=contact?remove='.page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
+          echo '<td class="text-left"><a href="index.php?p=contact?remove='.Page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
           echo '</tr>';
 
         } ?>

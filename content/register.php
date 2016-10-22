@@ -72,16 +72,25 @@
               </div>
             </div>
           </div>
+          <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>"\>
 
           <?php
 
           if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-             if ($U->getlastError() == "") {
-               echo '<div class="alert alert-success" role="alert"><center>Success, confirm your email to enable your Account.</center></div>';
-             } else {
-               echo '<div class="alert alert-danger" role="alert"><center>'.$U->getLastError().'</center></div>';
-             }
+            if ($_POST['Token'] == $_SESSION['Token']) {
+
+              if ($U->getlastError() == "") {
+                echo '<div class="alert alert-success" role="alert"><center>Success, confirm your email to enable your Account.</center></div>';
+              } else {
+                echo '<div class="alert alert-danger" role="alert"><center>'.$U->getLastError().'</center></div>';
+              }
+
+            } else {
+
+                echo '<div class="alert alert-danger" role="alert"><center>Token Verification Failed</center></div>';
+
+            }
 
           }
 
