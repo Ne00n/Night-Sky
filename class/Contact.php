@@ -69,10 +69,14 @@ class Contact {
 
   public function setID($id) {
 
-    if ($this->Verify->checkContactID($id,0) === true) {
+    if (php_sapi_name() == 'cli') {
       $this->id = $id;
     } else {
-      $this->error = "Invalid ID";
+      if ($this->Verify->checkContactID($id,0) === true) {
+        $this->id = $id;
+      } else {
+        $this->error = "Invalid ID";
+      }
     }
 
   }
