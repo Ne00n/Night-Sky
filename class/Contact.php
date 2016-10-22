@@ -33,13 +33,17 @@ class Contact {
 
   public function removeContact() {
 
-      if ($this->CheckifContactIsInUse() === false AND $this->error == "") {
+      if ($this->CheckifContactIsInUse() === false) {
 
-        $stmt = $this->DB->GetConnection()->prepare("DELETE FROM emails WHERE ID = ?");
-        $stmt->bind_param('i', $this->id);
-        $rc = $stmt->execute();
-        if ( false===$rc ) { $this->error = "MySQL Error"; }
-        $stmt->close();
+        if ($this->error == "") {
+
+          $stmt = $this->DB->GetConnection()->prepare("DELETE FROM emails WHERE ID = ?");
+          $stmt->bind_param('i', $this->id);
+          $rc = $stmt->execute();
+          if ( false===$rc ) { $this->error = "MySQL Error"; }
+          $stmt->close();
+
+        }
 
       } else {
 
