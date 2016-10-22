@@ -27,17 +27,23 @@ if ($Login->isLoggedIN()) {
 
         $history_id = str_replace("history?id=", "", $p);
 
-        $H = new History($DB);
-        $data = $H->getHistory($Login->getUserID(),$history_id);
+        if ($Login->checkHistoryID($history_id)) {
 
-        foreach ($data as $key => $element) {
+          $H = new History($DB);
+          $data = $H->getHistory($Login->getUserID(),$history_id);
 
-          echo '<tr class="'.($element['Status'] ? 'success' : 'danger').'">';
-          echo '<td class="text-left">'.Page::escape(date("d.m.Y H:i:s",$element['Timestamp'])).'</td>';
-          echo '<td class="text-left">'.($element['Status'] ? 'Online' : 'Offline').'</td>';
-          echo '</tr>';
+          foreach ($data as $key => $element) {
 
-        } ?>
+            echo '<tr class="'.($element['Status'] ? 'success' : 'danger').'">';
+            echo '<td class="text-left">'.Page::escape(date("d.m.Y H:i:s",$element['Timestamp'])).'</td>';
+            echo '<td class="text-left">'.($element['Status'] ? 'Online' : 'Offline').'</td>';
+            echo '</tr>';
+
+          }
+
+        }
+
+        ?>
 
         </tbody>
       </table>
