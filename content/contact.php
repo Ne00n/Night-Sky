@@ -72,7 +72,7 @@ if ($Login->isLoggedIN()) {
                <div class="input-group-addon">
               <span class="fa fa-envelope"></span>
                </div>
-                <input value="<?php echo page::escape($_POST['email']); ?>" type="text" class="form-control input-sm" name="email" placeholder="alert@email.com">
+                <input value="<?php if(isset($_POST['email'])) {echo page::escape($_POST['email']);} ?>" type="text" class="form-control input-sm" name="email" placeholder="alert@email.com">
               </div>
             </div>
           </div>

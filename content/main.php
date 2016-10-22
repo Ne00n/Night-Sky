@@ -72,7 +72,7 @@ if ($Login->isLoggedIN()) {
                  <div class="input-group-addon">
                 <span class="fa fa-server"></span>
                  </div>
-                 <input value="<?php echo page::escape($_POST['ip']); ?>" type="text" class="form-control input-sm" name="ip" placeholder="127.0.0.1"/>
+                 <input value="<?php if (isset($_POST['ip'])) {echo page::escape($_POST['ip']);} ?>" type="text" class="form-control input-sm" name="ip" placeholder="127.0.0.1"/>
                 </div>
               </div>
             </div>
@@ -82,7 +82,7 @@ if ($Login->isLoggedIN()) {
                  <div class="input-group-addon">
                 <span class="fa fa-pencil"></span>
                  </div>
-                  <input value="<?php echo page::escape($_POST['name']); ?>" type="text" class="form-control input-sm" name="name" placeholder="Tracer"/>
+                  <input value="<?php if (isset($_POST['name'])) {echo page::escape($_POST['name']);} ?>" type="text" class="form-control input-sm" name="name" placeholder="Tracer"/>
                 </div>
               </div>
               <div class="col-sm-2">
@@ -90,7 +90,7 @@ if ($Login->isLoggedIN()) {
                  <div class="input-group-addon">
                 <span class="fa fa-circle-o"></span>
                  </div>
-                  <input value="<?php echo page::escape($_POST['port']); ?>" type="text" class="form-control input-sm" name="port" placeholder="80"/>
+                  <input value="<?php if (isset($_POST['port'])) {echo page::escape($_POST['port']);} ?>" type="text" class="form-control input-sm" name="port" placeholder="80"/>
                 </div>
               </div>
             </div>
