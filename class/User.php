@@ -38,9 +38,10 @@
         $hash = password_hash($password, PASSWORD_DEFAULT);
 
         $rank = 2;
+        $activation_hash = bin2hex(random_bytes(40));
 
-        $stmt = $this->DB->GetConnection()->prepare("INSERT INTO users(Username,Password,rank) VALUES (?, ?, ?)");
-        $stmt->bind_param('ssi', $username,$hash,$rank);
+        $stmt = $this->DB->GetConnection()->prepare("INSERT INTO users(Username,Password,rank,activation_hash) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param('ssis', $username,$hash,$rank,$activation_hash);
         $rc = $stmt->execute();
         if ( false===$rc ) { $this->error = "MySQL Error"; }
         $user_id = $stmt->insert_id;
@@ -50,10 +51,56 @@
         $stmt->bind_param('is', $user_id,$email);
         $rc = $stmt->execute();
         if ( false===$rc ) { $this->error = "MySQL Error"; }
-        $user_id = $stmt->insert_id;
         $stmt->close();
 
+        $Mail = new Mail($email,'Night-Sky - Registration','Activate your Account: https://night.x8e.ru/index.php?key='.$activation_hash);
+        $Mail->run();
+
       }
+
+    }
+
+    public function enableUser($key) {
+
+      $enabled = 1;
+
+      #Enable User Account
+      $stmt = $this->DB->GetConnection()->prepare("UPDATE users SET enabled = ?  WHERE activation_hash = ?");
+      $stmt->bind_param('is', $enabled,$key);
+      $rc = $stmt->execute();
+      if ( false===$rc ) { $this->error = "MySQL Error"; }
+      $stmt->close();
+
+      #Get user ID
+      $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM users WHERE activation_hash = ?");
+      $stmt->bind_param('i', $key);
+      $rc = $stmt->execute();
+      if ( false===$rc ) { $this->error = "MySQL Error"; }
+      $stmt->bind_result($db_user_id);
+      $stmt->fetch();
+      $stmt->close();
+
+      #Enable Email
+      $stmt = $this->DB->GetConnection()->prepare("UPDATE emails SET Status = ?  WHERE USER_ID = ? AND Status = 0");
+      $stmt->bind_param('ii', $enabled,$db_user_id);
+      $rc = $stmt->execute();
+      if ( false===$rc ) { $this->error = "MySQL Error"; }
+      $stmt->close();
+
+    }
+
+    public function checkUserAmmount() {
+
+        $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM users");
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows < _user_limit ) {
+          return true;
+        } else {
+          $this->error = "Registration closed";
+          return false;
+        }
+        $stmt->close();
 
     }
 

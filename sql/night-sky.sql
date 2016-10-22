@@ -1,3 +1,6 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
 CREATE TABLE `checks` (
   `ID` int(11) NOT NULL,
   `USER_ID` int(11) NOT NULL,
@@ -14,7 +17,7 @@ CREATE TABLE `emails` (
   `ID` int(11) NOT NULL,
   `USER_ID` int(11) NOT NULL,
   `EMail` varchar(50) NOT NULL,
-  `Status` int(1) NOT NULL DEFAULT '1'
+  `Status` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `threads` (
@@ -27,7 +30,8 @@ CREATE TABLE `users` (
   `Username` varchar(50) NOT NULL,
   `Password` varchar(255) NOT NULL,
   `Rank` int(11) NOT NULL,
-  `enabled` int(1) NOT NULL DEFAULT '0'
+  `enabled` int(1) NOT NULL DEFAULT '0',
+  `activation_hash` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
@@ -43,7 +47,8 @@ ALTER TABLE `threads`
 
 ALTER TABLE `users`
   ADD PRIMARY KEY (`ID`),
-  ADD UNIQUE KEY `Username` (`Username`);
+  ADD UNIQUE KEY `Username` (`Username`),
+  ADD UNIQUE KEY `activation_hash` (`activation_hash`);
 
 
 ALTER TABLE `checks`

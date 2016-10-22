@@ -7,6 +7,27 @@
     <label class="sr-only">Password</label>
     <input type="password" class="form-control" placeholder="Password" name="password" required>
       <?php
+
+        if (isset($k)) {
+
+          $Verify = new Verify($DB);
+          if ($Verify->checkHash($k)) {
+
+            $U = new User($DB);
+            $U->enableUser($k);
+
+            if ($U->getlastError() == "") {
+              echo '<div class="alert alert-success" role="alert"><center>Account enabled</center></div>';
+            } else {
+              echo '<div class="alert alert-danger" role="alert"><center>'.$Verify->getLastError().'</center></div>';
+            }
+
+          } else {
+            echo '<div class="alert alert-danger" role="alert"><center>Invalid Key</center></div>';
+          }
+
+        }
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
           $Verify = new Verify($DB);
@@ -16,7 +37,7 @@
             $_SESSION['user_id'] = $Verify->getUserID();
             header('Location: index.php?p=main');
           } else {
-
+            echo '<div class="alert alert-danger" role="alert"><center>'.$Verify->getLastError().'</center></div>';
           }
 
         }

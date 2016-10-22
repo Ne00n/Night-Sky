@@ -12,6 +12,8 @@ session_start();
 
 if (isset($_GET["p"])) {
   $p = $_GET["p"];
+} elseif (isset($_GET["key"])) {
+  $k = $_GET["key"];
 }
 
 if(!isset($p)) {
@@ -21,7 +23,7 @@ if(!isset($p)) {
 $DB = new Database;
 $DB->InitDB();
 
-if ($p == "login") {
+if ($p == "login" OR Page::startsWith($k,"activate")) {
   include 'content/login.php';
 }
 

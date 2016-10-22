@@ -4,6 +4,25 @@
       <div class="main-login main-center">
         <form class="form-horizontal" method="post" action="index.php?p=register">
 
+          <?php
+
+          if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+            $U = new User($DB);
+
+            if ($U->checkUserAmmount() === true) {
+              $U->registerUser($_POST['username'],$_POST['email'],$_POST['password'],$_POST['password_confirm'],$_POST['code']);
+            }
+
+
+            if ($U->getlastError() == "") {
+              $_POST = array();
+            }
+
+          }
+
+           ?>
+
           <div class="form-group">
             <label for="username" class="cols-sm-2 control-label">Username</label>
             <div class="cols-sm-10">
@@ -58,8 +77,6 @@
 
           if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-            $U = new User($DB);
-            $U->registerUser($_POST['username'],$_POST['email'],$_POST['password'],$_POST['password_confirm'],$_POST['code']);
              if ($U->getlastError() == "") {
                echo '<div class="alert alert-success" role="alert"><center>Success, confirm your email to enable your Account.</center></div>';
              } else {
