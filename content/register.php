@@ -1,25 +1,42 @@
+<?php
+
+$U = new User($DB);
+
+?>
+
 <div class="container col-sm-4 col-md-offset-4">
     <div class="row main">
-      <h2 class="form-signin-heading"><center>Night Sky Monitoring - Register</center></h2>
+      <?php
+
+      if ($U->checkUserAmmount() === true) {
+        echo '<h2 class="form-signin-heading"><center>Night Sky Monitoring - Register</center></h2>';
+      } else {
+        echo '<h2 class="form-signin-heading"><center>Currently out of Stock, but here is a Video</center></h2>';
+      }
+
+       ?>
       <div class="main-login main-center">
         <form class="form-horizontal" method="post" action="index.php?p=register">
 
           <?php
 
-          if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+          if ($U->checkUserAmmount() === true) {
 
-            $U = new User($DB);
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-            if ($U->checkUserAmmount() === true) {
-              $U->registerUser($_POST['username'],$_POST['email'],$_POST['password'],$_POST['password_confirm'],$_POST['code']);
+              if ($_POST['Token'] == $_SESSION['Token']) {
+
+                $U->registerUser($_POST['username'],$_POST['email'],$_POST['password'],$_POST['password_confirm'],$_POST['code']);
+
+                if ($U->getlastError() == "") {
+                  $_POST = array();
+                }
+
+              } else {
+                  echo '<div class="alert alert-danger" role="alert"><center>Token Verification Failed</center></div>';
+              }
+
             }
-
-
-            if ($U->getlastError() == "") {
-              $_POST = array();
-            }
-
-          }
 
            ?>
 
@@ -76,32 +93,29 @@
 
           <?php
 
-          if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-            if ($_POST['Token'] == $_SESSION['Token']) {
-
-              if ($U->getlastError() == "") {
-                echo '<div class="alert alert-success" role="alert"><center>Success, confirm your email to enable your Account.</center></div>';
-              } else {
-                echo '<div class="alert alert-danger" role="alert"><center>'.$U->getLastError().'</center></div>';
-              }
-
-            } else {
-
-                echo '<div class="alert alert-danger" role="alert"><center>Token Verification Failed</center></div>';
+                if ($U->getlastError() == "") {
+                  echo '<div class="alert alert-success" role="alert"><center>Success, confirm your email to enable your Account.</center></div>';
+                } else {
+                  echo '<div class="alert alert-danger" role="alert"><center>'.$U->getLastError().'</center></div>';
+                }
 
             }
-
-          }
 
           ?>
 
           <div class="form-group ">
             <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Register</button>
           </div>
+
+          <?php } else {
+            echo '<center><iframe width="560" height="315" src="https://www.youtube.com/embed/X9otDixAtFw" frameborder="0" allowfullscreen></iframe><center>';
+            } ?>
+
           <div class="login-register">
-                  <center><a href="index.php">Login</a></center>
-               </div>
+            <center><a href="index.php">Login</a></center>
+          </div>
         </form>
       </div>
     </div>
