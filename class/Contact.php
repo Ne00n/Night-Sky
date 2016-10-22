@@ -33,7 +33,7 @@ class Contact {
 
   public function removeContact() {
 
-      if ($this->CheckifContactIsInUse() === false) {
+      if ($this->CheckifContactIsInUse() === false AND $this->error == "") {
 
         $stmt = $this->DB->GetConnection()->prepare("DELETE FROM emails WHERE ID = ?");
         $stmt->bind_param('i', $this->id);

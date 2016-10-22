@@ -48,11 +48,15 @@ class Main {
 
   public function removeCheck() {
 
+    if ($this->error == "") {
+
       $stmt = $this->DB->GetConnection()->prepare("DELETE FROM checks WHERE ID = ?");
       $stmt->bind_param('i', $this->id);
       $rc = $stmt->execute();
       if ( false===$rc ) { $this->error = "MySQL Error"; }
       $stmt->close();
+
+    }
 
   }
 
