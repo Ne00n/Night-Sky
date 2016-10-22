@@ -15,7 +15,8 @@ if (php_sapi_name() == 'cli') {
   $DB = new Database;
   $DB->InitDB();
 
-  $C = new Contact($DB,NULL);
+  $Verify = new Verify($DB);
+  $C = new Contact($DB,$Verify);
 
   $Checks = array();
 
