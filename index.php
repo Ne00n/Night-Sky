@@ -49,6 +49,10 @@ if (Page::startsWith($p,"contact")) {
   include 'content/contact.php';
 }
 
+if (Page::startsWith($p,"history")) {
+  include 'content/history.php';
+}
+
 
 if ($p=="logout") {
   session_unset();

@@ -1,6 +1,3 @@
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
 CREATE TABLE `checks` (
   `ID` int(11) NOT NULL,
   `USER_ID` int(11) NOT NULL,
@@ -18,6 +15,14 @@ CREATE TABLE `emails` (
   `USER_ID` int(11) NOT NULL,
   `EMail` varchar(50) NOT NULL,
   `Status` int(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `history` (
+  `ID` int(11) NOT NULL,
+  `USER_ID` int(11) NOT NULL,
+  `CHECK_ID` int(11) NOT NULL,
+  `Status` int(1) NOT NULL,
+  `Timestamp` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `threads` (
@@ -42,6 +47,9 @@ ALTER TABLE `emails`
   ADD PRIMARY KEY (`ID`),
   ADD UNIQUE KEY `EMail` (`EMail`);
 
+ALTER TABLE `history`
+  ADD PRIMARY KEY (`ID`);
+
 ALTER TABLE `threads`
   ADD PRIMARY KEY (`THREAD_ID`);
 
@@ -54,6 +62,8 @@ ALTER TABLE `users`
 ALTER TABLE `checks`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `emails`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `history`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `users`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;

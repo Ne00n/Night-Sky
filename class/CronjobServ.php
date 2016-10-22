@@ -65,6 +65,9 @@ class CronjobServ extends Thread {
               $asynchMail = new AsyncMail($element['EMAIL'],'Night-Sky - Downtime Alert '.page::escape($element['NAME']),'Server '.page::escape($element['NAME']).' went offline. Detected: '.date("d.m.Y H:i:s",page::escape($time)));
               $asynchMail->start();
 
+              $H = new History($DB);
+              $H->addHistory($element['USER_ID'],$key,0);
+
             //Still Offine
             } elseif ($S->getStatus() === 0) {
 
@@ -87,6 +90,9 @@ class CronjobServ extends Thread {
               $time = time();
               $asynchMail = new AsyncMail($element['EMAIL'],'Night-Sky - Uptime Alert '.page::escape($element['NAME']),'Server '.page::escape($element['NAME']).' is back Online. Detected: '.date("d.m.Y H:i:s",page::escape($time)));
               $asynchMail->start();
+
+              $H = new History($DB);
+              $H->addHistory($element['USER_ID'],$key,1);
 
             }
 

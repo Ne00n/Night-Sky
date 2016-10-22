@@ -172,7 +172,8 @@ if ($Login->isLoggedIN()) {
           echo '<td class="text-left">'.Page::escape($row['PORT']).'</td>';
           echo '<td class="text-left">'.($row['ENABLED'] ? 'Enabled' : 'Disabled').'</td>';
           echo '<td class="text-left">'.($row['ONLINE'] ? 'Yes' : 'No').'</td>';
-          echo '<td class="text-left"><a href="index.php?p=main?remove='.page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
+          echo '<td class="text-left"><a href="index.php?p=history?id='.page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-history"></i></button></a>';
+          echo '<a href="index.php?p=main?remove='.page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
           echo '</tr>';
 
         } ?>
