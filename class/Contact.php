@@ -15,6 +15,7 @@ class Contact {
   public function addContact($EMail) {
 
     if (!filter_var($EMail, FILTER_VALIDATE_EMAIL)) { $this->error = "Invalid EMail."; }
+    if (strlen($EMail) > 50) {$this->error = "The EMail is to long";}
 
     if ($this->error == "") {
 

@@ -18,6 +18,10 @@ class Main {
     if(!preg_match("/^[a-zA-Z0-9._\- ]+$/",$NAME)){ $this->error = "The Name contains invalid letters.";}
     if(!preg_match("/^[0-9]+$/",$PORT)){ $this->error = "Invalid Port.";}
     if ($this->Verify->checkContactID($EMAIL_ID) === false) { $this->error = "Invalid EMail";}
+    if (strlen($NAME) > 50) {$this->error = "The Name is to long";}
+    if (strlen($NAME) < 3) {$this->error = "The Name is to short";}
+    if ($PORT > 65535) {$this->error = "The Port is to big";}
+    if ($PORT < 1) {$this->error = "The Port should be at least 1";}
 
     if ($this->error == "") {
 
