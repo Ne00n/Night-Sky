@@ -91,12 +91,14 @@ class Verify {
   public function checkContactID($id,$status_check = 1) {
     if(!preg_match("/^[0-9]+$/",$id)){ return false;}
 
+     $user_id = $this->getUserID();
+
     if ($status_check == 1) {
-      $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM emails WHERE ID = ? AND Status = 1 LIMIT 1");
+      $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM emails WHERE ID = ? AND Status = 1 AND USER_ID = ? LIMIT 1");
     } elseif ($status_check == 0) {
-      $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM emails WHERE ID = ? LIMIT 1");
+      $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM emails WHERE ID = ? AND USER_ID = ? LIMIT 1");
     }
-    $stmt->bind_param('i', $id);
+    $stmt->bind_param('ii', $id,$user_id);
     $rc = $stmt->execute();
     if ( false===$rc ) { $this->error = "MySQL Error"; }
     $stmt->bind_result($result);
@@ -114,8 +116,10 @@ class Verify {
    public function checkCheckID($id) {
      if(!preg_match("/^[0-9]+$/",$id)){ return false;}
 
-     $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM checks WHERE ID = ? LIMIT 1");
-     $stmt->bind_param('i', $id);
+     $user_id = $this->getUserID();
+
+     $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM checks WHERE ID = ? AND USER_ID = ? LIMIT 1");
+     $stmt->bind_param('ii', $id,$user_id);
      $rc = $stmt->execute();
      if ( false===$rc ) { $this->error = "MySQL Error"; }
      $stmt->bind_result($result);
@@ -128,8 +132,7 @@ class Verify {
        return false;
      }
 
-    }
-
+  }
 
   public function getLastError() {
     return $this->error;
