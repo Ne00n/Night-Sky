@@ -23,8 +23,12 @@ if(!isset($p)) {
 $DB = new Database;
 $DB->InitDB();
 
-if ($p == "login" OR Page::startsWith($k,"activate")) {
+if ($p == "login") {
   include 'content/login.php';
+}
+
+if (isset($k) AND Page::startsWith($k,"activate")) {
+   include 'content/login.php';
 }
 
 if (Page::startsWith($p,"register")) {
