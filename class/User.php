@@ -93,13 +93,13 @@
 
     }
 
-    public function changePassword($old_pw,$new_pw,$new_pw_2,$Login) {
+    public function changePassword($old_pw,$new_pw,$new_pw_2) {
 
       if (strlen($new_pw) < 10 ) {$this->error = "Passwords to short."; }
       if (strlen($new_pw) > 160 ) {$this->error = "Passwords are to long."; }
       if ($new_pw != $new_pw_2) {$this->error = "Passwords not equal."; }
 
-      $user_id = $Login->getUserID();
+      $user_id = $this->Verify->getUserID();
 
       $stmt = $this->DB->GetConnection()->prepare("SELECT Password FROM users WHERE ID = ?");
       $stmt->bind_param('i', $user_id);
@@ -122,6 +122,55 @@
 
         } else {
           $this->error = "Old Password is incorrect.";
+        }
+      }
+
+    }
+
+    public function deleteAccount($current_password) {
+
+      if (strlen($current_password) < 10 ) {$this->error = "Password to short."; }
+      if (strlen($current_password) > 160 ) {$this->error = "Password is to long."; }
+
+      $user_id = $this->Verify->getUserID();
+
+      $stmt = $this->DB->GetConnection()->prepare("SELECT Password FROM users WHERE ID = ?");
+      $stmt->bind_param('i', $user_id);
+      $rc = $stmt->execute();
+      if ( false===$rc ) { $this->error = "MySQL Error"; }
+      $stmt->bind_result($password_db);
+      $stmt->fetch();
+      $stmt->close();
+
+      if ($this->error == "") {
+        if (password_verify($current_password, $password_db)) {
+
+          #Delete History
+          $stmt = $this->DB->GetConnection()->prepare("DELETE FROM history WHERE USER_ID = ?");
+          $stmt->bind_param('i', $user_id);
+          $rc = $stmt->execute();
+          $stmt->close();
+
+          #Emails
+          $stmt = $this->DB->GetConnection()->prepare("DELETE FROM emails WHERE USER_ID = ?");
+          $stmt->bind_param('i', $user_id);
+          $rc = $stmt->execute();
+          $stmt->close();
+
+          #Checks
+          $stmt = $this->DB->GetConnection()->prepare("DELETE FROM checks WHERE USER_ID = ?");
+          $stmt->bind_param('i', $user_id);
+          $rc = $stmt->execute();
+          $stmt->close();
+
+          #Account iself
+          $stmt = $this->DB->GetConnection()->prepare("DELETE FROM users WHERE ID = ? LIMIT 1");
+          $stmt->bind_param('i', $user_id);
+          $rc = $stmt->execute();
+          $stmt->close();
+
+        } else {
+          $this->error = "Current Password is incorrect.";
         }
       }
 
