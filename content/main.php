@@ -46,6 +46,94 @@ if ($Login->isLoggedIN()) {
 
         }
 
+        if (page::startsWith($p,"main?edit=")) {
+
+          $check_id = str_replace("main?edit=", "", $p);
+
+          $M = new Main($DB,$Login);
+          $M->setID($check_id);
+
+          if ($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['confirm'])) {
+
+            if ($_POST['Token'] == $_SESSION['Token']) {
+
+              $M->updateCheck($_POST['ip'],$_POST['port'],$_POST['email'],$_POST['name']);
+
+               if ($M->getlastError() == "") {
+                 echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
+                 $_POST = array();
+               } else {
+                 echo '<div class="alert alert-danger" role="alert"><center>'.$M->getLastError().'</center></div>';
+               }
+
+            } else {
+                echo '<div class="alert alert-danger" role="alert"><center>Token Verification Failed</center></div>';
+            }
+
+          }
+
+          $M->getData();
+
+        ?><form class="form-horizontal" action="index.php?p=main?edit=<?php echo Page::escape($check_id); ?>" method="post">
+            <div class="form-group">
+              <div class="col-sm-8 col-sm-offset-2">
+                <div class="input-group">
+                 <div class="input-group-addon">
+                <span class="fa fa-server"></span>
+                 </div>
+                 <input value="<?php echo Page::escape($M->getIP()); ?>" type="text" class="form-control input-sm" name="ip" placeholder="127.0.0.1"/>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-6 col-sm-offset-2">
+                <div class="input-group">
+                 <div class="input-group-addon">
+                <span class="fa fa-pencil"></span>
+                 </div>
+                  <input value="<?php echo Page::escape($M->getName()); ?>" type="text" class="form-control input-sm" name="name" placeholder="Tracer"/>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="input-group">
+                 <div class="input-group-addon">
+                <span class="fa fa-circle-o"></span>
+                 </div>
+                  <input value="<?php echo Page::escape($M->getPort()); ?>" type="text" class="form-control input-sm" name="port" placeholder="80"/>
+                </div>
+              </div>
+            </div>
+            <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>"\>
+
+            <div class="form-group">
+                  <div class="col-sm-5 col-sm-offset-2">
+                    <div class="input-group">
+                      <div class="input-group-addon">
+                     <span class="fa fa-envelope"></span>
+                      </div>
+                      <select class="form-control input-sm" name="email">
+                        <?php
+                        $query = "SELECT ID,EMail FROM emails WHERE USER_ID = ? AND Status = 1 ORDER by id";
+                        $USER_ID = $Login->getUserID();
+                        $stmt = $DB->GetConnection()->prepare($query);
+                        $stmt->bind_param('i', $USER_ID);
+                        $stmt->execute();
+                        $stmt->bind_result($db_ID, $db_EMail);
+                        while ($stmt->fetch()) {
+                             echo '<option value="'. Page::escape($db_ID) .'">'. Page::escape($db_EMail) .'</option>';
+                        }
+                        $stmt->close(); ?>
+                      </select>
+                     </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" name="confirm" class="btn btn-primary">Save</button>
+            </div>
+          </form> <?php
+
+        }
+
         if (page::startsWith($p,"main?remove=")) {
 
           $check_id = str_replace("main?remove=", "", $p);
@@ -202,10 +290,11 @@ if ($Login->isLoggedIN()) {
           echo '<td class="text-left">'.Page::escape($row['PORT']).'</td>';
           echo '<td class="text-left">'.($row['ENABLED'] ? 'Enabled' : 'Disabled').'</td>';
           echo '<td class="text-left">'.($row['ONLINE'] ? 'Yes' : 'No').'</td>';
+          echo '<td class="text-left"><a href="index.php?p=main?edit='.page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-gear"></i></button></a>';
           if ($row['ENABLED'] === 1) {
-            echo '<td class="text-left"><a href="index.php?p=main?disable='.page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-stop"></i></button></a>';
+            echo '<a href="index.php?p=main?disable='.page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-pause"></i></button></a>';
           } elseif ($row['ENABLED'] === 0) {
-            echo '<td class="text-left"><a href="index.php?p=main?enable='.page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-play"></i></button></a>';
+            echo '<a href="index.php?p=main?enable='.page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-play"></i></button></a>';
           }
           echo '<a href="index.php?p=history?id='.page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-history"></i></button></a>';
           echo '<a href="index.php?p=main?remove='.page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
