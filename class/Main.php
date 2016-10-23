@@ -64,7 +64,7 @@ class Main {
     if ($this->error == "") {
 
       $stmt = $this->DB->GetConnection()->prepare("UPDATE checks SET EMAIL_ID = ?, IP = ?, PORT = ?, NAME = ? WHERE ID = ?");
-      $stmt->bind_param('isisi', $USER_ID,$IP,$PORT,$NAME,$this->id);
+      $stmt->bind_param('isisi', $EMAIL_ID,$IP,$PORT,$NAME,$this->id);
       $rc = $stmt->execute();
       if ( false===$rc ) { $this->error = "MySQL Error"; }
       $stmt->close();
