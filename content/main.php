@@ -16,6 +16,36 @@ if ($Login->isLoggedIN()) {
 
         <?php
 
+        if (page::startsWith($p,"main?enable=")) {
+
+          $check_id = str_replace("main?enable=", "", $p);
+
+          $M = new Main($DB,$Login);
+          $M->setID($check_id);
+          $M->enable();
+          if ($M->getLastError() == "") {
+            echo '<div class="alert alert-success" role="alert"><center>Success.</center></div>';
+          } else {
+            echo '<div class="alert alert-danger" role="alert"><center>'.$M->getLastError().'</center></div>';
+          }
+
+        }
+
+        if (page::startsWith($p,"main?disable=")) {
+
+          $check_id = str_replace("main?disable=", "", $p);
+
+          $M = new Main($DB,$Login);
+          $M->setID($check_id);
+          $M->disable();
+          if ($M->getLastError() == "") {
+            echo '<div class="alert alert-success" role="alert"><center>Success.</center></div>';
+          } else {
+            echo '<div class="alert alert-danger" role="alert"><center>'.$M->getLastError().'</center></div>';
+          }
+
+        }
+
         if (page::startsWith($p,"main?remove=")) {
 
           $check_id = str_replace("main?remove=", "", $p);
@@ -172,7 +202,12 @@ if ($Login->isLoggedIN()) {
           echo '<td class="text-left">'.Page::escape($row['PORT']).'</td>';
           echo '<td class="text-left">'.($row['ENABLED'] ? 'Enabled' : 'Disabled').'</td>';
           echo '<td class="text-left">'.($row['ONLINE'] ? 'Yes' : 'No').'</td>';
-          echo '<td class="text-left"><a href="index.php?p=history?id='.page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-history"></i></button></a>';
+          if ($row['ENABLED'] === 1) {
+            echo '<td class="text-left"><a href="index.php?p=main?disable='.page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-stop"></i></button></a>';
+          } elseif ($row['ENABLED'] === 0) {
+            echo '<td class="text-left"><a href="index.php?p=main?enable='.page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-play"></i></button></a>';
+          }
+          echo '<a href="index.php?p=history?id='.page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-history"></i></button></a>';
           echo '<a href="index.php?p=main?remove='.page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
           echo '</tr>';
 

@@ -60,6 +60,38 @@ class Main {
 
   }
 
+  public function enable() {
+
+    if ($this->error == "") {
+
+      $enabled = 1;
+
+      $stmt = $this->DB->GetConnection()->prepare("UPDATE checks SET ENABLED = ?  WHERE ID = ?");
+      $stmt->bind_param('ii', $enabled,$this->id);
+      $rc = $stmt->execute();
+      if ( false===$rc ) { $this->error = "MySQL Error"; }
+      $stmt->close();
+
+    }
+
+  }
+
+  public function disable() {
+
+    if ($this->error == "") {
+
+      $enabled = 0;
+
+      $stmt = $this->DB->GetConnection()->prepare("UPDATE checks SET ENABLED = ?  WHERE ID = ?");
+      $stmt->bind_param('ii', $enabled,$this->id);
+      $rc = $stmt->execute();
+      if ( false===$rc ) { $this->error = "MySQL Error"; }
+      $stmt->close();
+
+    }
+
+  }
+
   public function setID($id) {
 
     if ($this->Verify->checkCheckID($id) === true) {
