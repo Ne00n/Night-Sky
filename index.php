@@ -53,6 +53,9 @@ if (Page::startsWith($p,"history")) {
   include 'content/history.php';
 }
 
+if (Page::startsWith($p,"account")) {
+  include 'content/account.php';
+}
 
 if ($p=="logout") {
   session_unset();

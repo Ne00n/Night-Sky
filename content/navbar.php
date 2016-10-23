@@ -29,6 +29,15 @@
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
+          <?php
+
+          if (Page::startsWith($p,"account")) {
+             echo '<li class="active"><a href="index.php?p=account">Account</a></li>';
+          } else {
+            echo '<li><a href="index.php?p=account">Account</a></li>';
+          }
+
+           ?>
           <li><a href="index.php?p=logout">Logout</a></li>
         </ul>
 

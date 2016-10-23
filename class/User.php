@@ -4,9 +4,11 @@
 
     private $DB;
     private $error;
+    private $Verify;
 
-    public function __construct($DB) {
-      $this->DB = $DB;
+    public function __construct($DB_IN,$Verify_IN = NULL) {
+      $this->DB = $DB_IN;
+      $this->Verify = $Verify_IN;
     }
 
     public function registerUser($username,$email,$password,$password_repeat,$code) {
@@ -88,6 +90,40 @@
       $rc = $stmt->execute();
       if ( false===$rc ) { $this->error = "MySQL Error"; }
       $stmt->close();
+
+    }
+
+    public function changePassword($old_pw,$new_pw,$new_pw_2,$Login) {
+
+      if (strlen($new_pw) < 10 ) {$this->error = "Passwords to short."; }
+      if (strlen($new_pw) > 160 ) {$this->error = "Passwords are to long."; }
+      if ($new_pw != $new_pw_2) {$this->error = "Passwords not equal."; }
+
+      $user_id = $Login->getUserID();
+
+      $stmt = $this->DB->GetConnection()->prepare("SELECT Password FROM users WHERE ID = ?");
+      $stmt->bind_param('i', $user_id);
+      $rc = $stmt->execute();
+      if ( false===$rc ) { $this->error = "MySQL Error"; }
+      $stmt->bind_result($password_db);
+      $stmt->fetch();
+      $stmt->close();
+
+      if ($this->error == "") {
+        if (password_verify($old_pw, $password_db)) {
+
+          $hash = password_hash($new_pw, PASSWORD_DEFAULT);
+
+          $stmt = $this->DB->GetConnection()->prepare("UPDATE users SET Password = ?  WHERE ID = ?");
+          $stmt->bind_param('si',$hash,$Login->getUserID());
+          $rc = $stmt->execute();
+          if ( false===$rc ) { $this->error = "MySQL Error"; }
+          $stmt->close();
+
+        } else {
+          $this->error = "Old Password is incorrect.";
+        }
+      }
 
     }
 
