@@ -101,6 +101,7 @@ if ($Login->isLoggedIN()) {
 
   <?php } ?>
 
+      <div class="table-responsive table-hover">
         <table class="table">
         <thead>
           <tr>
@@ -125,13 +126,14 @@ if ($Login->isLoggedIN()) {
           echo '<tr>';
           echo '<td class="text-left">'.Page::escape($row['EMail']).'</td>';
           echo '<td class="text-left">'.($row['Status'] ? 'Enabled' : 'Disabled').'</td>';
-          echo '<td class="text-left"><a href="index.php?p=contact?remove='.Page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
+          echo '<td class="text-left col-md-3"><a href="index.php?p=contact?remove='.Page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
           echo '</tr>';
 
         } ?>
 
         </tbody>
       </table>
+    </div>
 
       <div class="form-group">
         <a href="index.php?p=contact?add"><button class="btn btn-primary" type="button">Add Contact</button></a>

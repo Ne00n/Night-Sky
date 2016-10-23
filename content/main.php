@@ -260,6 +260,7 @@ if ($Login->isLoggedIN()) {
 
           <?php } ?>
 
+        <div class="table-responsive table-hover">
         <table class="table">
         <thead>
           <tr>
@@ -290,7 +291,7 @@ if ($Login->isLoggedIN()) {
           echo '<td class="text-left">'.Page::escape($row['PORT']).'</td>';
           echo '<td class="text-left">'.($row['ENABLED'] ? 'Enabled' : 'Disabled').'</td>';
           echo '<td class="text-left">'.($row['ONLINE'] ? 'Yes' : 'No').'</td>';
-          echo '<td class="text-left"><a href="index.php?p=main?edit='.page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-gear"></i></button></a>';
+          echo '<td class="text-left col-md-3"><a href="index.php?p=main?edit='.page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-gear"></i></button></a>';
           if ($row['ENABLED'] === 1) {
             echo '<a href="index.php?p=main?disable='.page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-pause"></i></button></a>';
           } elseif ($row['ENABLED'] === 0) {
@@ -304,6 +305,7 @@ if ($Login->isLoggedIN()) {
 
         </tbody>
       </table>
+    </div>
 
       <div class="form-group">
         <a href="index.php?p=main?add"><button class="btn btn-primary" type="button">Add Check</button></a>
