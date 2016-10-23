@@ -45,7 +45,7 @@ $U = new User($DB);
             <div class="cols-sm-10">
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-                <input type="text" value="<?php echo page::escape($_POST['username']); ?>" class="form-control" name="username" placeholder="Enter your Username"/>
+                <input type="text" value="<?php if(isset($_POST['username'])) {echo page::escape($_POST['username']);} ?>" class="form-control" name="username" placeholder="Enter your Username"/>
               </div>
             </div>
           </div>
@@ -55,7 +55,7 @@ $U = new User($DB);
             <div class="cols-sm-10">
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                <input type="text" value="<?php echo page::escape($_POST['email']); ?>" class="form-control" name="email" placeholder="Enter your Email"/>
+                <input type="text" value="<?php if(isset($_POST['email'])) {echo page::escape($_POST['email']);} ?>" class="form-control" name="email" placeholder="Enter your Email"/>
               </div>
             </div>
           </div>
@@ -85,7 +85,7 @@ $U = new User($DB);
             <div class="cols-sm-10">
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-qrcode fa-lg" aria-hidden="true"></i></span>
-                <input type="text" value="<?php echo page::escape($_POST['code']); ?>" class="form-control" name="code" placeholder="Enter your Code"/>
+                <input type="text" value="<?php if(isset($_POST['code'])) {echo page::escape($_POST['code']);} ?>" class="form-control" name="code" placeholder="Enter your Code"/>
               </div>
             </div>
           </div>
