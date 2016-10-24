@@ -106,6 +106,7 @@ if ($Login->isLoggedIN()) {
 
                   if ($U->getLastError() == "") {
                     echo '<div class="alert alert-success" role="alert"><center>Success.</center></div>';
+                    echo '<meta http-equiv="refresh" content="3; url=index.php?p=logout" />';
                   } else {
                     echo '<div class="alert alert-danger" role="alert"><center>'.$U->getLastError().'</center></div>';
                   }
