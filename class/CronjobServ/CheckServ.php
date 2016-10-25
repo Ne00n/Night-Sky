@@ -3,11 +3,14 @@
 class CheckServ {
 
   private $online = false;
+  private $remote_boxes;
+
+  public function __construct() {
+    $this->remote_boxes[] = array('Location' => 'Germany','IP' => '','PORT' => '');
+  }
 
   public function getStatus() {
-
     return $this->online;
-
   }
 
   public function checkAvailability($IP,$PORT) {
@@ -22,8 +25,17 @@ class CheckServ {
       $this->online = false;
 
       #EXTERNAL CHECKS Todo
+      $external_one = mt_rand(0,count($this->remote_boxes));
+      $external_second = mt_rand(0,count($this->remote_boxes));
 
+      $res_one = $this->fetchRemote($this->remote_boxes[$external_one]['IP'],$this->remote_boxes[$external_one]['PORT'],$IP,$PORT);
+      $res_two = $this->fetchRemote($this->remote_boxes[$external_second]['IP'],$this->remote_boxes[$external_second]['PORT'],$IP,$PORT);
 
+      if ($res_one[0] == 1) {
+        $this->online = true;
+      } elseif ($res_two[0] == 1) {
+        $this->online = true;
+      }
 
     }
 
