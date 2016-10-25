@@ -11,7 +11,7 @@ if (isset($_GET['host'])) {
 }
 
 function check($ip,$port) {
-	$socket = @fsockopen($ip, $port, $errorNo, $errorStr, 1.5);
+	$socket = @fsockopen($ip, $port, $errorNo, $errorStr, 1.0);
 	if ($errorNo == 0) {
 		echo "1:success";
 	} else {
