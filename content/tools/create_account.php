@@ -2,10 +2,10 @@
 
 die();
 
-include '../content/config.php';
+include '../../content/config.php';
 
 function dat_loader($class) {
-    include '../class/' . $class . '.php';
+    include '../../class/' . $class . '.php';
 }
 
 spl_autoload_register('dat_loader');
