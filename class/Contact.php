@@ -20,12 +20,16 @@ class Contact {
     if ($this->error == "") {
 
       $USER_ID = $this->Verify->getUserID();
+      $activation_hash = bin2hex(random_bytes(40));
 
-      $stmt = $this->DB->GetConnection()->prepare("INSERT INTO emails(USER_ID,EMail) VALUES (?,?)");
-      $stmt->bind_param('is',$USER_ID, $EMail);
+      $stmt = $this->DB->GetConnection()->prepare("INSERT INTO emails(USER_ID,EMail,activation_hash) VALUES (?,?,?)");
+      $stmt->bind_param('iss',$USER_ID, $EMail,$activation_hash);
       $rc = $stmt->execute();
       if ( false===$rc ) { $this->error = "MySQL Error"; }
       $stmt->close();
+
+      $Mail = new Mail($email,'Night-Sky - EMail confirmation','Please confirm your added Mail: https://night.x8e.ru/index.php?p=contact?key='.$activation_hash);
+      $Mail->run();
 
     }
 
@@ -50,6 +54,19 @@ class Contact {
         $this->error = "Contact still in use";
 
       }
+
+  }
+
+  public function enableContact($key) {
+
+    $enabled = 1;
+
+    #Enable Contact
+    $stmt = $this->DB->GetConnection()->prepare("UPDATE emails SET Status = ?  WHERE activation_hash = ?");
+    $stmt->bind_param('is', $enabled,$key);
+    $rc = $stmt->execute();
+    if ( false===$rc ) { $this->error = "MySQL Error"; }
+    $stmt->close();
 
   }
 

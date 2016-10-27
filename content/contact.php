@@ -18,6 +18,26 @@ if ($Login->isLoggedIN()) {
 
       $CT = new Contact($DB,$Login);
 
+      if (Page::startsWith($p,"contact?key=")) {
+
+        $k = str_replace("contact?key=", "", $p);
+
+        if ($Login->checkEmailHash($k)) {
+
+          $CT->enableContact($k);
+
+          if ($U->getlastError() == "") {
+            echo '<div class="alert alert-success" role="alert"><center>Account enabled</center></div>';
+          } else {
+            echo '<div class="alert alert-danger" role="alert"><center>'.$Verify->getLastError().'</center></div>';
+          }
+
+        } else {
+          echo '<div class="alert alert-danger" role="alert"><center>Invalid Key</center></div>';
+        }
+
+      }
+
       if (page::startsWith($p,"contact?remove=")) {
 
       $contact_id = str_replace("contact?remove=", "", $p);
