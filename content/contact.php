@@ -26,10 +26,10 @@ if ($Login->isLoggedIN()) {
 
           $CT->enableContact($k);
 
-          if ($U->getlastError() == "") {
-            echo '<div class="alert alert-success" role="alert"><center>Account enabled</center></div>';
+          if ($CT->getlastError() == "") {
+            echo '<div class="alert alert-success" role="alert"><center>Mail enabled</center></div>';
           } else {
-            echo '<div class="alert alert-danger" role="alert"><center>'.$Verify->getLastError().'</center></div>';
+            echo '<div class="alert alert-danger" role="alert"><center>'.$CT->getLastError().'</center></div>';
           }
 
         } else {
