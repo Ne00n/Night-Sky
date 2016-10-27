@@ -31,9 +31,6 @@ class CheckServ {
       $res_one = $this->fetchRemote($this->remote_boxes[$external_one]['IP'],$this->remote_boxes[$external_one]['PORT'],$IP,$PORT);
       $res_two = $this->fetchRemote($this->remote_boxes[$external_second]['IP'],$this->remote_boxes[$external_second]['PORT'],$IP,$PORT);
 
-      var_dump($res_two);
-      var_dump($res_two);
-
       if ($res_one[0] == 1) {
         $this->online = true;
       } elseif ($res_two[0] == 1) {
