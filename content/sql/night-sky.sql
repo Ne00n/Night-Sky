@@ -1,3 +1,6 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
 CREATE TABLE `checks` (
   `ID` int(11) NOT NULL,
   `USER_ID` int(11) NOT NULL,
@@ -25,6 +28,19 @@ CREATE TABLE `history` (
   `Timestamp` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE `remote` (
+  `ID` int(11) NOT NULL,
+  `Location` varchar(50) NOT NULL,
+  `IP` varchar(50) NOT NULL,
+  `Port` int(5) NOT NULL,
+  `Online` int(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `remote` (`ID`, `Location`, `IP`, `Port`, `Online`) VALUES
+(1, 'Germany', 'de-check.x8e.ru', 443, 0),
+(2, 'United Kingdom', 'uk-check.x8e.ru', 443, 0),
+(3, 'Dallas (US)', 'da-check.x8e.ru', 443, 0);
+
 CREATE TABLE `threads` (
   `THREAD_ID` varchar(11) NOT NULL,
   `THREAD_LOCK` int(1) NOT NULL DEFAULT '0'
@@ -50,6 +66,9 @@ ALTER TABLE `emails`
 ALTER TABLE `history`
   ADD PRIMARY KEY (`ID`);
 
+ALTER TABLE `remote`
+  ADD PRIMARY KEY (`ID`);
+
 ALTER TABLE `threads`
   ADD PRIMARY KEY (`THREAD_ID`);
 
@@ -64,6 +83,8 @@ ALTER TABLE `checks`
 ALTER TABLE `emails`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `history`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `remote`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `users`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;

@@ -5,8 +5,8 @@ class CheckServ {
   private $online = false;
   private $remote_boxes;
 
-  public function __construct() {
-    $this->remote_boxes[] = array('Location' => 'Germany','IP' => '','PORT' => '');
+  public function __construct($in_Remote) {
+    $this->remote_boxes = $in_Remote;
   }
 
   public function getStatus() {
@@ -31,6 +31,9 @@ class CheckServ {
       $res_one = $this->fetchRemote($this->remote_boxes[$external_one]['IP'],$this->remote_boxes[$external_one]['PORT'],$IP,$PORT);
       $res_two = $this->fetchRemote($this->remote_boxes[$external_second]['IP'],$this->remote_boxes[$external_second]['PORT'],$IP,$PORT);
 
+      var_dump($res_two);
+      var_dump($res_two);
+
       if ($res_one[0] == 1) {
         $this->online = true;
       } elseif ($res_two[0] == 1) {
@@ -43,7 +46,7 @@ class CheckServ {
 
   public function fetchRemote($IP,$Port,$IP_Check,$Port_Check) {
 
-    $ch = curl_init("https://".$IP.":".$PORT."/check.php?host=". $IP_Check .":" . $Port_Check ."");
+    $ch = curl_init("https://".$IP.":".$Port."/check.php?host=". $IP_Check .":" . $Port_Check ."");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,1); //Time for connection in seconds

@@ -4,11 +4,13 @@ class CronjobBase {
 
   private $threadId;
   private $Checks;
+  private $Remote;
 
-  public function __construct($threadId,$Checks)
+  public function __construct($in_threadId,$in_Checks,$in_Remote)
   {
-      $this->threadId = $threadId;
-      $this->Checks = $Checks;
+      $this->threadId = $in_threadId;
+      $this->Checks = $in_Checks;
+      $this->Remote = $in_Remote;
   }
 
   public function run()
@@ -24,7 +26,7 @@ class CronjobBase {
         $Check_Thread = array_slice($this->Checks[$this->threadId], $i, $i +5, true);
 
         #Create a new Thread and pass our stuff to it
-        $t[$i] = new CronjobServ($this->threadId,$i,$Check_Thread);
+        $t[$i] = new CronjobServ($this->threadId,$i,$Check_Thread,$this->Remote);
 
         #Launch it
         $t[$i]->start();

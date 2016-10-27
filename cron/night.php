@@ -19,6 +19,9 @@ if (php_sapi_name() == 'cli') {
   $Verify = new Verify($DB);
   $C = new Contact($DB,$Verify);
 
+  $R = new Remote($DB);
+  $Remote = $R->getRemote();
+
   $Checks = array();
 
   $query = "SELECT SLOT,ID,IP,PORT,EMAIL_ID,USER_ID,NAME FROM checks WHERE ENABLED = 1 ORDER by ID";
@@ -40,7 +43,7 @@ if (php_sapi_name() == 'cli') {
 
         if (isset($Checks[$i])) {
           printf("Night Base\n",$i);
-          $t[$i] = new CronjobBase($i,$Checks);
+          $t[$i] = new CronjobBase($i,$Checks,$Remote);
           $t[$i]->run();
         } else {
           printf("Night Base No Job\n",$i);

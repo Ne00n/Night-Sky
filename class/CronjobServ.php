@@ -9,13 +9,15 @@ class CronjobServ extends Thread {
   private $slot;
   private $threadId;
   private $Check;
+  private $Remote;
   private $error;
 
-  public function __construct($slot,$threadId,$Check)
+  public function __construct($in_slot,$in_threadId,$in_Check,$in_Remote)
   {
-      $this->threadId = $threadId;
-      $this->slot = $slot;
-      $this->Check = $Check;
+      $this->threadId = $in_threadId;
+      $this->slot = $in_slot;
+      $this->Check = $in_Check;
+      $this->Remote = $in_Remote;
   }
 
   public function run()
@@ -29,7 +31,7 @@ class CronjobServ extends Thread {
       $S = new Status($DB);
 
       #Create a new Checkserv Object
-      $CS = new Checkserv();
+      $CS = new Checkserv($this->Remote);
 
       #Create a new ThreadLock Object
       $T = new ThreadLock($DB);
