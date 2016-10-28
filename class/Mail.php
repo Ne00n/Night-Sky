@@ -6,6 +6,7 @@ class Mail {
     private $_mail_to;
     private $_subject;
     private $_text;
+    private $success = true;
 
     public function __construct($mail_to,$subject,$text) {
         $this->_subject = $subject;
@@ -14,7 +15,36 @@ class Mail {
     }
 
     public function run() {
-        mail($this->_mail_to,$this->_subject,$this->_text,$this->_mail_from);
+        #mail($this->_mail_to,$this->_subject,$this->_text,$this->_mail_from);
+
+        $mail = new PHPMailer;
+
+        $mail->isSMTP();
+        $mail->Host = 'ghost.mxroute.com ';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'noreply@x8e.ru';
+        $mail->Password = ',aO;sGz?*%sy';
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        $mail->setFrom('noreply@night.x8e.ru', 'Night-Sky');
+        $mail->addAddress($this->_mail_to);
+
+        $mail->Subject = $this->_subject;
+        $mail->Body    = $this->_text;
+
+        if(!$mail->send()) {
+            #echo 'Message could not be sent.';
+            #echo 'Mailer Error: ' . $mail->ErrorInfo;
+            $this->success = false;
+        }
+
+    }
+
+    public function checkSuccess() {
+
+      return $this->success;
+
     }
 }
 
