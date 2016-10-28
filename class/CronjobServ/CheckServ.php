@@ -23,8 +23,7 @@ class CheckServ {
       $this->online = true;
     } else {
       $this->online = false;
-
-      #EXTERNAL CHECKS Todo
+      
       $external_one = mt_rand(0,count($this->remote_boxes));
       $external_second = mt_rand(0,count($this->remote_boxes));
 
