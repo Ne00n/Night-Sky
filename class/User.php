@@ -40,7 +40,7 @@
         $hash = password_hash($password, PASSWORD_DEFAULT);
 
         $rank = 2;
-        $activation_hash = bin2hex(random_bytes(40));
+        $activation_hash = bin2hex(random_bytes(20));
 
         $stmt = $this->DB->GetConnection()->prepare("INSERT INTO users(Username,Password,rank,activation_hash) VALUES (?, ?, ?, ?)");
         $stmt->bind_param('ssis', $username,$hash,$rank,$activation_hash);

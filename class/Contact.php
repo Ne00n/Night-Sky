@@ -20,7 +20,7 @@ class Contact {
     if ($this->error == "") {
 
       $USER_ID = $this->Verify->getUserID();
-      $activation_hash = bin2hex(random_bytes(40));
+      $activation_hash = bin2hex(random_bytes(20));
 
       $Mail = new Mail($EMail,'Night-Sky - EMail confirmation','Please confirm your added Mail: https://night.x8e.ru/index.php?p=contact?key='.$activation_hash);
       $Mail->run();
