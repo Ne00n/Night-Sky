@@ -42,7 +42,7 @@ class Verify {
 
   public function isLoggedIN() {
 
-    if(preg_match("/^[0-9]+$/",$_SESSION['user_id'])){
+    if(isset($_SESSION['user_id']) AND preg_match("/^[0-9]+$/",$_SESSION['user_id'])){
 
       $stmt = $this->DB->GetConnection()->prepare("SELECT Rank,ID FROM users WHERE ID = ? AND enabled = 1 LIMIT 1");
       $stmt->bind_param('i', $_SESSION['user_id']);
