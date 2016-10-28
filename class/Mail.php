@@ -7,6 +7,8 @@ class Mail {
     private $_subject;
     private $_text;
     private $success = true;
+    private $error;
+    private $DB;
 
     public function __construct($mail_to,$subject,$text) {
         $this->_subject = $subject;
@@ -46,6 +48,21 @@ class Mail {
       return $this->success;
 
     }
+
+    public function addbackLog($mail_to,$subject,$text) {
+
+      $stmt = $this->DB->GetConnection()->prepare("INSERT INTO emails_backlog(Target,Subject,Content) VALUES (?,?,?)");
+      $stmt->bind_param('sss',$mail_to, $subject, $text);
+      $rc = $stmt->execute();
+      if ( false===$rc ) { $this->error = "MySQL Error"; }
+      $stmt->close();
+
+    }
+
+    public function setDB($in_DB) {
+      $this->DB = $in_DB;
+    }
+
 }
 
 ?>

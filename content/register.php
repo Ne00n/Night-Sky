@@ -95,8 +95,10 @@ $U = new User($DB);
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-                if ($U->getlastError() == "") {
+                if ($U->getlastError() == "" AND $U->getlastWarning() == "") {
                   echo '<div class="alert alert-success" role="alert"><center>Success, confirm your email to enable your Account.</center></div>';
+                } elseif ($U->getlastWarning() != "") {
+                  echo '<div class="alert alert-warning" role="alert"><center>'.$U->getlastWarning().'</center></div>';
                 } else {
                   echo '<div class="alert alert-danger" role="alert"><center>'.$U->getLastError().'</center></div>';
                 }
