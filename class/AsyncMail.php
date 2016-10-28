@@ -19,10 +19,10 @@ class AsyncMail extends Thread{
         $mail = new PHPMailer;
 
         $mail->isSMTP();
-        $mail->Host = 'ghost.mxroute.com ';
+        $mail->Host = _mail_host;
         $mail->SMTPAuth = true;
-        $mail->Username = 'noreply@x8e.ru';
-        $mail->Password = ',aO;sGz?*%sy';
+        $mail->Username = _mail_user;
+        $mail->Password = _mail_password;
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 
