@@ -6,7 +6,6 @@ class Mail {
     private $_mail_to;
     private $_subject;
     private $_text;
-    private $success = true;
     private $error;
     private $DB;
 
@@ -18,12 +17,6 @@ class Mail {
 
     public function run() {
       mail($this->_mail_to,$this->_subject,$this->_text,$this->_mail_from);
-    }
-
-    public function checkSuccess() {
-
-      return $this->success;
-
     }
 
     public function addbackLog($mail_to,$subject,$text) {
@@ -38,6 +31,10 @@ class Mail {
 
     public function setDB($in_DB) {
       $this->DB = $in_DB;
+    }
+
+    public function getlastError() {
+      return $this->error;
     }
 
 }

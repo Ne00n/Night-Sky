@@ -25,15 +25,11 @@ class Contact {
       $Mail = new Mail($EMail,'Night-Sky - EMail confirmation','Please confirm your added Mail: https://night.x8e.ru/index.php?p=contact?key='.$activation_hash);
       $Mail->run();
 
-      if ($Mail->checkSuccess()) {
-        $stmt = $this->DB->GetConnection()->prepare("INSERT INTO emails(USER_ID,EMail,activation_hash) VALUES (?,?,?)");
-        $stmt->bind_param('iss',$USER_ID, $EMail,$activation_hash);
-        $rc = $stmt->execute();
-        if ( false===$rc ) { $this->error = "MySQL Error"; }
-        $stmt->close();
-      } else {
-        $this->error = "Could not send Mail, please try again later.";
-      }
+      $stmt = $this->DB->GetConnection()->prepare("INSERT INTO emails(USER_ID,EMail,activation_hash) VALUES (?,?,?)");
+      $stmt->bind_param('iss',$USER_ID, $EMail,$activation_hash);
+      $rc = $stmt->execute();
+      if ( false===$rc ) { $this->error = "MySQL Error"; }
+      $stmt->close();
 
     }
 

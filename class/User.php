@@ -59,11 +59,6 @@
 
           $Mail = new Mail($email,'Night-Sky - Registration','Activate your Account: https://night.x8e.ru/index.php?key='.$activation_hash);
           $Mail->run();
-          if (!$Mail->checkSuccess()) {
-            $this->warning = "Success, confirm your email to enable your Account. The delivery of the confirmation email will be delayed.";
-            $Mail->setDB($this->DB);
-            $Mail->addbackLog($email,'Night-Sky - Registration','Activate your Account: https://night.x8e.ru/index.php?key='.$activation_hash);
-          }
 
         }
 
