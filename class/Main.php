@@ -97,6 +97,12 @@ class Main {
 
     if ($this->error == "") {
 
+      $stmt = $this->DB->GetConnection()->prepare("DELETE FROM history WHERE CHECK_ID = ?");
+      $stmt->bind_param('i', $this->id);
+      $rc = $stmt->execute();
+      if ( false===$rc ) { $this->error = "MySQL Error"; }
+      $stmt->close();
+
       $stmt = $this->DB->GetConnection()->prepare("DELETE FROM checks WHERE ID = ?");
       $stmt->bind_param('i', $this->id);
       $rc = $stmt->execute();
