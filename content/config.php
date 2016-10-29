@@ -15,9 +15,4 @@ define("_db_user", "night");
 define("_db_password", "x2xQIpu3WvTixHtV");
 define("_db_database", "night");
 
-//Mail
-define("_mail_host", "ghost.mxroute.com");
-define("_mail_user", "noreply@x8e.ru");
-define("_mail_password", ",aO;sGz?*%sy");
-
  ?>
