@@ -60,7 +60,9 @@ CREATE TABLE `users` (
   `Password` varchar(255) NOT NULL,
   `Rank` int(11) NOT NULL,
   `enabled` int(1) NOT NULL DEFAULT '0',
-  `activation_hash` varchar(40) NOT NULL
+  `activation_hash` varchar(40) NOT NULL,
+  `Check_Limit` int(11) NOT NULL DEFAULT '10',
+  `Contact_Limit` int(11) NOT NULL DEFAULT '4'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
@@ -69,7 +71,8 @@ ALTER TABLE `checks`
 
 ALTER TABLE `emails`
   ADD PRIMARY KEY (`ID`),
-  ADD UNIQUE KEY `EMail` (`EMail`);
+  ADD UNIQUE KEY `EMail` (`EMail`),
+  ADD UNIQUE KEY `activation_hash` (`activation_hash`);
 
 ALTER TABLE `emails_backlog`
   ADD PRIMARY KEY (`ID`);

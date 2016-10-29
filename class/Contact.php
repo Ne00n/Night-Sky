@@ -16,6 +16,7 @@ class Contact {
 
     if (!filter_var($EMail, FILTER_VALIDATE_EMAIL)) { $this->error = "Invalid EMail."; }
     if (strlen($EMail) > 50) {$this->error = "The EMail is to long";}
+    if (!$this->checkLimit()) { $this->error = "Limit reached";}
 
     if ($this->error == "") {
 
@@ -113,6 +114,21 @@ class Contact {
     } else {
       return false;
     }
+
+  }
+
+  public function checkLimit() {
+
+    $user_id = $this->Verify->getUserID();
+
+    $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM emails WHERE USER_ID = ?");
+    $stmt->bind_param('i', $user_id);
+    $stmt->execute();
+    $stmt->store_result();
+    if ($stmt->num_rows < $this->Verify->getContactLimit()) {
+      return true;
+    }
+    $stmt->close();
 
   }
 

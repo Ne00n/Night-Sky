@@ -26,6 +26,7 @@ class Main {
     if (strlen($NAME) < 3) {$this->error = "The Name is to short";}
     if ($PORT > 65535) {$this->error = "The Port is to big";}
     if ($PORT < 1) {$this->error = "The Port should be at least 1";}
+    if (!$this->checkLimit()) { $this->error = "Limit reached";}
 
     if ($this->error == "") {
 
@@ -142,6 +143,21 @@ class Main {
       $stmt->close();
 
     }
+
+  }
+
+  public function checkLimit() {
+
+    $user_id = $this->Verify->getUserID();
+
+    $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM checks WHERE USER_ID = ?");
+    $stmt->bind_param('i', $user_id);
+    $stmt->execute();
+    $stmt->store_result();
+    if ($stmt->num_rows < $this->Verify->getCheckLimit()) {
+      return true;
+    }
+    $stmt->close();
 
   }
 
