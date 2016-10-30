@@ -20,6 +20,8 @@ class CheckServ {
 
   public function checkAvailability($IP,$PORT) {
 
+    $status_detail = [];
+
     #Check if we can reach the Server from here, 1.5sec Timeout
     $fp = fsockopen($IP,$PORT, $errno, $errstr, 1.5);
 
