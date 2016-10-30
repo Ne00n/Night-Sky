@@ -5,6 +5,7 @@ class CheckServ {
   private $online = false;
   private $remote_boxes;
   private $status_detail;
+  private $external_before;
 
   public function __construct($in_Remote) {
     $this->remote_boxes = $in_Remote;
@@ -18,9 +19,27 @@ class CheckServ {
     return $this->status_detail;
   }
 
+  public function getUniqueRemote($start,$end) {
+    $i = 1;
+    while ($i <= 15) {
+      $r = mt_rand($start,$end);
+      if ($r != $this->external_before) {
+        $this->external_before = $r;
+        return $r;
+      }
+      $i++;
+    }
+    //We try to give out 2 unique Remote Servers but if just have One, we still need to output something
+    return $r;
+  }
+
   public function checkAvailability($IP,$PORT) {
 
+    error_reporting(0);
+
+    //Reset, since use this objective for up to 5 servers
     $this->status_detail = [];
+    $this->external_before = NULL;
 
     #Check if we can reach the Server from here, 1.5sec Timeout
     $fp = fsockopen($IP,$PORT, $errno, $errstr, 1.5);
@@ -33,8 +52,8 @@ class CheckServ {
       $this->online = false;
       $this->status_detail[] = array('Location' => 'Localhost','Status' => 'Offline','Reason' => $errstr);
 
-      $external_one = mt_rand(0,count($this->remote_boxes) -1);
-      $external_second = mt_rand(0,count($this->remote_boxes) -1);
+      $external_one = $this->getUniqueRemote(0,count($this->remote_boxes)-1);
+      $external_second = $this->getUniqueRemote(0,count($this->remote_boxes)-1);
 
       $res_one = $this->fetchRemote($this->remote_boxes[$external_one]['IP'],$this->remote_boxes[$external_one]['Port'],$IP,$PORT);
       $this->status_detail[] = array('Location' => $this->remote_boxes[$external_one]['Location'],'Status' => ($res_one[0] ? 'Online' : 'Offline'),'Reason' => $res_one[1],'Totaltime' => $res_one[2]);
