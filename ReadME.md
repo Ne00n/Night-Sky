@@ -1,6 +1,6 @@
 10 Seconds Interval Port Monitoring
 
-- Threading (pthreads PHP), CLI
+- PHP, Threading with Gearman, CLI
 - Run a Slot every Second, each Slot contains multiple Threads, 5 Servers per one Thread
 - Loadbalance the Monitoring requests over these Slots, 10 Slots per 10 Seconds, 1 Slot reserved for Offline Servers
 - If a Port is not reachable, move it to the Dedicated Offline Slot, move it back afterwards
@@ -8,7 +8,7 @@
 - EMail notifications via MXRoute
 - Block the current Thread if the previous one is still Running
 - Database Backend: MySQL
-- Frontend: PHP+HTML(skeleton)
+- Frontend: PHP+HTML(Bootstrap)
 
 
 PHP: https://github.com/Ne00n/php-7-debian
