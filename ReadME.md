@@ -11,6 +11,6 @@
 - Frontend: PHP+HTML (PHP 7.0+ / Bootstrap / Font Awesome)
 
 Todo:
-- Migrate stuff from pthreads to Gearman
+- Migrate stuff to BackgorundProcess
 
 Gearman: http://gearman.org/
