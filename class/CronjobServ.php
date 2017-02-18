@@ -4,7 +4,7 @@ include 'CronjobServ/ThreadLock.php';
 include 'CronjobServ/Status.php';
 include 'CronjobServ/CheckServ.php';
 
-class CronjobServ extends Thread {
+class CronjobServ {
 
   private $slot;
   private $threadId;
@@ -71,8 +71,8 @@ class CronjobServ extends Thread {
                 $email .= $elementary['Location'].": ".$elementary['Reason']."\n";
               }
 
-              $asynchMail = new AsyncMail($element['EMAIL'],'Night-Sky - Downtime Alert '.page::escape($element['NAME']),$email);
-              $asynchMail->start();
+              $Mail = new Mail($element['EMAIL'],'Night-Sky - Downtime Alert '.page::escape($element['NAME']),$email);
+              $Mail->run();
 
               $H = new History($DB);
               $H->addHistory($element['USER_ID'],$key,0);
@@ -97,8 +97,8 @@ class CronjobServ extends Thread {
               $S->setStatus(1);
 
               $time = time();
-              $asynchMail = new AsyncMail($element['EMAIL'],'Night-Sky - Uptime Alert '.page::escape($element['NAME']),'Server '.page::escape($element['NAME']).' is back Online. Detected: '.date("d.m.Y H:i:s",page::escape($time)));
-              $asynchMail->start();
+              $Mail = new Mail($element['EMAIL'],'Night-Sky - Uptime Alert '.page::escape($element['NAME']),'Server '.page::escape($element['NAME']).' is back Online. Detected: '.date("d.m.Y H:i:s",page::escape($time)));
+              $Mail->run();
 
               $H = new History($DB);
               $H->addHistory($element['USER_ID'],$key,1);

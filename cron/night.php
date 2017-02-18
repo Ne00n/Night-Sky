@@ -1,6 +1,15 @@
 <?php
 
 if (php_sapi_name() == 'cli') {
+  
+  function dat_loader($class) {
+      include '../class/' . $class . '.php';
+  }
+
+  spl_autoload_register('dat_loader');
+
+  $DB = new Database;
+  $DB->InitDB();
 
   function fetchAll($DB,$C) {
 
@@ -21,25 +30,8 @@ if (php_sapi_name() == 'cli') {
     return $Checks;
   }
 
-  include '../content/config.php';
-  include '../class/AsyncMail.php';
-  include '../class/Page.php';
-  include '../class/History.php';
-
-  function dat_loader($class) {
-      include '../class/' . $class . '.php';
-  }
-
-  spl_autoload_register('dat_loader');
-
-  $DB = new Database;
-  $DB->InitDB();
-
   $Verify = new Verify($DB);
   $C = new Contact($DB,$Verify);
-
-  $R = new Remote($DB);
-  $Remote = $R->getRemote();
 
   for ($i_out = 1; $i_out <= 6; $i_out++) {
 
@@ -50,7 +42,7 @@ if (php_sapi_name() == 'cli') {
 
         if (isset($Checks[$i])) {
           printf("Night Base\n",$i);
-          $t[$i] = new CronjobBase($i,$Checks,$Remote);
+          $t[$i] = new CronjobBase($i,$Checks);
           $t[$i]->run();
         } else {
           printf("Night Base No Job\n",$i);

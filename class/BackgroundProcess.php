@@ -7,21 +7,8 @@ class BackgroundProcess {
   //This launches the command $cmd, redirects the command output to $outputfile, and writes the process id to $pidfile.
   public static function startProcess($cmd)
   {
-    exec(sprintf("%s > %s 2>&1 & echo $! >> %s", $cmd, $outputfile, $pidfile));
-    return $pidfile;
-  }
-
-  //Checks if the Process with the PID is still running
-  public static function isRunning($pid)
-  {
-      try{
-          $result = shell_exec(sprintf("ps %d", $pid));
-          if( count(preg_split("/\n/", $result)) > 2){
-              return true;
-          }
-      }catch(Exception $e){}
-
-      return false;
+    //exec(sprintf("%s > /dev/null 2>&1 & echo $! > %s", $cmd, $pidfile));
+    exec(sprintf("%s > /dev/null 2>&1", $cmd));
   }
 
 }
