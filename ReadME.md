@@ -9,5 +9,3 @@
 - Block the current Thread if the previous one is still Running
 - Database Backend: MySQL
 - Frontend: PHP+HTML (PHP 7.0+ / Bootstrap / Font Awesome)
-
-Gearman: http://gearman.org/

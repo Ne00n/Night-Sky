@@ -16,7 +16,7 @@ if ($Login->isLoggedIN()) {
 
         <?php
 
-        if (page::startsWith($p,"main?enable=")) {
+        if (Page::startsWith($p,"main?enable=")) {
 
           $check_id = str_replace("main?enable=", "", $p);
 
@@ -31,7 +31,7 @@ if ($Login->isLoggedIN()) {
 
         }
 
-        if (page::startsWith($p,"main?disable=")) {
+        if (Page::startsWith($p,"main?disable=")) {
 
           $check_id = str_replace("main?disable=", "", $p);
 
@@ -46,7 +46,7 @@ if ($Login->isLoggedIN()) {
 
         }
 
-        if (page::startsWith($p,"main?edit=")) {
+        if (Page::startsWith($p,"main?edit=")) {
 
           $check_id = str_replace("main?edit=", "", $p);
 
@@ -134,7 +134,7 @@ if ($Login->isLoggedIN()) {
 
         }
 
-        if (page::startsWith($p,"main?remove=")) {
+        if (Page::startsWith($p,"main?remove=")) {
 
           $check_id = str_replace("main?remove=", "", $p);
 
@@ -163,7 +163,7 @@ if ($Login->isLoggedIN()) {
 
             <p>Are you sure, that you want to delete this Check?</p>
 
-            <form class="form-horizontal" action="index.php?p=main?remove=<?= page::escape($check_id) ?>" method="post">
+            <form class="form-horizontal" action="index.php?p=main?remove=<?= Page::escape($check_id) ?>" method="post">
               <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>"\>
               <div class="form-group">
                   <button type="submit" name="confirm" class="btn btn-danger">Yes</button><a href="index.php?p=main"><button class="btn btn-primary" type="button">No</button></a>
@@ -207,7 +207,7 @@ if ($Login->isLoggedIN()) {
                  <div class="input-group-addon">
                 <span class="fa fa-server"></span>
                  </div>
-                 <input value="<?php if (isset($_POST['ip'])) {echo page::escape($_POST['ip']);} ?>" type="text" class="form-control input-sm" name="ip" placeholder="127.0.0.1"/>
+                 <input value="<?php if (isset($_POST['ip'])) {echo Page::escape($_POST['ip']);} ?>" type="text" class="form-control input-sm" name="ip" placeholder="127.0.0.1"/>
                 </div>
               </div>
             </div>
@@ -217,7 +217,7 @@ if ($Login->isLoggedIN()) {
                  <div class="input-group-addon">
                 <span class="fa fa-pencil"></span>
                  </div>
-                  <input value="<?php if (isset($_POST['name'])) {echo page::escape($_POST['name']);} ?>" type="text" class="form-control input-sm" name="name" placeholder="Tracer"/>
+                  <input value="<?php if (isset($_POST['name'])) {echo Page::escape($_POST['name']);} ?>" type="text" class="form-control input-sm" name="name" placeholder="Tracer"/>
                 </div>
               </div>
               <div class="col-sm-2">
@@ -225,7 +225,7 @@ if ($Login->isLoggedIN()) {
                  <div class="input-group-addon">
                 <span class="fa fa-circle-o"></span>
                  </div>
-                  <input value="<?php if (isset($_POST['port'])) {echo page::escape($_POST['port']);} ?>" type="text" class="form-control input-sm" name="port" placeholder="80"/>
+                  <input value="<?php if (isset($_POST['port'])) {echo Page::escape($_POST['port']);} ?>" type="text" class="form-control input-sm" name="port" placeholder="80"/>
                 </div>
               </div>
             </div>
@@ -291,14 +291,14 @@ if ($Login->isLoggedIN()) {
           echo '<td class="text-left">'.Page::escape($row['PORT']).'</td>';
           echo '<td class="text-left">'.($row['ENABLED'] ? 'Enabled' : 'Disabled').'</td>';
           echo '<td class="text-left">'.($row['ONLINE'] ? 'Yes' : 'No').'</td>';
-          echo '<td class="text-left col-md-3"><a href="index.php?p=main?edit='.page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-gear"></i></button></a>';
+          echo '<td class="text-left col-md-3"><a href="index.php?p=main?edit='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-gear"></i></button></a>';
           if ($row['ENABLED'] === 1) {
-            echo '<a href="index.php?p=main?disable='.page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-pause"></i></button></a>';
+            echo '<a href="index.php?p=main?disable='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-pause"></i></button></a>';
           } elseif ($row['ENABLED'] === 0) {
-            echo '<a href="index.php?p=main?enable='.page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-play"></i></button></a>';
+            echo '<a href="index.php?p=main?enable='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-play"></i></button></a>';
           }
-          echo '<a href="index.php?p=history?id='.page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-history"></i></button></a>';
-          echo '<a href="index.php?p=main?remove='.page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
+          echo '<a href="index.php?p=history?id='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-history"></i></button></a>';
+          echo '<a href="index.php?p=main?remove='.Page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
           echo '</tr>';
 
         } ?>

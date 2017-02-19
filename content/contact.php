@@ -38,7 +38,7 @@ if ($Login->isLoggedIN()) {
 
       }
 
-      if (page::startsWith($p,"contact?remove=")) {
+      if (Page::startsWith($p,"contact?remove=")) {
 
       $contact_id = str_replace("contact?remove=", "", $p);
 
@@ -66,7 +66,7 @@ if ($Login->isLoggedIN()) {
 
           <p>Are you sure, that you want to delete this Contact?</p>
 
-          <form class="form-horizontal" action="index.php?p=contact?remove=<?= page::escape($contact_id) ?>" method="post">
+          <form class="form-horizontal" action="index.php?p=contact?remove=<?= Page::escape($contact_id) ?>" method="post">
             <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>"\>
             <div class="form-group">
                 <button type="submit" name="confirm" class="btn btn-danger">Yes</button><a href="index.php?p=contact"><button class="btn btn-primary" type="button">No</button></a>
@@ -109,7 +109,7 @@ if ($Login->isLoggedIN()) {
                <div class="input-group-addon">
               <span class="fa fa-envelope"></span>
                </div>
-                <input value="<?php if(isset($_POST['email'])) {echo page::escape($_POST['email']);} ?>" type="text" class="form-control input-sm" name="email" placeholder="alert@email.com">
+                <input value="<?php if(isset($_POST['email'])) {echo Page::escape($_POST['email']);} ?>" type="text" class="form-control input-sm" name="email" placeholder="alert@email.com">
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
 <?php
 
-class page {
+class Page {
 
   public static function startsWith($haystack, $needle) {
     // search backwards starting from haystack length characters from the end
@@ -19,7 +19,7 @@ class page {
   }
 
   public static function escape($text) {
-  return htmlspecialchars($text,ENT_QUOTES);
+    return htmlspecialchars($text,ENT_QUOTES);
   }
 
 }
