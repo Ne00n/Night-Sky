@@ -14,8 +14,9 @@ class Contact {
 
   public function addContact($EMail) {
 
-    if (!filter_var($EMail, FILTER_VALIDATE_EMAIL)) { $this->error = "Invalid EMail."; }
-    if (strlen($EMail) > 50) {$this->error = "The EMail is to long";}
+    if (!filter_var($EMail, FILTER_VALIDATE_EMAIL)) { $this->error = "Invalid Email."; }
+    if (strlen($EMail) > 50) {$this->error = "The Email is to long";}
+    if ($this->checkifEMailExists($EMail) == true) {$this->error = "The Email exists.";}
     if (!$this->checkLimit()) { $this->error = "Limit reached";}
 
     if ($this->error == "") {
@@ -103,6 +104,24 @@ class Contact {
 
     $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM checks WHERE EMAIL_ID = ? LIMIT 1");
     $stmt->bind_param('i', $this->id);
+    $rc = $stmt->execute();
+    if ( false===$rc ) { $this->error = "MySQL Error"; }
+    $stmt->bind_result($db_id);
+    $stmt->fetch();
+    $stmt->close();
+
+    if (isset($db_id)) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+
+  public function checkifEMailExists($email) {
+
+    $stmt = $this->DB->GetConnection()->prepare("SELECT id FROM emails WHERE EMail = ? LIMIT 1");
+    $stmt->bind_param('s', $email);
     $rc = $stmt->execute();
     if ( false===$rc ) { $this->error = "MySQL Error"; }
     $stmt->bind_result($db_id);
