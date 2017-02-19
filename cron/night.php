@@ -1,7 +1,9 @@
 <?php
 
 if (php_sapi_name() == 'cli') {
-  
+
+  include '../content/config.php';
+
   function dat_loader($class) {
       include '../class/' . $class . '.php';
   }
@@ -42,8 +44,8 @@ if (php_sapi_name() == 'cli') {
 
         if (isset($Checks[$i])) {
           printf("Night Base\n",$i);
-          $t[$i] = new CronjobBase($i,$Checks);
-          $t[$i]->run();
+          $CB = new CronjobBase($i,$Checks);
+          $CB->run();
         } else {
           printf("Night Base No Job\n",$i);
         }

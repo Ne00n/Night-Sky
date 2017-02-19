@@ -65,13 +65,13 @@ class CronjobServ {
 
               $time = time();
 
-              $email = 'Server '.page::escape($element['NAME']).' went offline. Detected: '.date("d.m.Y H:i:s",page::escape($time));
+              $email = 'Server '.Page::escape($element['NAME']).' went offline. Detected: '.date("d.m.Y H:i:s",Page::escape($time));
               $email .= "\n\n";
               foreach ($CS->getStatusDetail() as $serv => $elementary) {
                 $email .= $elementary['Location'].": ".$elementary['Reason']."\n";
               }
 
-              $Mail = new Mail($element['EMAIL'],'Night-Sky - Downtime Alert '.page::escape($element['NAME']),$email);
+              $Mail = new Mail($element['EMAIL'],'Night-Sky - Downtime Alert '.Page::escape($element['NAME']),$email);
               $Mail->run();
 
               $H = new History($DB);
@@ -97,7 +97,7 @@ class CronjobServ {
               $S->setStatus(1);
 
               $time = time();
-              $Mail = new Mail($element['EMAIL'],'Night-Sky - Uptime Alert '.page::escape($element['NAME']),'Server '.page::escape($element['NAME']).' is back Online. Detected: '.date("d.m.Y H:i:s",page::escape($time)));
+              $Mail = new Mail($element['EMAIL'],'Night-Sky - Uptime Alert '.Page::escape($element['NAME']),'Server '.Page::escape($element['NAME']).' is back Online. Detected: '.date("d.m.Y H:i:s",Page::escape($time)));
               $Mail->run();
 
               $H = new History($DB);

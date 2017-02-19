@@ -35,6 +35,9 @@
     $R = new Remote($DB);
     $Remote = $R->getRemote();
 
+    $Verify = new Verify($DB);
+    $C = new Contact($DB,$Verify);
+
     $options = getopt("T:I:");
 
     $threadID = $options['T'];
