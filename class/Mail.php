@@ -2,7 +2,7 @@
 
 class Mail {
 
-    private $_mail_from = 'From: '_mail_sender . "\r\n";
+    private $_mail_from = 'From: '._mail_sender . "\r\n";
     private $_mail_to;
     private $_subject;
     private $_text;
