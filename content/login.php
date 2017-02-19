@@ -6,7 +6,7 @@
     <input type="text" class="form-control" placeholder="Username" name="username" required>
     <label class="sr-only">Password</label>
     <input type="password" class="form-control" placeholder="Password" name="password" required>
-    <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>"\>
+    <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
       <?php
 
         if (isset($k)) {

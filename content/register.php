@@ -89,7 +89,7 @@ $U = new User($DB);
               </div>
             </div>
           </div>
-          <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>"\>
+          <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
 
           <?php
 

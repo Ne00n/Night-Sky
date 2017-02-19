@@ -67,7 +67,7 @@ if ($Login->isLoggedIN()) {
           <p>Are you sure, that you want to delete this Contact?</p>
 
           <form class="form-horizontal" action="index.php?p=contact?remove=<?= Page::escape($contact_id) ?>" method="post">
-            <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>"\>
+            <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
             <div class="form-group">
                 <button type="submit" name="confirm" class="btn btn-danger">Yes</button><a href="index.php?p=contact"><button class="btn btn-primary" type="button">No</button></a>
             </div>
@@ -113,7 +113,7 @@ if ($Login->isLoggedIN()) {
               </div>
             </div>
           </div>
-          <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>"\>
+          <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
           <div class="form-group">
               <button type="submit" name="confirm" class="btn btn-primary">Save</button>
           </div>
