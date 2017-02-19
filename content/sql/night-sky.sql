@@ -44,11 +44,6 @@ CREATE TABLE `remote` (
   `Online` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `remote` (`ID`, `Location`, `IP`, `Port`, `Online`) VALUES
-(1, 'Germany', 'de-check.x8e.ru', 443, 1),
-(2, 'United Kingdom', 'uk-check.x8e.ru', 443, 1),
-(3, 'Dallas (US)', 'da-check.x8e.ru', 443, 1);
-
 CREATE TABLE `threads` (
   `THREAD_ID` varchar(11) NOT NULL,
   `THREAD_LOCK` int(1) NOT NULL DEFAULT '0'
@@ -62,7 +57,8 @@ CREATE TABLE `users` (
   `enabled` int(1) NOT NULL DEFAULT '0',
   `activation_hash` varchar(40) NOT NULL,
   `Check_Limit` int(11) NOT NULL DEFAULT '10',
-  `Contact_Limit` int(11) NOT NULL DEFAULT '4'
+  `Contact_Limit` int(11) NOT NULL DEFAULT '4',
+  `Same_IP_Limit` int(11) NOT NULL DEFAULT '2'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 

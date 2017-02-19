@@ -27,6 +27,8 @@ class Main {
     if ($PORT > 65535) {$this->error = "The Port is to big";}
     if ($PORT < 1) {$this->error = "The Port should be at least 1";}
     if (!$this->checkLimit()) { $this->error = "Limit reached";}
+    if (!$this->checkIPLimit($IP)) { $this->error = "Limit reached";}
+    if (!$this->checkIP_Global_Limit($IP)) { $this->error = "Limit reached";}
 
     if ($this->error == "") {
 
@@ -61,6 +63,11 @@ class Main {
     if (strlen($NAME) < 3) {$this->error = "The Name is to short";}
     if ($PORT > 65535) {$this->error = "The Port is to big";}
     if ($PORT < 1) {$this->error = "The Port should be at least 1";}
+    if ($this->ip != $IP) {
+      if (!$this->checkIPLimit($IP,1)) { $this->error = "Limit reached";}
+      if (!$this->checkIP_Global_Limit($IP)) { $this->error = "Limit reached";}
+
+    }
 
     if ($this->error == "") {
 
@@ -155,6 +162,34 @@ class Main {
     $stmt->execute();
     $stmt->store_result();
     if ($stmt->num_rows < $this->Verify->getCheckLimit()) {
+      return true;
+    }
+    $stmt->close();
+
+  }
+
+  public function checkIPLimit($ip) {
+
+    $user_id = $this->Verify->getUserID();
+
+    $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM checks WHERE USER_ID = ? AND IP = ?");
+    $stmt->bind_param('is', $user_id,$ip);
+    $stmt->execute();
+    $stmt->store_result();
+    if ($stmt->num_rows < $this->Verify->getCheckIPLimit()) {
+      return true;
+    }
+    $stmt->close();
+
+  }
+
+  public function checkIP_Global_Limit($ip) {
+
+    $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM checks WHERE IP = ?");
+    $stmt->bind_param('s', $ip);
+    $stmt->execute();
+    $stmt->store_result();
+    if ($stmt->num_rows < _ip_limit_global) {
       return true;
     }
     $stmt->close();

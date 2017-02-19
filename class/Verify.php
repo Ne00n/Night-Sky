@@ -8,6 +8,7 @@ class Verify {
   private $rank;
   private $check_limit = 0;
   private $contact_limit = 0;
+  private $check_ip_limit = 0;
 
   public function __construct($DB) {
     $this->DB = $DB;
@@ -46,11 +47,11 @@ class Verify {
 
     if(isset($_SESSION['user_id']) AND preg_match("/^[0-9]+$/",$_SESSION['user_id'])){
 
-      $stmt = $this->DB->GetConnection()->prepare("SELECT Rank,ID,Check_Limit,Contact_Limit FROM users WHERE ID = ? AND enabled = 1 LIMIT 1");
+      $stmt = $this->DB->GetConnection()->prepare("SELECT Rank,ID,Check_Limit,Contact_Limit,Same_IP_Limit FROM users WHERE ID = ? AND enabled = 1 LIMIT 1");
       $stmt->bind_param('i', $_SESSION['user_id']);
       $rc = $stmt->execute();
       if ( false===$rc ) { $this->error = "MySQL Error"; }
-      $stmt->bind_result($db_rank,$db_id,$db_check_limit,$db_contact_limit);
+      $stmt->bind_result($db_rank,$db_id,$db_check_limit,$db_contact_limit,$db_same_ip_limit);
       $stmt->fetch();
       $stmt->close();
 
@@ -58,6 +59,7 @@ class Verify {
       $this->user_id = $db_id;
       $this->contact_limit = $db_contact_limit;
       $this->check_limit = $db_check_limit;
+      $this->check_ip_limit = $db_same_ip_limit;
 
       if ($db_id != "") {
         return true;
@@ -182,6 +184,10 @@ class Verify {
 
   public function getCheckLimit() {
     return $this->check_limit;
+  }
+
+  public function getCheckIPLimit() {
+    return $this->check_ip_limit;
   }
 
   public function getContactLimit() {

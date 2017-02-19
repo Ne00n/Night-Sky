@@ -52,6 +52,7 @@ if ($Login->isLoggedIN()) {
 
           $M = new Main($DB,$Login);
           $M->setID($check_id);
+          $M->getData();
 
           if ($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['confirm'])) {
 
