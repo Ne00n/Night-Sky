@@ -73,8 +73,6 @@ if ($Login->isLoggedIN()) {
 
           }
 
-          $M->getData();
-
         ?><form class="form-horizontal" action="index.php?p=main?edit=<?php echo Page::escape($check_id); ?>" method="post">
             <div class="form-group">
               <div class="col-sm-8 col-sm-offset-2">
