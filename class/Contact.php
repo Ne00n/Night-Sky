@@ -23,7 +23,7 @@ class Contact {
       $USER_ID = $this->Verify->getUserID();
       $activation_hash = bin2hex(random_bytes(20));
 
-      $Mail = new Mail($EMail,'Night-Sky - EMail confirmation','Please confirm your added Mail: https://'.._Domain'/index.php?p=contact?key='.$activation_hash);
+      $Mail = new Mail($EMail,'Night-Sky - EMail confirmation','Please confirm your added Mail: https://'._Domain.'/index.php?p=contact?key='.$activation_hash);
       $Mail->run();
 
       $stmt = $this->DB->GetConnection()->prepare("INSERT INTO emails(USER_ID,EMail,activation_hash) VALUES (?,?,?)");
