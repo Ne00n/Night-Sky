@@ -57,7 +57,7 @@
           if ( false===$rc ) { $this->error = "MySQL Error"; }
           $stmt->close();
 
-          $Mail = new Mail($email,'Night-Sky - Registration','Activate your Account: https://night.x8e.ru/index.php?key='.$activation_hash);
+          $Mail = new Mail($email,'Night-Sky - Registration','Activate your Account: https://'._Domain.'/index.php?key='.$activation_hash);
           $Mail->run();
 
         }
