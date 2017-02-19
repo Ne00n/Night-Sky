@@ -9,6 +9,9 @@ session_set_cookie_params(0,'/','.'._Domain,true,true);
 //User Limit
 define("_user_limit",2);
 
+//Mail Sender
+define("_mail_sender","noreply@night.x8e.ru");
+
 //Database
 define("_db_host", "localhost");
 define("_db_user", "night");
