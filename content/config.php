@@ -18,7 +18,7 @@ define("_mail_sender","noreply@night.x8e.ru");
 //Database
 define("_db_host", "localhost");
 define("_db_user", "night");
-define("_db_password", "x2xQIpu3WvTixHtV");
+define("_db_password", "night");
 define("_db_database", "night");
 
  ?>
