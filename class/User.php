@@ -101,10 +101,8 @@
       if (strlen($new_pw) > 160 ) {$this->error = "Passwords are to long."; }
       if ($new_pw != $new_pw_2) {$this->error = "Passwords not equal."; }
 
-      $user_id = $this->Verify->getUserID();
-
       $stmt = $this->DB->GetConnection()->prepare("SELECT Password FROM users WHERE ID = ?");
-      $stmt->bind_param('i', $user_id);
+      $stmt->bind_param('i', $this->Verify->getUserID());
       $rc = $stmt->execute();
       if ( false===$rc ) { $this->error = "MySQL Error"; }
       $stmt->bind_result($password_db);
@@ -117,7 +115,7 @@
           $hash = password_hash($new_pw, PASSWORD_DEFAULT);
 
           $stmt = $this->DB->GetConnection()->prepare("UPDATE users SET Password = ?  WHERE ID = ?");
-          $stmt->bind_param('si',$hash,$Login->getUserID());
+          $stmt->bind_param('si',$hash,$this->Verify->getUserID());
           $rc = $stmt->execute();
           if ( false===$rc ) { $this->error = "MySQL Error"; }
           $stmt->close();
