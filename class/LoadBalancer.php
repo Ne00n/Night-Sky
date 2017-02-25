@@ -18,7 +18,7 @@ class LoadBalancer {
       $stmt->bind_param('i', $slot);
       $stmt->execute();
       $stmt->store_result();
-      if ($stmt->num_rows < 50) {
+      if ($stmt->num_rows < _checks_limit_global) {
         return $slot;
       }
       $stmt->close();

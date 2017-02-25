@@ -12,6 +12,9 @@ define("_user_limit",2);
 //Global IP Limit
 define("_ip_limit_global",4);
 
+//Global Checks Limit
+define("_checks_limit_global",50);
+
 //Mail Sender
 define("_mail_sender","noreply@yourdomain.net");
 
