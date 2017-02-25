@@ -22,6 +22,15 @@ class Page {
     return htmlspecialchars($text,ENT_QUOTES);
   }
 
+  public static function check_page($url) {
+  	$socket = @fsockopen($url, 80, $errorNo, $errorStr, 1.5);
+  	if ($errorNo == 0) {
+  		return true;
+  	} else {
+  		return false;
+  	}
+  }
+
 }
 
  ?>

@@ -37,22 +37,28 @@ if (php_sapi_name() == 'cli') {
 
   for ($i_out = 1; $i_out <= 6; $i_out++) {
 
-    $start = microtime(true);
-    for ($i = 1; $i <= 10; $i++) {
+    if (Page::check_page("google.com") || Page::check_page("wikipedia.org")) {
+      echo "Connected to the Internet\n";
 
-        $Checks = fetchAll($DB,$C);
+      $start = microtime(true);
+      for ($i = 1; $i <= 10; $i++) {
 
-        if (isset($Checks[$i])) {
-          printf("Night Base\n",$i);
-          $CB = new CronjobBase($i,$Checks);
-          $CB->run();
-        } else {
-          printf("Night Base No Job\n",$i);
-        }
-        sleep(1);
+          $Checks = fetchAll($DB,$C);
+
+          if (isset($Checks[$i])) {
+            echo("Night Base\n");
+            $CB = new CronjobBase($i,$Checks);
+            $CB->run();
+          } else {
+            printf("Night Base No Job\n",$i);
+          }
+          sleep(1);
+      }
+      echo microtime(true) - $start . "\n";
+      echo "10 Slots done, next round"."\n";
+
     }
-    echo microtime(true) - $start . "\n";
-    echo "10 Slots done, next round"."\n";
+
   }
 
 }
