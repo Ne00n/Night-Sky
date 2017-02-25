@@ -52,6 +52,6 @@
        ?>
     <button type="submit" class="btn btn-lg btn-primary btn-block">Sign in</button>
   </form>
-  <center><a href="index.php?p=register">Register</a></center>
+  <center><a href="index.php?p=register">Register</a> - <a href="index.php?p=tos">Terms of Service</a> - <a href="index.php?p=privacy">Privacy</a></center>
 
 </div>

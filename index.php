@@ -49,6 +49,14 @@ if (Page::startsWith($p,"history")) {
   include 'content/history.php';
 }
 
+if (Page::startsWith($p,"tos")) {
+  include 'content/tos.php';
+}
+
+if (Page::startsWith($p,"privacy")) {
+  include 'content/privacy.php';
+}
+
 if (Page::startsWith($p,"account")) {
   include 'content/account.php';
 }
