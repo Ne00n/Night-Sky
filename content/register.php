@@ -11,7 +11,8 @@ $U = new User($DB);
       if ($U->checkUserAmmount() === true) {
         echo '<h2 class="form-signin-heading"><center>Night Sky Monitoring - Register</center></h2>';
       } else {
-        echo '<h2 class="form-signin-heading"><center>Currently out of Stock, but here is a Video</center></h2>';
+        echo '<h2 class="form-signin-heading"><center>Currently out of Stock, but here is a Video:</center></h2>';
+        echo '<h3><center><a href="https://www.youtube.com/watch?v=X9otDixAtFw">What is something? and why does it happen?</a></center></h3>';
       }
 
        ?>
@@ -111,9 +112,7 @@ $U = new User($DB);
             <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Register</button>
           </div>
 
-          <?php } else {
-            echo '<center><iframe width="560" height="315" src="https://www.youtube.com/embed/X9otDixAtFw" frameborder="0" allowfullscreen></iframe><center>';
-            } ?>
+          <?php }  ?>
 
           <div class="login-register">
             <center><a href="index.php">Login</a> - <a href="index.php?p=tos">Terms of Service</a> - <a href="index.php?p=privacy">Privacy</a></center>
