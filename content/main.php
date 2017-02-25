@@ -284,7 +284,11 @@ if ($Login->isLoggedIN()) {
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
 
-          echo '<tr>';
+          if ($row['ONLINE']) {
+            echo '<tr class="success">';
+          } else {
+            echo '<tr class="danger">';
+          }
           echo '<td class="text-left">'.Page::escape($row['NAME']).'</td>';
           echo '<td class="text-left">'.Page::escape($row['IP']).'</td>';
           echo '<td class="text-left">'.Page::escape($row['PORT']).'</td>';
