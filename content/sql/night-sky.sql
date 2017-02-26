@@ -29,6 +29,13 @@ CREATE TABLE `history` (
   `Timestamp` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE `login_blacklist` (
+  `id` int(11) NOT NULL,
+  `ip_remote` varchar(255) NOT NULL,
+  `timestamp` int(11) NOT NULL,
+  `timestamp_expires` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE `remote` (
   `ID` int(11) NOT NULL,
   `Location` varchar(50) NOT NULL,
@@ -66,6 +73,9 @@ ALTER TABLE `emails`
 ALTER TABLE `history`
   ADD PRIMARY KEY (`ID`);
 
+ALTER TABLE `login_blacklist`
+  ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `remote`
   ADD PRIMARY KEY (`ID`);
 
@@ -84,6 +94,8 @@ ALTER TABLE `emails`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `history`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `login_blacklist`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `remote`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `users`
