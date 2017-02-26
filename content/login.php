@@ -33,14 +33,23 @@
 
           if ($_POST['Token'] == $_SESSION['Token']) {
 
-            $Verify = new Verify($DB);
-            $Verify->ValidateLogin($_POST['username'],$_POST['password']);
-            if ($Verify->getLastError() == "") {
-              $_SESSION['logged_in'] = 1;
-              $_SESSION['user_id'] = $Verify->getUserID();
-              header('Location: index.php?p=main');
+            $Login = new Login($DB);
+
+            if (!$Login->check_blocked_ip($_SERVER['REMOTE_ADDR'])) {
+
+              $Verify = new Verify($DB);
+              $Verify->ValidateLogin($_POST['username'],$_POST['password']);
+              if ($Verify->getLastError() == "") {
+                $_SESSION['logged_in'] = 1;
+                $_SESSION['user_id'] = $Verify->getUserID();
+                header('Location: index.php?p=main');
+              } else {
+                echo '<div class="alert alert-danger" role="alert"><center>'.$Verify->getLastError().'</center></div>';
+                $Login->addtoBlacklist($_SERVER['REMOTE_ADDR']);
+              }
+
             } else {
-              echo '<div class="alert alert-danger" role="alert"><center>'.$Verify->getLastError().'</center></div>';
+              echo '<div class="alert alert-danger" role="alert"><center>IP Blocked</center></div>';
             }
 
           } else {
