@@ -8,7 +8,10 @@ $U = new User($DB);
     <div class="row main">
       <?php
 
-      if ($U->checkUserAmmount() === true) {
+      $Login = new Login($DB);
+
+
+      if ($U->checkUserAmmount() === true && !$Login->check_blocked_ip($_SERVER['REMOTE_ADDR'],"register_blacklist",1)) {
         echo '<h2 class="form-signin-heading"><center>Night Sky Monitoring - Register</center></h2>';
       } else {
         echo '<h2 class="form-signin-heading"><center>Currently out of Stock, but here is a Video:</center></h2>';
@@ -21,7 +24,7 @@ $U = new User($DB);
 
           <?php
 
-          if ($U->checkUserAmmount() === true) {
+          if ($U->checkUserAmmount() === true && !$Login->check_blocked_ip($_SERVER['REMOTE_ADDR'],"register_blacklist",1)) {
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -98,6 +101,7 @@ $U = new User($DB);
 
                 if ($U->getlastError() == "" AND $U->getlastWarning() == "") {
                   echo '<div class="alert alert-success" role="alert"><center>Success, confirm your email to enable your Account.</center></div>';
+                  $Login->addtoBlacklist($_SERVER['REMOTE_ADDR'],"register_blacklist");
                 } elseif ($U->getlastWarning() != "") {
                   echo '<div class="alert alert-warning" role="alert"><center>'.$U->getlastWarning().'</center></div>';
                 } else {

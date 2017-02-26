@@ -9,12 +9,12 @@ class Login {
     $this->DB = $DB;
   }
 
-  public function check_blocked_ip($ip_remote) {
+  public function check_blocked_ip($ip_remote,$table = "login_blacklist",$ammount = 3) {
 
     if (!$this->isValidIP($ip_remote)) { $ip_remote = 0; }
 
     $time = time();
-    $query = "SELECT `id` FROM `login_blacklist` WHERE (ip_remote = ?) AND timestamp_expires > ? ";
+    $query = "SELECT `id` FROM `".$table."` WHERE (ip_remote = ?) AND timestamp_expires > ? ";
 
     if ($stmt = $this->DB->GetConnection()->prepare($query)){
 
@@ -27,7 +27,7 @@ class Login {
                 $stmt->bind_result($check);
                 $stmt->fetch();
 
-                if ($stmt->num_rows >= 3){
+                if ($stmt->num_rows >= $ammount){
                   return true;
                 } else {
                   return false;
@@ -36,24 +36,24 @@ class Login {
         }
   }
 
-    public function addtoBlacklist($ip_remote) {
+  public function addtoBlacklist($ip_remote,$table = "login_blacklist") {
 
-      if (!$this->isValidIP($ip_remote)) { $ip_remote = 0; }
+    if (!$this->isValidIP($ip_remote)) { $ip_remote = 0; }
 
-      $timestamp = time();
-      $expires = strtotime('+30 minutes', $timestamp);
+    $timestamp = time();
+    $expires = strtotime('+30 minutes', $timestamp);
 
-      $stmt = $this->DB->GetConnection()->prepare("INSERT INTO login_blacklist(ip_remote,timestamp,timestamp_expires) VALUES (?, ?, ?)");
-      $stmt->bind_param('sii', $ip_remote,$timestamp,$expires);
-      $rc = $stmt->execute();
-      if ( false===$rc ) { $this->error = "MySQL Error"; }
-      $stmt->close();
+    $stmt = $this->DB->GetConnection()->prepare("INSERT INTO ".$table."(ip_remote,timestamp,timestamp_expires) VALUES (?, ?, ?)");
+    $stmt->bind_param('sii', $ip_remote,$timestamp,$expires);
+    $rc = $stmt->execute();
+    if ( false===$rc ) { $this->error = "MySQL Error"; }
+    $stmt->close();
 
-    }
+  }
 
-    public function isValidIP($ip) {
-      return filter_var($ip,  FILTER_VALIDATE_IP);
-    }
+  public function isValidIP($ip) {
+    return filter_var($ip,  FILTER_VALIDATE_IP);
+  }
 
 }
 
