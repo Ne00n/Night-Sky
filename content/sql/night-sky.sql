@@ -21,13 +21,6 @@ CREATE TABLE `emails` (
   `activation_hash` varchar(40) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE `emails_backlog` (
-  `ID` int(11) NOT NULL,
-  `Target` varchar(50) NOT NULL,
-  `Subject` varchar(50) NOT NULL,
-  `Content` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 CREATE TABLE `history` (
   `ID` int(11) NOT NULL,
   `USER_ID` int(11) NOT NULL,
@@ -70,9 +63,6 @@ ALTER TABLE `emails`
   ADD UNIQUE KEY `EMail` (`EMail`),
   ADD UNIQUE KEY `activation_hash` (`activation_hash`);
 
-ALTER TABLE `emails_backlog`
-  ADD PRIMARY KEY (`ID`);
-
 ALTER TABLE `history`
   ADD PRIMARY KEY (`ID`);
 
@@ -91,8 +81,6 @@ ALTER TABLE `users`
 ALTER TABLE `checks`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `emails`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
-ALTER TABLE `emails_backlog`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `history`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
