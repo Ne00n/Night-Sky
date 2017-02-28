@@ -4,7 +4,6 @@ SET time_zone = "+00:00";
 CREATE TABLE `checks` (
   `ID` int(11) NOT NULL,
   `USER_ID` int(11) NOT NULL,
-  `EMAIL_ID` int(11) NOT NULL,
   `ENABLED` int(1) NOT NULL DEFAULT '1',
   `SLOT` int(1) NOT NULL,
   `ONLINE` int(1) NOT NULL DEFAULT '0',
@@ -19,6 +18,24 @@ CREATE TABLE `emails` (
   `EMail` varchar(50) NOT NULL,
   `Status` int(1) NOT NULL DEFAULT '0',
   `activation_hash` varchar(40) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `groups` (
+  `ID` int(11) NOT NULL,
+  `USER_ID` int(11) NOT NULL,
+  `Name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `groups_checks` (
+  `ID` int(11) NOT NULL,
+  `CheckID` int(11) NOT NULL,
+  `GroupID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `groups_emails` (
+  `ID` int(11) NOT NULL,
+  `EmailID` int(11) NOT NULL,
+  `GroupID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `history` (
@@ -77,6 +94,15 @@ ALTER TABLE `emails`
   ADD UNIQUE KEY `EMail` (`EMail`),
   ADD UNIQUE KEY `activation_hash` (`activation_hash`);
 
+ALTER TABLE `groups`
+  ADD PRIMARY KEY (`ID`);
+
+ALTER TABLE `groups_checks`
+  ADD PRIMARY KEY (`ID`);
+
+ALTER TABLE `groups_emails`
+  ADD PRIMARY KEY (`ID`);
+
 ALTER TABLE `history`
   ADD PRIMARY KEY (`ID`);
 
@@ -101,6 +127,12 @@ ALTER TABLE `users`
 ALTER TABLE `checks`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `emails`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `groups`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `groups_checks`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `groups_emails`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `history`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
