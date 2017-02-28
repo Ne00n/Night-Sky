@@ -9,3 +9,10 @@
 - Block the current Thread if the previous one is still Running
 - Database Backend: MySQL
 - Frontend: PHP+HTML (PHP 7.0+ / Bootstrap / Font Awesome)
+
+QuickSetup:
+
+1. Create a User+DB, Import the SQL file
+2. Update config.php with your Login details and make SURE to change "Domain"
+3. Put night.php and remote.php into Crontab to run every 60 seconds
+4. Deploy some Remote Servers and add them to the table remote
