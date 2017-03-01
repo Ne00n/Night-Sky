@@ -24,18 +24,18 @@ class Contact {
       $USER_ID = $this->Verify->getUserID();
       $activation_hash = bin2hex(random_bytes(20));
 
+      $stmt = $this->DB->GetConnection()->prepare("INSERT INTO emails(USER_ID,EMail,activation_hash) VALUES (?,?,?)");
+      $stmt->bind_param('iss',$USER_ID, $EMail,$activation_hash);
+      $rc = $stmt->execute();
+      if ( false===$rc ) { $this->error = "MySQL Error"; }
+      $stmt->close();
+
       if ($testing === true && php_sapi_name() == 'cli') {
         return $activation_hash;
       } else {
         $Mail = new Mail($EMail,'Night-Sky - EMail confirmation','Please confirm your added Mail: https://'._Domain.'/index.php?p=contact?key='.$activation_hash);
         $Mail->run();
       }
-
-      $stmt = $this->DB->GetConnection()->prepare("INSERT INTO emails(USER_ID,EMail,activation_hash) VALUES (?,?,?)");
-      $stmt->bind_param('iss',$USER_ID, $EMail,$activation_hash);
-      $rc = $stmt->execute();
-      if ( false===$rc ) { $this->error = "MySQL Error"; }
-      $stmt->close();
 
     }
 
