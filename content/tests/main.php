@@ -21,7 +21,7 @@ class Main extends PHPUnit_Framework_TestCase
 		$this->DB->InitDB();
     $this->Verify = new Verify($this->DB,true);
     $this->Main = new Main($this->DB,$this->Verify);
-    $this->Contact = new Contact($this->DB,,$this->Verify);
+    $this->Contact = new Contact($this->DB,$this->Verify);
 	}
 
 	public function testMySQLConnection() {
