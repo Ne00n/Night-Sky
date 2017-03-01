@@ -10,8 +10,11 @@ class Verify {
   private $contact_limit = 0;
   private $check_ip_limit = 0;
 
-  public function __construct($DB) {
+  public function __construct($DB,$testing = false) {
     $this->DB = $DB;
+    if ($testing === true && php_sapi_name() == 'cli') {
+      $this->user_id = 1;
+    }
   }
 
   public function ValidateLogin($User,$Password) {
