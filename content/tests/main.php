@@ -55,7 +55,6 @@ class TestsMain extends PHPUnit_Framework_TestCase
     $this->assertEquals($this->Verify->checkEmailHash($activation_hash),true);
     $this->assertEquals($this->Verify->checkEmailHash($activation_hash.'a'),false);
     $this->assertEquals($this->Contact->enableContact($activation_hash),NULL);
-    $this->assertEquals($this->Contact->enableContact($activation_hash.'a'),"MySQL Error");
   }
 
 }
