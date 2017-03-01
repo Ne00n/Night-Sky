@@ -8,7 +8,7 @@ function dat_loader($class) {
 }
 spl_autoload_register('dat_loader');
 
-class Main extends PHPUnit_Framework_TestCase
+class TestsMain extends PHPUnit_Framework_TestCase
 {
 
 	private $DB;
