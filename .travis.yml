@@ -11,7 +11,7 @@ before_script:
 
 php:
   - '7.0'
+  - '7.1'
   - hhvm
-  - nightly
 
 script: phpunit content/tests/main.php
