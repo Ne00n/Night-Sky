@@ -12,7 +12,7 @@ class Contact {
     $this->Verify = $Verify;
   }
 
-  public function addContact($EMail) {
+  public function addContact($EMail,$testing = false) {
 
     if (!filter_var($EMail, FILTER_VALIDATE_EMAIL)) { $this->error = "Invalid Email."; }
     if (strlen($EMail) > 50) {$this->error = "The Email is to long";}
@@ -24,8 +24,12 @@ class Contact {
       $USER_ID = $this->Verify->getUserID();
       $activation_hash = bin2hex(random_bytes(20));
 
-      $Mail = new Mail($EMail,'Night-Sky - EMail confirmation','Please confirm your added Mail: https://'._Domain.'/index.php?p=contact?key='.$activation_hash);
-      $Mail->run();
+      if ($testing === true && php_sapi_name() == 'cli') {
+        return $activation_hash;
+      } else {
+        $Mail = new Mail($EMail,'Night-Sky - EMail confirmation','Please confirm your added Mail: https://'._Domain.'/index.php?p=contact?key='.$activation_hash);
+        $Mail->run();
+      }
 
       $stmt = $this->DB->GetConnection()->prepare("INSERT INTO emails(USER_ID,EMail,activation_hash) VALUES (?,?,?)");
       $stmt->bind_param('iss',$USER_ID, $EMail,$activation_hash);

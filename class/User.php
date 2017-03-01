@@ -12,7 +12,7 @@
       $this->Verify = $Verify_IN;
     }
 
-    public function registerUser($username,$email,$password,$password_repeat,$code) {
+    public function registerUser($username,$email,$password,$password_repeat,$code,$testing = false) {
 
       if ($password != $password_repeat) { $this->error = "Passwords are not equal"; }
       if (strlen($password) < 10 ) {$this->error = "The Password to short."; $error = true;}
@@ -57,8 +57,13 @@
           if ( false===$rc ) { $this->error = "MySQL Error"; }
           $stmt->close();
 
-          $Mail = new Mail($email,'Night-Sky - Registration','Activate your Account: https://'._Domain.'/index.php?key='.$activation_hash);
-          $Mail->run();
+          if ($testing === true && php_sapi_name() == 'cli') {
+            return $activation_hash;
+          } else {
+            $Mail = new Mail($email,'Night-Sky - Registration','Activate your Account: https://'._Domain.'/index.php?key='.$activation_hash);
+            $Mail->run();
+          }
+
 
         }
 
