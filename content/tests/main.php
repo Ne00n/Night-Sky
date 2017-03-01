@@ -3,10 +3,12 @@
 #Load config
 include 'content/config.php';
 #Load all Class files
-function dat_loader($class) {
-    include 'class/' . $class . '.php';
-}
-spl_autoload_register('dat_loader');
+include 'class/Database.php';
+include 'class/Verify.php';
+include 'class/Main.php';
+include 'class/Page.php';
+include 'class/Contact.php';
+include 'class/User.php';
 
 class TestsMain extends PHPUnit_Framework_TestCase
 {
