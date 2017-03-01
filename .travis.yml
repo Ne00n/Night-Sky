@@ -1,0 +1,17 @@
+language: php
+
+services:
+  - mysql
+
+before_script:
+  - mysql -u root -e "CREATE DATABASE night;"
+  - mysql -u root -e "CREATE USER 'night'@'localhost' IDENTIFIED BY 'night';"
+  - mysql -u root -e "GRANT ALL ON night.* TO 'night'@'localhost';"
+  - mysql -u root night < content/sql/night-sky.sql
+
+php:
+  - '7.0'
+  - hhvm
+  - nightly
+
+script: phpunit content/tests/main.php
