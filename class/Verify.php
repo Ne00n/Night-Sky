@@ -14,6 +14,9 @@ class Verify {
     $this->DB = $DB;
     if ($testing === true && php_sapi_name() == 'cli') {
       $this->user_id = 1;
+      $this->contact_limit = 4;
+      $this->check_limit = 10.
+      $this->check_ip_limit = 2;
     }
   }
 
