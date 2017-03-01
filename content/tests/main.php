@@ -50,7 +50,7 @@ class TestsMain extends PHPUnit_Framework_TestCase
 
   public function testContacts() {
     #Add a Contact
-    $activation_hash = $this->Contact->addContact("test@test.com",true);
+    $activation_hash = $this->Contact->addContact("test2@test.com",true);
     $this->assertEquals($this->Contact->getLastError(),NULL);
     $this->assertEquals($this->Verify->checkEmailHash($activation_hash),true);
     $this->assertEquals($this->Verify->checkEmailHash($activation_hash.'a'),false);
