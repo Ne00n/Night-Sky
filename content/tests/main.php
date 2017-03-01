@@ -43,7 +43,8 @@ class TestsMain extends PHPUnit_Framework_TestCase
     $activation_hash = $this->User->registerUser("Tester","test@test.com",$password,$password,"LET",true);
     $this->assertEquals($this->User->getLastError(),NULL);
     $this->assertEquals($this->Verify->checkHash($activation_hash),true);
-    $this->assertEquals($this->User->enableUser($activation_hash),true);
+    $this->User->enableUser($activation_hash);
+    $this->assertEquals($this->User->getLastError(),NULL);
     $this->assertEquals($this->Verify->checkHash($activation_hash.'a'),false);
   }
 
