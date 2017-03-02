@@ -55,6 +55,14 @@ class TestsMain extends PHPUnit_Framework_TestCase
 		//Enable the Account
     $this->User->enableUser($activation_hash);
     $this->assertEquals($this->User->getLastError(),NULL); //Check for Errors
+		//Check if the Login works fine...
+		$Verify->ValidateLogin("Tester",$password);
+		$this->assertEquals($this->Verify->getLastError(),NULL); //Check for Errors
+		$Verify->ValidateLogin("Tester2",$password);
+		$this->assertEquals($this->Verify->getLastError(),NULL); //Check for Errors
+		//Check a incorrect password
+		$Verify->ValidateLogin("Tester",$password.'a');
+		$this->assertEquals($this->Verify->getLastError(),"Incorrect Login details"); //Check for Errors
   }
 
   public function testContacts() {
@@ -75,9 +83,11 @@ class TestsMain extends PHPUnit_Framework_TestCase
     $this->assertEquals($this->Contact->getLastError(),NULL); //Check for Errors
 		//Enable the Contact
 		$this->assertEquals($this->Contact->enableContact($activation_hash),NULL);
-		//Check if Verify allows us to set 1 as ID to contact, which should not work, since 1 is assigned to the Account before
+		//Check if Verify allows us to set 1/3 as ID to contact, which should not work, since 1/3 is assigned to the Account before
+		$this->assertEquals($this->Verify->checkContactID(1,0),false);
 		$this->assertEquals($this->Verify->checkContactID(3,0),false);
-		//But we should be able to acess or own Contact
+		//But we should be able to acess our own Contact
+		$this->assertEquals($this->Verify->checkContactID(2,0),true);
 		$this->assertEquals($this->Verify->checkContactID(4,0),true);
   }
 
