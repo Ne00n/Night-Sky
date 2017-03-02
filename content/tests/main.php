@@ -56,12 +56,12 @@ class TestsMain extends PHPUnit_Framework_TestCase
     $this->User->enableUser($activation_hash);
     $this->assertEquals($this->User->getLastError(),NULL); //Check for Errors
 		//Check if the Login works fine...
-		$Verify->ValidateLogin("Tester",$password);
+		$this->Verify->ValidateLogin("Tester",$password);
 		$this->assertEquals($this->Verify->getLastError(),NULL); //Check for Errors
-		$Verify->ValidateLogin("Tester2",$password);
+		$this->Verify->ValidateLogin("Tester2",$password);
 		$this->assertEquals($this->Verify->getLastError(),NULL); //Check for Errors
 		//Check a incorrect password
-		$Verify->ValidateLogin("Tester",$password.'a');
+		$this->Verify->ValidateLogin("Tester",$password.'a');
 		$this->assertEquals($this->Verify->getLastError(),"Incorrect Login details"); //Check for Errors
   }
 
