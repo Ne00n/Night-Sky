@@ -76,7 +76,7 @@ class TestsMain extends PHPUnit_Framework_TestCase
 		//Enable the Contact
 		$this->assertEquals($this->Contact->enableContact($activation_hash),NULL);
 		//Check if Verify allows us to set 1 as ID to contact, which should not work, since 1 is assigned to the Account before
-		$this->assertEquals($this->Verify->checkContactID(2,0),false);
+		$this->assertEquals($this->Verify->checkContactID(3,0),false);
 		//But we should be able to acess or own Contact
 		$this->assertEquals($this->Verify->checkContactID(4,0),true);
   }
