@@ -10,10 +10,10 @@ class Verify {
   private $contact_limit = 0;
   private $check_ip_limit = 0;
 
-  public function __construct($DB,$testing = false) {
+  public function __construct($DB,$testing = false,$user_id) {
     $this->DB = $DB;
     if ($testing === true && php_sapi_name() == 'cli') {
-      $this->user_id = 1;
+      $this->user_id = $user_id;
       $this->contact_limit = 4;
       $this->check_limit = 10;
       $this->check_ip_limit = 2;
