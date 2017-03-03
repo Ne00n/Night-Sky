@@ -13,7 +13,6 @@
     }
 
     public function registerUser($username,$email,$password,$password_repeat,$code,$testing = false) {
-
       if ($password != $password_repeat) { $this->error = "Passwords are not equal"; }
       if (strlen($password) < 10 ) {$this->error = "The Password to short."; $error = true;}
       if (strlen($password) > 160 ) {$this->error = "The Password is to long."; $error = true;}
@@ -68,11 +67,9 @@
         }
 
       }
-
     }
 
     public function enableUser($key) {
-
       $enabled = 1;
 
       #Enable User Account
@@ -97,11 +94,9 @@
       $rc = $stmt->execute();
       if ( false===$rc ) { $this->error = "MySQL Error"; }
       $stmt->close();
-
     }
 
     public function changePassword($old_pw,$new_pw,$new_pw_2) {
-
       if (strlen($new_pw) < 10 ) {$this->error = "Passwords to short."; }
       if (strlen($new_pw) > 160 ) {$this->error = "Passwords are to long."; }
       if ($new_pw != $new_pw_2) {$this->error = "Passwords not equal."; }
@@ -129,11 +124,9 @@
           $this->error = "Old Password is incorrect.";
         }
       }
-
     }
 
     public function deleteAccount($current_password) {
-
       if (strlen($current_password) < 10 ) {$this->error = "Password to short."; }
       if (strlen($current_password) > 160 ) {$this->error = "Password is to long."; }
 
@@ -178,11 +171,9 @@
           $this->error = "Current Password is incorrect.";
         }
       }
-
     }
 
     public function checkUserAmmount() {
-
         $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM users");
         $stmt->execute();
         $stmt->store_result();
@@ -193,11 +184,9 @@
           return false;
         }
         $stmt->close();
-
     }
 
     public function checkifUserExists($name) {
-
       $stmt = $this->DB->GetConnection()->prepare("SELECT id FROM users WHERE Username = ? LIMIT 1");
       $stmt->bind_param('s', $name);
       $rc = $stmt->execute();
@@ -211,11 +200,9 @@
       } else {
         return false;
       }
-
     }
 
     public function checkifEMailExists($email) {
-
       $stmt = $this->DB->GetConnection()->prepare("SELECT id FROM emails WHERE EMail = ? LIMIT 1");
       $stmt->bind_param('s', $email);
       $rc = $stmt->execute();
@@ -229,19 +216,14 @@
       } else {
         return false;
       }
-
     }
 
     public function getlastError() {
-
       return $this->error;
-
     }
 
     public function getlastWarning() {
-
       return $this->warning;
-
     }
 
   }

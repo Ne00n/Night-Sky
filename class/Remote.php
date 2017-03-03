@@ -10,7 +10,6 @@ class Remote {
   }
 
   public function checkRemote() {
-
     $query = "SELECT ID,IP,Port,Location FROM remote";
     $stmt = $this->DB->GetConnection()->prepare($query);
     $stmt->execute();
@@ -44,27 +43,19 @@ class Remote {
         $stmt->close();
 
       }
-
     }
-
   }
 
   public function getRemote() {
-
     $remote = array();
-
     $query = "SELECT ID,IP,Port,Location FROM remote WHERE Online = 1";
     $stmt = $this->DB->GetConnection()->prepare($query);
     $stmt->execute();
     $stmt->bind_result($db_ID,$db_IP,$db_Port,$db_Location);
     while ($stmt->fetch()) {
-
       $remote[] = array('Location' => $db_Location,'IP' => $db_IP,'Port' => $db_Port);
-
     }
-
     return $remote;
-
   }
 
 }

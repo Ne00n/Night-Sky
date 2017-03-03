@@ -34,9 +34,6 @@ class CheckServ {
   }
 
   public function checkAvailability($IP,$PORT) {
-
-    error_reporting(0);
-
     //Reset, since use this objective for up to 5 servers
     $this->status_detail = [];
     $this->external_before = NULL;
@@ -68,11 +65,9 @@ class CheckServ {
       }
 
     }
-
   }
 
   public function fetchRemote($IP,$Port,$IP_Check,$Port_Check) {
-
     $URL = "https://".$IP.":".$Port."/check.php?host=". $IP_Check .":" . $Port_Check;
 
     $ch = curl_init();
@@ -102,9 +97,7 @@ class CheckServ {
       $result[2] = $totaltime;
 
     }
-
     return $result;
-
   }
 
 }

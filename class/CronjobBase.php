@@ -5,15 +5,12 @@ class CronjobBase {
   private $threadId;
   private $Checks;
 
-  public function __construct($in_threadId,$in_Checks)
-  {
+  public function __construct($in_threadId,$in_Checks) {
       $this->threadId = $in_threadId;
       $this->Checks = $in_Checks;
   }
 
-  public function run()
-  {
-
+  public function run() {
       printf("Cronjob Base\n",$this->threadId);
       $start = microtime(true);
 
@@ -24,7 +21,6 @@ class CronjobBase {
 
       echo "CronjobBase end\n";
       echo microtime(true) - $start . "\n";
-
   }
 
 }

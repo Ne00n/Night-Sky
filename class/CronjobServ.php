@@ -12,17 +12,14 @@ class CronjobServ {
   private $Remote;
   private $error;
 
-  public function __construct($in_slot,$in_threadId,$in_Check,$in_Remote)
-  {
+  public function __construct($in_slot,$in_threadId,$in_Check,$in_Remote) {
       $this->threadId = $in_threadId;
       $this->slot = $in_slot;
       $this->Check = $in_Check;
       $this->Remote = $in_Remote;
   }
 
-  public function run()
-  {
-
+  public function run() {
       #Create a new Database Object
       $DB = new Database;
       $DB->InitDB();
@@ -113,7 +110,6 @@ class CronjobServ {
         $T->setUnlock();
 
       }
-
   }
 
 }

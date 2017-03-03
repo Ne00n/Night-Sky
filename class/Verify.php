@@ -21,7 +21,6 @@ class Verify {
   }
 
   public function ValidateLogin($User,$Password) {
-
     if (strlen($User) < 4) { $this->error = "The Username is to short.";}
     if (strlen($User) > 50) { $this->error = "The Username is to long.";}
     if (strlen($Password) < 8) { $this->error = "The Password is to short.";}
@@ -46,11 +45,9 @@ class Verify {
       }
 
     }
-
   }
 
   public function isLoggedIN() {
-
     if(isset($_SESSION['user_id']) AND preg_match("/^[0-9]+$/",$_SESSION['user_id'])){
 
       $stmt = $this->DB->GetConnection()->prepare("SELECT Rank,ID,Check_Limit,Contact_Limit,Same_IP_Limit FROM users WHERE ID = ? AND enabled = 1 LIMIT 1");
@@ -76,11 +73,9 @@ class Verify {
     } else {
       return false;
     }
-
   }
 
   public function checkHash($key) {
-
     if(!preg_match("/^[a-zA-Z0-9]+$/",$key)){ return false;}
     if (strlen($key) != 40) {return false;}
 
@@ -97,11 +92,9 @@ class Verify {
     } else {
       return false;
     }
-
    }
 
    public function checkEmailHash($key) {
-
      if(!preg_match("/^[a-zA-Z0-9]+$/",$key)){ return false;}
      if (strlen($key) != 40) {return false;}
 
@@ -118,7 +111,6 @@ class Verify {
      } else {
        return false;
      }
-
     }
 
   public function checkContactID($id,$status_check = 1) {

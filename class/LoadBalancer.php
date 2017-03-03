@@ -9,7 +9,6 @@ class LoadBalancer {
   }
 
   public function balanceCheck() {
-
     for ($i = 1; $i <= 25; $i = $i + 1) {
 
       $slot = mt_rand (1,9);
@@ -25,7 +24,6 @@ class LoadBalancer {
     }
     return false;
   }
-
 }
 
- ?>
+?>

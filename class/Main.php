@@ -17,7 +17,6 @@ class Main {
   }
 
   public function addCheck($IP,$PORT,$EMAIL_ID,$NAME) {
-
     if (!filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) { $this->error = "Invalid IP."; }
     if(!preg_match("/^[a-zA-Z0-9._\- ]+$/",$NAME)){ $this->error = "The Name contains invalid letters.";}
     if(!preg_match("/^[0-9]+$/",$PORT)){ $this->error = "Invalid Port.";}
@@ -50,11 +49,9 @@ class Main {
       }
 
     }
-
   }
 
   public function updateCheck($IP,$PORT,$EMAIL_ID,$NAME) {
-
     if (!filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) { $this->error = "Invalid IP."; }
     if(!preg_match("/^[a-zA-Z0-9._\- ]+$/",$NAME)){ $this->error = "The Name contains invalid letters.";}
     if(!preg_match("/^[0-9]+$/",$PORT)){ $this->error = "Invalid Port.";}
@@ -78,11 +75,9 @@ class Main {
       $stmt->close();
 
     }
-
   }
 
   public function getData() {
-
     if ($this->error == "") {
 
       $stmt = $this->DB->GetConnection()->prepare("SELECT NAME,IP,PORT FROM checks WHERE ID = ? LIMIT 1");
@@ -98,11 +93,9 @@ class Main {
       $this->ip = $db_ip;
 
     }
-
   }
 
   public function removeCheck() {
-
     if ($this->error == "") {
 
       $stmt = $this->DB->GetConnection()->prepare("DELETE FROM history WHERE CHECK_ID = ?");
@@ -118,11 +111,9 @@ class Main {
       $stmt->close();
 
     }
-
   }
 
   public function enable() {
-
     if ($this->error == "") {
 
       $enabled = 1;
@@ -134,11 +125,9 @@ class Main {
       $stmt->close();
 
     }
-
   }
 
   public function disable() {
-
     if ($this->error == "") {
 
       $enabled = 0;
@@ -150,11 +139,9 @@ class Main {
       $stmt->close();
 
     }
-
   }
 
   public function checkLimit() {
-
     $user_id = $this->Verify->getUserID();
 
     $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM checks WHERE USER_ID = ?");
@@ -165,11 +152,9 @@ class Main {
       return true;
     }
     $stmt->close();
-
   }
 
   public function checkIPLimit($ip) {
-
     $user_id = $this->Verify->getUserID();
 
     $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM checks WHERE USER_ID = ? AND IP = ?");
@@ -180,11 +165,9 @@ class Main {
       return true;
     }
     $stmt->close();
-
   }
 
   public function checkIP_Global_Limit($ip) {
-
     $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM checks WHERE IP = ?");
     $stmt->bind_param('s', $ip);
     $stmt->execute();
@@ -193,17 +176,14 @@ class Main {
       return true;
     }
     $stmt->close();
-
   }
 
   public function setID($id) {
-
     if ($this->Verify->checkCheckID($id) === true) {
       $this->id = $id;
     } else {
       $this->error = "Invalid ID";
     }
-
   }
 
   public function getLastError() {

@@ -13,7 +13,6 @@ class Contact {
   }
 
   public function addContact($EMail,$testing = false) {
-
     if (!filter_var($EMail, FILTER_VALIDATE_EMAIL)) { $this->error = "Invalid Email."; }
     if (strlen($EMail) > 50) {$this->error = "The Email is to long";}
     if ($this->checkifEMailExists($EMail) == true) {$this->error = "The Email exists.";}
@@ -42,9 +41,7 @@ class Contact {
   }
 
   public function removeContact() {
-
       if ($this->CheckifContactIsInUse() === false) {
-
         if ($this->error == "") {
 
           $stmt = $this->DB->GetConnection()->prepare("DELETE FROM emails WHERE ID = ?");
@@ -54,17 +51,12 @@ class Contact {
           $stmt->close();
 
         }
-
       } else {
-
         $this->error = "Contact still in use";
-
       }
-
   }
 
   public function enableContact($key) {
-
     $enabled = 1;
 
     #Enable Contact
@@ -73,11 +65,9 @@ class Contact {
     $rc = $stmt->execute();
     if ( false===$rc ) { $this->error = "MySQL Error"; }
     $stmt->close();
-
   }
 
   public function getEMailbyID() {
-
     $stmt = $this->DB->GetConnection()->prepare("SELECT EMail FROM emails WHERE ID = ? LIMIT 1");
     $stmt->bind_param('i', $this->id);
     $rc = $stmt->execute();
@@ -87,11 +77,9 @@ class Contact {
     $stmt->close();
 
     return $db_email;
-
   }
 
   public function setID($id) {
-
     if (php_sapi_name() == 'cli') {
       $this->id = $id;
     } else {
@@ -101,11 +89,9 @@ class Contact {
         $this->error = "Invalid ID";
       }
     }
-
   }
 
   public function CheckifContactIsInUse() {
-
     $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM checks WHERE EMAIL_ID = ? LIMIT 1");
     $stmt->bind_param('i', $this->id);
     $rc = $stmt->execute();
@@ -119,11 +105,9 @@ class Contact {
     } else {
       return false;
     }
-
   }
 
   public function checkifEMailExists($email) {
-
     $stmt = $this->DB->GetConnection()->prepare("SELECT id FROM emails WHERE EMail = ? LIMIT 1");
     $stmt->bind_param('s', $email);
     $rc = $stmt->execute();
@@ -137,11 +121,9 @@ class Contact {
     } else {
       return false;
     }
-
   }
 
   public function checkLimit() {
-
     $user_id = $this->Verify->getUserID();
 
     $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM emails WHERE USER_ID = ?");
@@ -152,7 +134,6 @@ class Contact {
       return true;
     }
     $stmt->close();
-
   }
 
   public function getLastError() {

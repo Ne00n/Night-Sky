@@ -10,7 +10,6 @@ class Login {
   }
 
   public function check_blocked_ip($ip_remote,$table = "login_blacklist",$ammount = 3) {
-
     if (!$this->isValidIP($ip_remote)) { $ip_remote = 0; }
 
     $time = time();
@@ -18,26 +17,25 @@ class Login {
 
     if ($stmt = $this->DB->GetConnection()->prepare($query)){
 
-            $stmt->bind_param("si",$ip_remote,$time);
+      $stmt->bind_param("si",$ip_remote,$time);
 
-            if($stmt->execute()){
-                $stmt->store_result();
+      if($stmt->execute()){
+          $stmt->store_result();
 
-                $check= "";
-                $stmt->bind_result($check);
-                $stmt->fetch();
+          $check= "";
+          $stmt->bind_result($check);
+          $stmt->fetch();
 
-                if ($stmt->num_rows >= $ammount){
-                  return true;
-                } else {
-                  return false;
-                }
-            }
-        }
+          if ($stmt->num_rows >= $ammount){
+            return true;
+          } else {
+            return false;
+          }
+      }
+    }
   }
 
   public function addtoBlacklist($ip_remote,$table = "login_blacklist") {
-
     if (!$this->isValidIP($ip_remote)) { $ip_remote = 0; }
 
     $timestamp = time();
@@ -48,7 +46,6 @@ class Login {
     $rc = $stmt->execute();
     if ( false===$rc ) { $this->error = "MySQL Error"; }
     $stmt->close();
-
   }
 
   public function isValidIP($ip) {
