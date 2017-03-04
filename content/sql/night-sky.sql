@@ -82,7 +82,8 @@ CREATE TABLE `users` (
   `activation_hash` varchar(40) NOT NULL,
   `Check_Limit` int(11) NOT NULL DEFAULT '10',
   `Contact_Limit` int(11) NOT NULL DEFAULT '4',
-  `Same_IP_Limit` int(11) NOT NULL DEFAULT '2'
+  `Same_IP_Limit` int(11) NOT NULL DEFAULT '2',
+  `Group_Limit` int(11) NOT NULL DEFAULT '15'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 

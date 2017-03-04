@@ -78,7 +78,7 @@ class Group {
   public function CheckifGroupIsInUse() {
     $in_use = false;
 
-    $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM groups_checks WHERE ID = ? LIMIT 1");
+    $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM groups_checks WHERE GroupID = ? LIMIT 1");
     $stmt->bind_param('i', $this->id);
     $rc = $stmt->execute();
     if ( false===$rc ) { $this->error = "MySQL Error"; }
@@ -88,7 +88,7 @@ class Group {
 
     if (isset($db_id)) { $in_use = true; }
 
-    $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM groups_checks WHERE ID = ? LIMIT 1");
+    $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM groups_checks WHERE GroupID = ? LIMIT 1");
     $stmt->bind_param('i', $this->id);
     $rc = $stmt->execute();
     if ( false===$rc ) { $this->error = "MySQL Error"; }

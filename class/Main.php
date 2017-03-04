@@ -16,11 +16,10 @@ class Main {
     $this->Verify = $Verify;
   }
 
-  public function addCheck($IP,$PORT,$EMAIL_ID,$NAME) {
+  public function addCheck($IP,$PORT,$groups,$NAME) {
     if (!filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) { $this->error = "Invalid IP."; }
     if(!preg_match("/^[a-zA-Z0-9._\- ]+$/",$NAME)){ $this->error = "The Name contains invalid letters.";}
     if(!preg_match("/^[0-9]+$/",$PORT)){ $this->error = "Invalid Port.";}
-    if ($this->Verify->checkContactID($EMAIL_ID) === false) { $this->error = "Invalid EMail";}
     if (strlen($NAME) > 50) {$this->error = "The Name is to long";}
     if (strlen($NAME) < 3) {$this->error = "The Name is to short";}
     if ($PORT > 65535) {$this->error = "The Port is to big";}
@@ -28,6 +27,8 @@ class Main {
     if (!$this->checkLimit()) { $this->error = "Limit reached";}
     if (!$this->checkIPLimit($IP)) { $this->error = "Limit reached";}
     if (!$this->checkIP_Global_Limit($IP)) { $this->error = "Limit reached";}
+
+    if ($this->error == "") { $this->processGroups($groups); }
 
     if ($this->error == "") {
 
@@ -38,8 +39,8 @@ class Main {
 
       if ($SLOT != false) {
 
-        $stmt = $this->DB->GetConnection()->prepare("INSERT INTO checks(USER_ID,EMAIL_ID,IP,PORT,SLOT,NAME) VALUES (?,?,?,?,?,?)");
-        $stmt->bind_param('iisiis',$USER_ID, $EMAIL_ID, $IP, $PORT,$SLOT,$NAME);
+        $stmt = $this->DB->GetConnection()->prepare("INSERT INTO checks(USER_ID,IP,PORT,SLOT,NAME) VALUES (?,?,?,?,?)");
+        $stmt->bind_param('isiis',$USER_ID, $IP, $PORT,$SLOT,$NAME);
         $rc = $stmt->execute();
         if ( false===$rc ) { $this->error = "MySQL Error"; }
         $stmt->close();
@@ -51,11 +52,10 @@ class Main {
     }
   }
 
-  public function updateCheck($IP,$PORT,$EMAIL_ID,$NAME) {
+  public function updateCheck($IP,$PORT,$groups,$NAME) {
     if (!filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) { $this->error = "Invalid IP."; }
     if(!preg_match("/^[a-zA-Z0-9._\- ]+$/",$NAME)){ $this->error = "The Name contains invalid letters.";}
     if(!preg_match("/^[0-9]+$/",$PORT)){ $this->error = "Invalid Port.";}
-    if ($this->Verify->checkContactID($EMAIL_ID) === false) { $this->error = "Invalid EMail";}
     if (strlen($NAME) > 50) {$this->error = "The Name is to long";}
     if (strlen($NAME) < 3) {$this->error = "The Name is to short";}
     if ($PORT > 65535) {$this->error = "The Port is to big";}
@@ -63,17 +63,63 @@ class Main {
     if ($this->ip != $IP) {
       if (!$this->checkIPLimit($IP,1)) { $this->error = "Limit reached";}
       if (!$this->checkIP_Global_Limit($IP)) { $this->error = "Limit reached";}
-
     }
+
+    if ($this->error == "") { $this->processGroups($groups); }
 
     if ($this->error == "") {
 
-      $stmt = $this->DB->GetConnection()->prepare("UPDATE checks SET EMAIL_ID = ?, IP = ?, PORT = ?, NAME = ? WHERE ID = ?");
-      $stmt->bind_param('isisi', $EMAIL_ID,$IP,$PORT,$NAME,$this->id);
+      $stmt = $this->DB->GetConnection()->prepare("UPDATE checks SET IP = ?, PORT = ?, NAME = ? WHERE ID = ?");
+      $stmt->bind_param('sisi', $IP,$PORT,$NAME,$this->id);
       $rc = $stmt->execute();
       if ( false===$rc ) { $this->error = "MySQL Error"; }
       $stmt->close();
 
+    }
+  }
+
+  private function processGroups($groups) {
+    if (count($groups) > 0) {
+      $GR = new Group($this->DB,$this->Verify);
+      if (count($groups) < 16) {
+        foreach ($groups as &$id) {
+          if ($GR->checkGroupID($id) === false) {
+            $this->error = "Invalid Groups";
+            break;
+          }
+        }
+      } else {
+        $this->error = "Invalid Groups";
+      }
+
+      if ($this->error == "") {
+
+        #Remove all existing links to Groups from this Check
+        $stmt = $this->DB->GetConnection()->prepare("DELETE FROM groups_checks WHERE CheckID = ?");
+        $stmt->bind_param('i', $this->id);
+        $rc = $stmt->execute();
+        $stmt->close();
+
+        #Create all links to Groups which have been inserted
+        $stmt = $this->DB->GetConnection()->prepare("INSERT INTO groups_checks(CheckID,GroupID) VALUES (?,?)");
+        $stmt->bind_param('ii',$this->id,$group_id);
+        $this->DB->GetConnection()->query("START TRANSACTION");
+
+        foreach ($groups as &$id) {
+          $group_id = $id;
+          $stmt->execute();
+        }
+
+        $stmt->close();
+        $this->DB->GetConnection()->query("COMMIT");
+      }
+    } else {
+      var_dump($groups);
+      #Remove all existing links to Groups from this Check
+      $stmt = $this->DB->GetConnection()->prepare("DELETE FROM groups_checks WHERE CheckID = ?");
+      $stmt->bind_param('i', $this->id);
+      $rc = $stmt->execute();
+      $stmt->close();
     }
   }
 
@@ -98,16 +144,24 @@ class Main {
   public function removeCheck() {
     if ($this->error == "") {
 
+      //History
       $stmt = $this->DB->GetConnection()->prepare("DELETE FROM history WHERE CHECK_ID = ?");
       $stmt->bind_param('i', $this->id);
       $rc = $stmt->execute();
       if ( false===$rc ) { $this->error = "MySQL Error"; }
       $stmt->close();
 
+      //Check itself
       $stmt = $this->DB->GetConnection()->prepare("DELETE FROM checks WHERE ID = ?");
       $stmt->bind_param('i', $this->id);
       $rc = $stmt->execute();
       if ( false===$rc ) { $this->error = "MySQL Error"; }
+      $stmt->close();
+
+      #Remove all existing links to Groups from this Check
+      $stmt = $this->DB->GetConnection()->prepare("DELETE FROM groups_checks WHERE CheckID = ?");
+      $stmt->bind_param('i', $this->id);
+      $rc = $stmt->execute();
       $stmt->close();
 
     }

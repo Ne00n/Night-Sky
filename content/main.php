@@ -105,21 +105,21 @@ if ($Login->isLoggedIN()) {
             <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
 
             <div class="form-group">
-                  <div class="col-sm-5 col-sm-offset-2">
+                  <div class="col-sm-8 col-sm-offset-2">
                     <div class="input-group">
                       <div class="input-group-addon">
-                     <span class="fa fa-envelope"></span>
+                     <span class="fa fa-group"></span>
                       </div>
-                      <select class="form-control input-sm" name="email">
+                      <select class="form-control input-sm chosen-select" data-placeholder="Choose a Group" name="email[]" multiple tabindex="8">
                         <?php
-                        $query = "SELECT ID,EMail FROM emails WHERE USER_ID = ? AND Status = 1 ORDER by id";
+                        $query = "SELECT groups.ID,groups.Name,groups_checks.ID FROM groups LEFT JOIN groups_checks ON groups.ID=groups_checks.GroupID WHERE groups.USER_ID=? GROUP BY groups.ID";
                         $USER_ID = $Login->getUserID();
                         $stmt = $DB->GetConnection()->prepare($query);
                         $stmt->bind_param('i', $USER_ID);
                         $stmt->execute();
-                        $stmt->bind_result($db_ID, $db_EMail);
+                        $stmt->bind_result($db_group_id, $db_group_name,$db_group_uniq);
                         while ($stmt->fetch()) {
-                             echo '<option value="'. Page::escape($db_ID) .'">'. Page::escape($db_EMail) .'</option>';
+                             echo '<option '.($db_group_uniq ? "selected" : "").' value="'. Page::escape($db_group_id) .'">'. Page::escape($db_group_name) .'</option>';
                         }
                         $stmt->close(); ?>
                       </select>
@@ -231,21 +231,21 @@ if ($Login->isLoggedIN()) {
             <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
 
             <div class="form-group">
-                  <div class="col-sm-5 col-sm-offset-2">
+                  <div class="col-sm-8 col-sm-offset-2">
                     <div class="input-group">
                       <div class="input-group-addon">
-                     <span class="fa fa-envelope"></span>
+                     <span class="fa fa-group"></span>
                       </div>
-                      <select class="form-control input-sm" name="email">
+                      <select class="form-control input-sm chosen-select" data-placeholder="Choose a Group" name="email[]" multiple tabindex="8">
                         <?php
-                        $query = "SELECT ID,EMail FROM emails WHERE USER_ID = ? AND Status = 1 ORDER by id";
+                        $query = "SELECT groups.ID,groups.Name,groups_checks.ID FROM groups LEFT JOIN groups_checks ON groups.ID=groups_checks.GroupID WHERE groups.USER_ID=? GROUP BY groups.ID";
                         $USER_ID = $Login->getUserID();
                         $stmt = $DB->GetConnection()->prepare($query);
                         $stmt->bind_param('i', $USER_ID);
                         $stmt->execute();
-                        $stmt->bind_result($db_ID, $db_EMail);
+                        $stmt->bind_result($db_group_id, $db_group_name,$db_group_uniq);
                         while ($stmt->fetch()) {
-                             echo '<option value="'. Page::escape($db_ID) .'">'. Page::escape($db_EMail) .'</option>';
+                             echo '<option '.($db_group_uniq ? "selected" : "").' value="'. Page::escape($db_group_id) .'">'. Page::escape($db_group_name) .'</option>';
                         }
                         $stmt->close(); ?>
                       </select>
