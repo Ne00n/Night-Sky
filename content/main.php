@@ -112,14 +112,25 @@ if ($Login->isLoggedIN()) {
                       </div>
                       <select class="form-control input-sm chosen-select" data-placeholder="Choose a Group" name="email[]" multiple tabindex="8">
                         <?php
-                        $query = "SELECT groups.ID,groups.Name,groups_checks.ID FROM groups LEFT JOIN groups_checks ON groups.ID=groups_checks.GroupID WHERE groups.USER_ID=? GROUP BY groups.ID";
+                        $group_ids = array();
+
+                        $query = "SELECT GroupID FROM groups_checks WHERE CheckID=?";
+                        $stmt = $DB->GetConnection()->prepare($query);
+                        $stmt->bind_param('i', $check_id);
+                        $stmt->execute();
+                        $stmt->bind_result($db_group_id);
+                        while ($stmt->fetch()) {
+                             $group_ids[] = $db_group_id;
+                        }
+
+                        $query = "SELECT ID,Name FROM groups WHERE USER_ID=? ORDER BY ID";
                         $USER_ID = $Login->getUserID();
                         $stmt = $DB->GetConnection()->prepare($query);
                         $stmt->bind_param('i', $USER_ID);
                         $stmt->execute();
-                        $stmt->bind_result($db_group_id, $db_group_name,$db_group_uniq);
+                        $stmt->bind_result($db_group_id, $db_group_name);
                         while ($stmt->fetch()) {
-                             echo '<option '.($db_group_uniq ? "selected" : "").' value="'. Page::escape($db_group_id) .'">'. Page::escape($db_group_name) .'</option>';
+                             echo '<option '.(in_array($db_group_id,$group_ids) ? "selected" : "").' value="'. Page::escape($db_group_id) .'">'. Page::escape($db_group_name) .'</option>';
                         }
                         $stmt->close(); ?>
                       </select>
@@ -238,12 +249,12 @@ if ($Login->isLoggedIN()) {
                       </div>
                       <select class="form-control input-sm chosen-select" data-placeholder="Choose a Group" name="email[]" multiple tabindex="8">
                         <?php
-                        $query = "SELECT groups.ID,groups.Name,groups_checks.ID FROM groups LEFT JOIN groups_checks ON groups.ID=groups_checks.GroupID WHERE groups.USER_ID=? GROUP BY groups.ID";
+                        $query = "SELECT ID,Name FROM groups WHERE USER_ID=? GROUP BY ID";
                         $USER_ID = $Login->getUserID();
                         $stmt = $DB->GetConnection()->prepare($query);
                         $stmt->bind_param('i', $USER_ID);
                         $stmt->execute();
-                        $stmt->bind_result($db_group_id, $db_group_name,$db_group_uniq);
+                        $stmt->bind_result($db_group_id, $db_group_name);
                         while ($stmt->fetch()) {
                              echo '<option '.($db_group_uniq ? "selected" : "").' value="'. Page::escape($db_group_id) .'">'. Page::escape($db_group_name) .'</option>';
                         }
