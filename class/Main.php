@@ -28,8 +28,6 @@ class Main {
     if (!$this->checkIPLimit($IP)) { $this->error = "Limit reached";}
     if (!$this->checkIP_Global_Limit($IP)) { $this->error = "Limit reached";}
 
-    if ($this->error == "") { $this->processGroups($groups); }
-
     if ($this->error == "") {
 
       $USER_ID = $this->Verify->getUserID();
@@ -43,7 +41,12 @@ class Main {
         $stmt->bind_param('isiis',$USER_ID, $IP, $PORT,$SLOT,$NAME);
         $rc = $stmt->execute();
         if ( false===$rc ) { $this->error = "MySQL Error"; }
+        $check_id = $stmt->insert_id;
         $stmt->close();
+
+        if ($this->error == "") { $this->setID($check_id); }
+
+        if ($this->error == "") { $this->processGroups($groups); }
 
       } else {
         $this->error = "Unable to find free slot.";

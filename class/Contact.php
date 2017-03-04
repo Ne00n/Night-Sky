@@ -6,13 +6,14 @@ class Contact {
   private $Verify;
   private $error;
   private $id;
+  private $email;
 
   public function __construct($DB,$Verify) {
     $this->DB = $DB;
     $this->Verify = $Verify;
   }
 
-  public function addContact($EMail,$testing = false) {
+  public function addContact($EMail,$groups,$testing = false) {
     if (!filter_var($EMail, FILTER_VALIDATE_EMAIL)) { $this->error = "Invalid Email."; }
     if (strlen($EMail) > 50) {$this->error = "The Email is to long";}
     if ($this->checkifEMailExists($EMail) == true) {$this->error = "The Email exists.";}
@@ -27,33 +28,124 @@ class Contact {
       $stmt->bind_param('iss',$USER_ID, $EMail,$activation_hash);
       $rc = $stmt->execute();
       if ( false===$rc ) { $this->error = "MySQL Error"; }
+      $contact_id = $stmt->insert_id;
       $stmt->close();
+
+      if ($this->error == "") { $this->setID($contact_id); }
+
+      if ($this->error == "") { $this->processGroups($groups); }
 
       if ($testing === true && php_sapi_name() == 'cli') {
         return $activation_hash;
       } else {
-        $Mail = new Mail($EMail,'Night-Sky - EMail confirmation','Please confirm your added Mail: https://'._Domain.'/index.php?p=contact?key='.$activation_hash);
-        $Mail->run();
+        if ($this->error == "") {
+          $Mail = new Mail($EMail,'Night-Sky - EMail confirmation','Please confirm your added Mail: https://'._Domain.'/index.php?p=contact?key='.$activation_hash);
+          $Mail->run();
+        }
       }
 
     }
 
   }
 
+  public function updateContact($EMail,$groups,$testing = false) {
+    if (!filter_var($EMail, FILTER_VALIDATE_EMAIL)) { $this->error = "Invalid Email."; }
+    if (strlen($EMail) > 50) {$this->error = "The Email is to long";}
+    if ($this->email != $EMail) {
+      if ($this->checkifEMailExists($EMail) == true) {$this->error = "The Email exists.";}
+    }
+
+    if ($this->error == "") { $this->processGroups($groups); }
+
+    if ($this->error == "") {
+
+      $stmt = $this->DB->GetConnection()->prepare("UPDATE emails SET EMail = ? WHERE ID = ?");
+      $stmt->bind_param('si', $EMail,$this->id);
+      $rc = $stmt->execute();
+      if ( false===$rc ) { $this->error = "MySQL Error"; }
+      $stmt->close();
+
+    }
+
+  }
+
   public function removeContact() {
-      if ($this->CheckifContactIsInUse() === false) {
         if ($this->error == "") {
 
+          //Delete email
           $stmt = $this->DB->GetConnection()->prepare("DELETE FROM emails WHERE ID = ?");
           $stmt->bind_param('i', $this->id);
           $rc = $stmt->execute();
           if ( false===$rc ) { $this->error = "MySQL Error"; }
           $stmt->close();
 
+          //Remove all existing links to Groups from this email
+          $stmt = $this->DB->GetConnection()->prepare("DELETE FROM groups_emails WHERE EmailID = ?");
+          $stmt->bind_param('i', $this->id);
+          $rc = $stmt->execute();
+          if ( false===$rc ) { $this->error = "MySQL Error"; }
+          $stmt->close();
+
+        }
+  }
+
+  private function processGroups($groups) {
+    if (count($groups) > 0) {
+      $GR = new Group($this->DB,$this->Verify);
+      if (count($groups) < 16) {
+        foreach ($groups as &$id) {
+          if ($GR->checkGroupID($id) === false) {
+            $this->error = "Invalid Groups";
+            break;
+          }
         }
       } else {
-        $this->error = "Contact still in use";
+        $this->error = "Invalid Groups";
       }
+
+      if ($this->error == "") {
+
+        #Remove all existing links to Groups from this Check
+        $stmt = $this->DB->GetConnection()->prepare("DELETE FROM groups_emails WHERE EmailID = ?");
+        $stmt->bind_param('i', $this->id);
+        $rc = $stmt->execute();
+        $stmt->close();
+
+        #Create all links to Groups which have been inserted
+        $stmt = $this->DB->GetConnection()->prepare("INSERT INTO groups_emails(EmailID,GroupID) VALUES (?,?)");
+        $stmt->bind_param('ii',$this->id,$group_id);
+        $this->DB->GetConnection()->query("START TRANSACTION");
+
+        foreach ($groups as &$id) {
+          $group_id = $id;
+          $stmt->execute();
+        }
+
+        $stmt->close();
+        $this->DB->GetConnection()->query("COMMIT");
+      }
+    } else {
+      #Remove all existing links to Groups from this Check
+      $stmt = $this->DB->GetConnection()->prepare("DELETE FROM groups_emails WHERE EmailID = ?");
+      $stmt->bind_param('i', $this->id);
+      $rc = $stmt->execute();
+      $stmt->close();
+    }
+  }
+
+  public function getData() {
+    if ($this->error == "") {
+
+      $stmt = $this->DB->GetConnection()->prepare("SELECT EMail FROM emails WHERE ID = ? LIMIT 1");
+      $stmt->bind_param('i', $this->id);
+      $rc = $stmt->execute();
+      if ( false===$rc ) { $this->error = "MySQL Error"; }
+      $stmt->bind_result($db_email);
+      $stmt->fetch();
+      $stmt->close();
+
+      $this->email = $db_email;
+    }
   }
 
   public function enableContact($key) {
@@ -91,22 +183,6 @@ class Contact {
     }
   }
 
-  public function CheckifContactIsInUse() {
-    $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM checks WHERE EMAIL_ID = ? LIMIT 1");
-    $stmt->bind_param('i', $this->id);
-    $rc = $stmt->execute();
-    if ( false===$rc ) { $this->error = "MySQL Error"; }
-    $stmt->bind_result($db_id);
-    $stmt->fetch();
-    $stmt->close();
-
-    if (isset($db_id)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   public function checkifEMailExists($email) {
     $stmt = $this->DB->GetConnection()->prepare("SELECT id FROM emails WHERE EMail = ? LIMIT 1");
     $stmt->bind_param('s', $email);
@@ -138,6 +214,10 @@ class Contact {
 
   public function getLastError() {
     return $this->error;
+  }
+
+  public function getEmail() {
+    return $this->email;
   }
 
 }

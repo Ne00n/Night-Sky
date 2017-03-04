@@ -60,7 +60,11 @@ class Group {
     $stmt->fetch();
     $stmt->close();
 
-    if (isset($result)) { return true; }
+    if (isset($result)) {
+      return true;
+    } else {
+      return false;
+     }
    }
 
   public function setID($id) {

@@ -256,7 +256,7 @@ if ($Login->isLoggedIN()) {
                         $stmt->execute();
                         $stmt->bind_result($db_group_id, $db_group_name);
                         while ($stmt->fetch()) {
-                             echo '<option '.($db_group_uniq ? "selected" : "").' value="'. Page::escape($db_group_id) .'">'. Page::escape($db_group_name) .'</option>';
+                             echo '<option value="'. Page::escape($db_group_id) .'">'. Page::escape($db_group_name) .'</option>';
                         }
                         $stmt->close(); ?>
                       </select>

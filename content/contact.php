@@ -74,6 +74,81 @@ if ($Login->isLoggedIN()) {
         }
       }
 
+      if (Page::startsWith($p,"contact?edit=")) {
+
+        $contact_id = str_replace("contact?edit=", "", $p);
+
+        $CT->setID($contact_id);
+        $CT->getData();
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['confirm'])) {
+
+          if ($_POST['Token'] == $_SESSION['Token']) {
+
+            $CT->updateContact($_POST['email'],$_POST['groups']);
+             if ($CT->getlastError() == "") {
+               echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
+               $_POST = array();
+             } else {
+               echo '<div class="alert alert-danger" role="alert"><center>'.$CT->getLastError().'</center></div>';
+             }
+
+          } else {
+              echo '<div class="alert alert-danger" role="alert"><center>Token Verification Failed</center></div>';
+          }
+        } ?>
+
+        <form class="form-horizontal" action="index.php?p=contact?edit=<?php echo Page::escape($contact_id); ?>" method="post">
+          <div class="form-group">
+            <div class="col-sm-8 col-sm-offset-2">
+              <div class="input-group">
+               <div class="input-group-addon">
+              <span class="fa fa-envelope"></span>
+               </div>
+                <input value="<?php echo Page::escape($CT->getEmail()); ?>" type="text" class="form-control input-sm" name="email">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+                <div class="col-sm-8 col-sm-offset-2">
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                   <span class="fa fa-group"></span>
+                    </div>
+                    <select class="form-control input-sm chosen-select" data-placeholder="Choose a Group" name="groups[]" multiple tabindex="8">
+                      <?php
+                      $group_ids = array();
+
+                      $query = "SELECT GroupID FROM groups_emails WHERE EmailID=?";
+                      $stmt = $DB->GetConnection()->prepare($query);
+                      $stmt->bind_param('i', $contact_id);
+                      $stmt->execute();
+                      $stmt->bind_result($db_group_id);
+                      while ($stmt->fetch()) {
+                           $group_ids[] = $db_group_id;
+                      }
+
+                      $query = "SELECT ID,Name FROM groups WHERE USER_ID=? ORDER BY ID";
+                      $USER_ID = $Login->getUserID();
+                      $stmt = $DB->GetConnection()->prepare($query);
+                      $stmt->bind_param('i', $USER_ID);
+                      $stmt->execute();
+                      $stmt->bind_result($db_group_id, $db_group_name);
+                      while ($stmt->fetch()) {
+                           echo '<option '.(in_array($db_group_id,$group_ids) ? "selected" : "").' value="'. Page::escape($db_group_id) .'">'. Page::escape($db_group_name) .'</option>';
+                      }
+                      $stmt->close(); ?>
+                    </select>
+                   </div>
+              </div>
+          </div>
+          <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
+          <div class="form-group">
+              <button type="submit" name="confirm" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+
+  <?php }
 
       if ($p == "contact?add") {
 
@@ -81,7 +156,7 @@ if ($Login->isLoggedIN()) {
 
           if ($_POST['Token'] == $_SESSION['Token']) {
 
-            $CT->addContact($_POST['email']);
+            $CT->addContact($_POST['email'],$_POST['groups']);
              if ($CT->getlastError() == "") {
                echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
                $_POST = array();
@@ -104,6 +179,28 @@ if ($Login->isLoggedIN()) {
                 <input value="<?php if(isset($_POST['email'])) {echo Page::escape($_POST['email']);} ?>" type="text" class="form-control input-sm" name="email" placeholder="alert@email.com">
               </div>
             </div>
+          </div>
+          <div class="form-group">
+                <div class="col-sm-8 col-sm-offset-2">
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                   <span class="fa fa-group"></span>
+                    </div>
+                    <select class="form-control input-sm chosen-select" data-placeholder="Choose a Group" name="groups[]" multiple tabindex="8">
+                      <?php
+                      $query = "SELECT ID,Name FROM groups WHERE USER_ID=? GROUP BY ID";
+                      $USER_ID = $Login->getUserID();
+                      $stmt = $DB->GetConnection()->prepare($query);
+                      $stmt->bind_param('i', $USER_ID);
+                      $stmt->execute();
+                      $stmt->bind_result($db_group_id, $db_group_name);
+                      while ($stmt->fetch()) {
+                           echo '<option '.($db_group_uniq ? "selected" : "").' value="'. Page::escape($db_group_id) .'">'. Page::escape($db_group_name) .'</option>';
+                      }
+                      $stmt->close(); ?>
+                    </select>
+                   </div>
+              </div>
           </div>
           <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
           <div class="form-group">
@@ -138,7 +235,8 @@ if ($Login->isLoggedIN()) {
           echo '<tr>';
           echo '<td class="text-left">'.Page::escape($row['EMail']).'</td>';
           echo '<td class="text-left">'.($row['Status'] ? 'Enabled' : 'Disabled').'</td>';
-          echo '<td class="text-left col-md-3"><a href="index.php?p=contact?remove='.Page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
+          echo '<td class="text-left col-md-3"><a href="index.php?p=contact?edit='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-gear"></i></button></a>';
+          echo '<a href="index.php?p=contact?remove='.Page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
           echo '</tr>';
 
         } ?>
