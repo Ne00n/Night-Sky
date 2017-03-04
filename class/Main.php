@@ -114,7 +114,6 @@ class Main {
         $this->DB->GetConnection()->query("COMMIT");
       }
     } else {
-      var_dump($groups);
       #Remove all existing links to Groups from this Check
       $stmt = $this->DB->GetConnection()->prepare("DELETE FROM groups_checks WHERE CheckID = ?");
       $stmt->bind_param('i', $this->id);
