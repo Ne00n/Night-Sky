@@ -307,7 +307,7 @@ if ($Login->isLoggedIN()) {
     </div>
 
       <div class="form-group">
-        <a href="index.php?p=main?add"><button class="btn btn-primary" type="button">Add Check</button></a>
+        <a href="index.php?p=main?add"><button class="btn btn-primary" type="button">Add a Check</button></a>
     </div>
       </div>
     </div>

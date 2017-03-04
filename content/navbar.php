@@ -19,6 +19,12 @@
             echo '<li><a href="index.php?p=main">Home</a></li>';
           }
 
+          if (Page::startsWith($p,"group")) {
+             echo '<li class="active"><a href="index.php?p=group">Groups</a></li>';
+          } else {
+            echo '<li><a href="index.php?p=group">Groups</a></li>';
+          }
+
           if (Page::startsWith($p,"contact")) {
              echo '<li class="active"><a href="index.php?p=contact">Contacts</a></li>';
           } else {

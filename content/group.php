@@ -16,42 +16,22 @@ if ($Login->isLoggedIN()) {
 
       <?php
 
-      $CT = new Contact($DB,$Login);
+      $GR = new Group($DB,$Login);
 
-      if (Page::startsWith($p,"contact?key=")) {
+      if (Page::startsWith($p,"group?remove=")) {
 
-        $k = str_replace("contact?key=", "", $p);
-
-        if ($Login->checkEmailHash($k)) {
-
-          $CT->enableContact($k);
-
-          if ($CT->getlastError() == "") {
-            echo '<div class="alert alert-success" role="alert"><center>Mail enabled</center></div>';
-          } else {
-            echo '<div class="alert alert-danger" role="alert"><center>'.$CT->getLastError().'</center></div>';
-          }
-
-        } else {
-          echo '<div class="alert alert-danger" role="alert"><center>Invalid Key</center></div>';
-        }
-
-      }
-
-      if (Page::startsWith($p,"contact?remove=")) {
-
-      $contact_id = str_replace("contact?remove=", "", $p);
+      $group_id = str_replace("group?remove=", "", $p);
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['confirm'])) {
 
           if ($_POST['Token'] == $_SESSION['Token']) {
 
-            $CT->setID($contact_id);
-            $CT->removeContact();
-            if ($CT->getLastError() == "") {
+            $GR->setID($group_id);
+            $GR->removeGroup();
+            if ($GR->getLastError() == "") {
               echo '<div class="alert alert-success" role="alert"><center>Success.</center></div>';
             } else {
-              echo '<div class="alert alert-danger" role="alert"><center>'.$CT->getLastError().'</center></div>';
+              echo '<div class="alert alert-danger" role="alert"><center>'.$GR->getLastError().'</center></div>';
             }
           } else {
               echo '<div class="alert alert-danger" role="alert"><center>Token Verification Failed</center></div>';
@@ -61,9 +41,9 @@ if ($Login->isLoggedIN()) {
 
         ?>
 
-          <p>Are you sure, that you want to delete this Contact?</p>
+          <p>Are you sure, that you want to delete this Group?</p>
 
-          <form class="form-horizontal" action="index.php?p=contact?remove=<?= Page::escape($contact_id) ?>" method="post">
+          <form class="form-horizontal" action="index.php?p=group?remove=<?= Page::escape($group_id) ?>" method="post">
             <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
             <div class="form-group">
                 <button type="submit" name="confirm" class="btn btn-danger">Yes</button><a href="index.php?p=contact"><button class="btn btn-primary" type="button">No</button></a>
@@ -75,33 +55,33 @@ if ($Login->isLoggedIN()) {
       }
 
 
-      if ($p == "contact?add") {
+      if ($p == "group?add") {
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['confirm'])) {
 
           if ($_POST['Token'] == $_SESSION['Token']) {
 
-            $CT->addContact($_POST['email']);
-             if ($CT->getlastError() == "") {
+            $GR->addGroup($_POST['name']);
+             if ($GR->getlastError() == "") {
                echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
                $_POST = array();
              } else {
-               echo '<div class="alert alert-danger" role="alert"><center>'.$CT->getLastError().'</center></div>';
+               echo '<div class="alert alert-danger" role="alert"><center>'.$GR->getLastError().'</center></div>';
              }
-
           } else {
               echo '<div class="alert alert-danger" role="alert"><center>Token Verification Failed</center></div>';
           }
+
         } ?>
 
-        <form class="form-horizontal" action="index.php?p=contact?add" method="post">
+        <form class="form-horizontal" action="index.php?p=group?add" method="post">
           <div class="form-group">
             <div class="col-sm-8 col-sm-offset-2">
               <div class="input-group">
                <div class="input-group-addon">
-              <span class="fa fa-envelope"></span>
+              <span class="fa fa-pencil"></span>
                </div>
-                <input value="<?php if(isset($_POST['email'])) {echo Page::escape($_POST['email']);} ?>" type="text" class="form-control input-sm" name="email" placeholder="alert@email.com">
+                <input value="<?php if(isset($_POST['name'])) {echo Page::escape($_POST['name']);} ?>" type="text" class="form-control input-sm" name="name" placeholder="Tracer">
               </div>
             </div>
           </div>
@@ -117,8 +97,7 @@ if ($Login->isLoggedIN()) {
         <table class="table">
         <thead>
           <tr>
-            <th>EMail</th>
-            <th>Status</th>
+            <th>Name</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -128,19 +107,16 @@ if ($Login->isLoggedIN()) {
 
         $USER_ID = $Login->getUserID();
 
-        $query = "SELECT ID,EMail,Status FROM emails WHERE USER_ID = ? ";
+        $query = "SELECT ID,Name FROM groups WHERE USER_ID = ? ";
         $stmt = $DB->GetConnection()->prepare($query);
         $stmt->bind_param('i', $USER_ID);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
-
           echo '<tr>';
-          echo '<td class="text-left">'.Page::escape($row['EMail']).'</td>';
-          echo '<td class="text-left">'.($row['Status'] ? 'Enabled' : 'Disabled').'</td>';
-          echo '<td class="text-left col-md-3"><a href="index.php?p=contact?remove='.Page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
+          echo '<td class="text-left">'.Page::escape($row['Name']).'</td>';
+          echo '<td class="text-left col-md-3"><a href="index.php?p=group?remove='.Page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
           echo '</tr>';
-
         } ?>
 
         </tbody>
@@ -148,7 +124,7 @@ if ($Login->isLoggedIN()) {
     </div>
 
       <div class="form-group">
-        <a href="index.php?p=contact?add"><button class="btn btn-primary" type="button">Add a Contact</button></a>
+        <a href="index.php?p=group?add"><button class="btn btn-primary" type="button">Add a Group</button></a>
       </div>
 
       </div>

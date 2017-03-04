@@ -41,6 +41,10 @@ if (Page::startsWith($p,"main")) {
   include 'content/main.php';
 }
 
+if (Page::startsWith($p,"group")) {
+  include 'content/group.php';
+}
+
 if (Page::startsWith($p,"contact")) {
   include 'content/contact.php';
 }
