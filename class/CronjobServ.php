@@ -68,8 +68,13 @@ class CronjobServ {
                 $email .= $elementary['Location'].": ".$elementary['Reason']."\n";
               }
 
-              $Mail = new Mail($element['EMAIL'],'Night-Sky - Downtime Alert '.Page::escape($element['NAME']),$email);
-              $Mail->run();
+              if (!empty($element['EMAIL'])) {
+                foreach($element['EMAIL'] as $mail)
+                {
+                  $Mail = new Mail($mail,'Night-Sky - Downtime Alert '.Page::escape($element['NAME']),$email);
+                  $Mail->run();
+                }
+              }
 
               $H = new History($DB);
               $H->addHistory($element['USER_ID'],$key,0);
@@ -94,8 +99,14 @@ class CronjobServ {
               $S->setStatus(1);
 
               $time = time();
-              $Mail = new Mail($element['EMAIL'],'Night-Sky - Uptime Alert '.Page::escape($element['NAME']),'Server '.Page::escape($element['NAME']).' is back Online. Detected: '.date("d.m.Y H:i:s",Page::escape($time)));
-              $Mail->run();
+
+              if (!empty($element['EMAIL'])) {
+                foreach($element['EMAIL'] as $mail)
+                {
+                  $Mail = new Mail($mail,'Night-Sky - Uptime Alert '.Page::escape($element['NAME']),'Server '.Page::escape($element['NAME']).' is back Online. Detected: '.date("d.m.Y H:i:s",Page::escape($time)));
+                  $Mail->run();
+                }
+              }
 
               $H = new History($DB);
               $H->addHistory($element['USER_ID'],$key,1);

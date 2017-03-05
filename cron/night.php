@@ -13,7 +13,7 @@ if (php_sapi_name() == 'cli') {
   $DB = new Database;
   $DB->InitDB();
 
-  function fetchAll($DB,$C) {
+  function fetchAll($DB) {
 
     $Checks = array();
 
@@ -22,18 +22,12 @@ if (php_sapi_name() == 'cli') {
     $stmt->execute();
     $result = $stmt->get_result();
     while ($row = $result->fetch_assoc()) {
-
-      $C->setID($row['EMAIL_ID']);
-
-      $Checks[$row['SLOT']][$row['ID']] = array("IP" => $row['IP'],"PORT" => $row['PORT'],"EMAIL_ID" => $row['EMAIL_ID'],"EMAIL" => $C->getEMailbyID(),"NAME" => $row['NAME'],
-      "USER_ID" => $row['USER_ID']);
-
+      $Checks[$row['SLOT']][$row['ID']] = array("NAME" => $row['NAME'],"USER_ID" => $row['USER_ID']); //Just for counting how much are in there, the Data gets pulled again later so we dont need all data, rest removed.
     }
     return $Checks;
   }
 
   $Verify = new Verify($DB);
-  $C = new Contact($DB,$Verify);
 
   for ($i_out = 1; $i_out <= 6; $i_out++) {
 
@@ -43,7 +37,7 @@ if (php_sapi_name() == 'cli') {
       $start = microtime(true);
       for ($i = 1; $i <= 10; $i++) {
 
-          $Checks = fetchAll($DB,$C);
+          $Checks = fetchAll($DB);
 
           if (isset($Checks[$i])) {
             echo("Night Base\n");
