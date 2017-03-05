@@ -172,15 +172,11 @@ class Contact {
   }
 
   public function setID($id) {
-    if (php_sapi_name() == 'cli') {
-      $this->id = $id;
-    } else {
       if ($this->Verify->checkContactID($id,0) === true) {
         $this->id = $id;
       } else {
         $this->error = "Invalid ID";
       }
-    }
   }
 
   public function checkifEMailExists($email) {
@@ -210,6 +206,10 @@ class Contact {
       return true;
     }
     $stmt->close();
+  }
+
+  public function resetError() {
+    $this->error == NULL;
   }
 
   public function getLastError() {

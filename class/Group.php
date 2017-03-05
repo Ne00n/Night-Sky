@@ -153,6 +153,10 @@ class Group {
     $stmt->close();
   }
 
+  public function resetError() {
+    $this->error == NULL;
+  }
+
   public function getName() {
     return $this->name;
   }

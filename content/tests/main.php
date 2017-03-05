@@ -90,11 +90,17 @@ class TestsMain extends PHPUnit_Framework_TestCase
 		$this->assertEquals($this->Contact->enableContact($activation_hash),NULL);
 
 		//Check if Verify allows us to set 1/3 as ID to contact, which should not work, since 1/3 is assigned to the Account before
-		$this->assertEquals($this->Verify->checkContactID(1,0),false);
-		$this->assertEquals($this->Verify->checkContactID(3,0),false);
+		$this->Contact->setID(1);
+		$this->assertEquals($this->Contact->getLastError(),"Invalid ID"); //Check for Errors
+		$this->Contact->resetError();
+		$this->Contact->setID(3);
+		$this->assertEquals($this->Contact->getLastError(),"Invalid ID"); //Check for Errors
+		$this->Contact->resetError();
 		//But we should be able to acess our own Contact
-		$this->assertEquals($this->Verify->checkContactID(2,0),true);
-		$this->assertEquals($this->Verify->checkContactID(4,0),true);
+		$this->Contact->setID(2);
+		$this->assertEquals($this->Contact->getLastError(),NULL); //Check for Errors
+		$this->Contact->setID(4);
+		$this->assertEquals($this->Contact->getLastError(),NULL); //Check for Errors
   }
 
 }
