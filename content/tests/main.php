@@ -9,6 +9,7 @@ include 'class/Main.php';
 include 'class/Page.php';
 include 'class/Contact.php';
 include 'class/User.php';
+include 'class/Group.php';
 
 class TestsMain extends PHPUnit_Framework_TestCase
 {
@@ -25,6 +26,7 @@ class TestsMain extends PHPUnit_Framework_TestCase
     $this->Main = new Main($this->DB,$this->Verify);
     $this->Contact = new Contact($this->DB,$this->Verify);
     $this->User = new User($this->DB);
+		$this->Group = new Group($this->DB,$this->Verify);
 	}
 
 	public function testMySQLConnection() {
@@ -49,12 +51,14 @@ class TestsMain extends PHPUnit_Framework_TestCase
     $this->assertEquals($this->User->getLastError(),NULL); //Check for Errors
 		//Try a wrong Hash which should be incorrect
     $this->assertEquals($this->Verify->checkHash($activation_hash.'a'),false);
+
 		#Add a Second Account for Permission Validation
 		$activation_hash = $this->User->registerUser("Tester2","test3@test.com",$password,$password,"LET",true); //Which has obviously the ID 2
 		$this->assertEquals($this->User->getLastError(),NULL); //Check for Errors
 		//Enable the Account
     $this->User->enableUser($activation_hash);
     $this->assertEquals($this->User->getLastError(),NULL); //Check for Errors
+
 		//Check if the Login works fine...
 		$this->Verify->ValidateLogin("Tester",$password);
 		$this->assertEquals($this->Verify->getLastError(),NULL); //Check for Errors
@@ -67,7 +71,7 @@ class TestsMain extends PHPUnit_Framework_TestCase
 
   public function testContacts() {
     #Add a Contact
-    $activation_hash = $this->Contact->addContact("test2@test.com",true);
+    $activation_hash = $this->Contact->addContact("test2@test.com",$groups=array(),true);
     $this->assertEquals($this->Contact->getLastError(),NULL); //Check for Errors
 		//Validate our Hash that the Object gave us
     $this->assertEquals($this->Verify->checkEmailHash($activation_hash),true);
@@ -75,14 +79,16 @@ class TestsMain extends PHPUnit_Framework_TestCase
     $this->assertEquals($this->Verify->checkEmailHash($activation_hash.'a'),false);
 		//Enable the Contact
     $this->assertEquals($this->Contact->enableContact($activation_hash),NULL);
+
 		//We need to switch to ID 2, this above happend with ID 1
 		$this->Verify = new Verify($this->DB,true,2);
 		$this->Contact = new Contact($this->DB,$this->Verify);
 		#Add a Contact to our Second Account
-		$activation_hash = $this->Contact->addContact("test4@test.com",true);
+		$activation_hash = $this->Contact->addContact("test4@test.com",$groups=array(),true);
     $this->assertEquals($this->Contact->getLastError(),NULL); //Check for Errors
 		//Enable the Contact
 		$this->assertEquals($this->Contact->enableContact($activation_hash),NULL);
+
 		//Check if Verify allows us to set 1/3 as ID to contact, which should not work, since 1/3 is assigned to the Account before
 		$this->assertEquals($this->Verify->checkContactID(1,0),false);
 		$this->assertEquals($this->Verify->checkContactID(3,0),false);
