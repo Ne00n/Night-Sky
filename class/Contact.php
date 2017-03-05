@@ -175,7 +175,6 @@ class Contact {
       if ($this->Verify->checkContactID($id,0) === true) {
         $this->id = $id;
       } else {
-        var_dump($this->error);
         $this->error = "Invalid ID";
       }
   }

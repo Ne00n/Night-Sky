@@ -13,7 +13,7 @@ class Group {
     $this->Verify = $Verify;
   }
 
-  public function addGroup($Name,$testing = false) {
+  public function addGroup($Name) {
     if(!preg_match("/^[a-zA-Z0-9._\- ]+$/",$Name)){ $this->error = "The Group contains invalid letters.";}
     if (strlen($Name) > 50) {$this->error = "The Group is to long";}
     if (strlen($Name) < 3) {$this->error = "The Group is to short";}
@@ -32,7 +32,7 @@ class Group {
     }
   }
 
-  public function editGroup($Name,$testing = false) {
+  public function editGroup($Name) {
     if(!preg_match("/^[a-zA-Z0-9._\- ]+$/",$Name)){ $this->error = "The Group contains invalid letters.";}
     if (strlen($Name) > 50) {$this->error = "The Group is to long";}
     if (strlen($Name) < 3) {$this->error = "The Group is to short";}
@@ -102,16 +102,11 @@ class Group {
    }
 
   public function setID($id) {
-    if (php_sapi_name() == 'cli') {
-      $this->id = $id;
-    } else {
       if ($this->checkGroupID($id) === true) {
         $this->id = $id;
       } else {
-        var_dump($this->error);
         $this->error = "Invalid ID";
       }
-    }
   }
 
   public function CheckifGroupIsInUse() {

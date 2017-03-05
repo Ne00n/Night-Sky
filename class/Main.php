@@ -242,6 +242,10 @@ class Main {
     }
   }
 
+  public function resetError() {
+    $this->error = NULL;
+  }
+
   public function getLastError() {
     return $this->error;
   }
