@@ -15,16 +15,14 @@
       $checks = array();
       $checks_out = array();
 
-      $query = "SELECT SLOT,ID,IP,PORT,EMAIL_ID,USER_ID,NAME FROM checks WHERE ENABLED = 1 AND SLOT = ? ORDER by ID";
+      $query = "SELECT SLOT,ID,IP,PORT,USER_ID,NAME FROM checks WHERE ENABLED = 1 AND SLOT = ? ORDER by ID";
       $stmt = $DB->GetConnection()->prepare($query);
       $stmt->bind_param('i', $i);
       $stmt->execute();
       $result = $stmt->get_result();
-      $row = $result->fetch_array(MYSQLI_ASSOC);
       while ($row = $result->fetch_assoc()) {
         $checks[] = $row;
       }
-      $stmt-close();
 
       foreach($checks as $row)
       {
@@ -36,8 +34,8 @@
         $stmt->bind_param('i', $row['ID']);
         $stmt->execute();
         $result = $stmt->get_result();
-        while ($row = $result->fetch_assoc()) {
-          $emails[] = $row['emails.EMail'];
+        while ($row_emails = $result->fetch_assoc()) {
+          $emails[] = $row_emails['EMail'];
         }
 
         //Here we need all details
@@ -60,7 +58,7 @@
     $threadID = $options['T'];
     $i = $options['I'];
 
-    $Checks = fetchAll($DB,$i);
+    $Checks = fetchAll($DB,$threadID);
 
     $Check_Thread = array_slice($Checks[$threadID], $i, $i +5, true);
 

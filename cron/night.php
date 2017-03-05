@@ -17,7 +17,7 @@ if (php_sapi_name() == 'cli') {
 
     $Checks = array();
 
-    $query = "SELECT SLOT,ID,IP,PORT,EMAIL_ID,USER_ID,NAME FROM checks WHERE ENABLED = 1 ORDER by ID";
+    $query = "SELECT SLOT,ID,IP,PORT,USER_ID,NAME FROM checks WHERE ENABLED = 1 ORDER by ID";
     $stmt = $DB->GetConnection()->prepare($query);
     $stmt->execute();
     $result = $stmt->get_result();
