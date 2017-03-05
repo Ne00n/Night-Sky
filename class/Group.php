@@ -6,6 +6,7 @@ class Group {
   private $Verify;
   private $error;
   private $id;
+  private $name;
 
   public function __construct($DB,$Verify) {
     $this->DB = $DB;
@@ -24,6 +25,24 @@ class Group {
 
       $stmt = $this->DB->GetConnection()->prepare("INSERT INTO groups(USER_ID,Name) VALUES (?,?)");
       $stmt->bind_param('is',$USER_ID, $Name);
+      $rc = $stmt->execute();
+      if ( false===$rc ) { $this->error = "MySQL Error"; }
+      $stmt->close();
+
+    }
+  }
+
+  public function editGroup($Name,$testing = false) {
+    if(!preg_match("/^[a-zA-Z0-9._\- ]+$/",$Name)){ $this->error = "The Group contains invalid letters.";}
+    if (strlen($Name) > 50) {$this->error = "The Group is to long";}
+    if (strlen($Name) < 3) {$this->error = "The Group is to short";}
+
+    if ($this->error == "") {
+
+      $USER_ID = $this->Verify->getUserID();
+
+      $stmt = $this->DB->GetConnection()->prepare("UPDATE groups SET Name = ? WHERE ID = ?");
+      $stmt->bind_param('si',$Name,$this->id);
       $rc = $stmt->execute();
       if ( false===$rc ) { $this->error = "MySQL Error"; }
       $stmt->close();
@@ -64,6 +83,21 @@ class Group {
       return true;
     } else {
       return false;
+     }
+   }
+
+   public function getData() {
+     if ($this->error == "") {
+
+       $stmt = $this->DB->GetConnection()->prepare("SELECT Name FROM groups WHERE ID = ? LIMIT 1");
+       $stmt->bind_param('i', $this->id);
+       $rc = $stmt->execute();
+       if ( false===$rc ) { $this->error = "MySQL Error"; }
+       $stmt->bind_result($db_name);
+       $stmt->fetch();
+       $stmt->close();
+
+       $this->name = $db_name;
      }
    }
 
@@ -117,6 +151,10 @@ class Group {
       return true;
     }
     $stmt->close();
+  }
+
+  public function getName() {
+    return $this->name;
   }
 
   public function getLastError() {
