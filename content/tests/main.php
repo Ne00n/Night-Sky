@@ -11,8 +11,9 @@ include 'class/Contact.php';
 include 'class/User.php';
 include 'class/Group.php';
 
-class TestsMain extends PHPUnit_Framework_TestCase
-{
+use PHPUnit\Framework\TestCase;
+
+class TestsMain extends TestCase {
 
 	private $DB;
   private $Verify;
@@ -102,6 +103,35 @@ class TestsMain extends PHPUnit_Framework_TestCase
 		$this->Contact->setID(4);
 		$this->assertEquals($this->Contact->getLastError(),NULL); //Check for Errors
   }
+
+	public function testCleanUP() {
+		$stmt = $this->DB->GetConnection()->prepare("TRUNCATE TABLE `checks`");
+		$stmt->execute();
+
+		$stmt = $this->DB->GetConnection()->prepare("TRUNCATE TABLE `emails`");
+		$stmt->execute();
+
+		$stmt = $this->DB->GetConnection()->prepare("TRUNCATE TABLE `groups`");
+		$stmt->execute();
+
+		$stmt = $this->DB->GetConnection()->prepare("TRUNCATE TABLE `groups_checks`");
+		$stmt->execute();
+
+		$stmt = $this->DB->GetConnection()->prepare("TRUNCATE TABLE `groups_emails`");
+		$stmt->execute();
+
+		$stmt = $this->DB->GetConnection()->prepare("TRUNCATE TABLE `history`");
+		$stmt->execute();
+
+		$stmt = $this->DB->GetConnection()->prepare("TRUNCATE TABLE `remote`");
+		$stmt->execute();
+
+		$stmt = $this->DB->GetConnection()->prepare("TRUNCATE TABLE `threads`");
+		$stmt->execute();
+
+		$stmt = $this->DB->GetConnection()->prepare("TRUNCATE TABLE `users`");
+		$stmt->execute();
+	}
 
 }
 ?>

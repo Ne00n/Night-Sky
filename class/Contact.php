@@ -175,6 +175,7 @@ class Contact {
       if ($this->Verify->checkContactID($id,0) === true) {
         $this->id = $id;
       } else {
+        var_dump($this->error);
         $this->error = "Invalid ID";
       }
   }
@@ -209,7 +210,7 @@ class Contact {
   }
 
   public function resetError() {
-    $this->error == NULL;
+    $this->error = NULL;
   }
 
   public function getLastError() {

@@ -108,6 +108,7 @@ class Group {
       if ($this->checkGroupID($id) === true) {
         $this->id = $id;
       } else {
+        var_dump($this->error);
         $this->error = "Invalid ID";
       }
     }
@@ -154,7 +155,7 @@ class Group {
   }
 
   public function resetError() {
-    $this->error == NULL;
+    $this->error = NULL;
   }
 
   public function getName() {
