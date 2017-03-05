@@ -164,13 +164,13 @@ class TestsMain extends TestCase {
 		//Add a Check to Account 1 with incorrect GroupsIDs
 		$this->Main->addCheck("8.7.7.7","22",$groups=array(2,1,11),"Testcheck");
 		$this->assertEquals($this->Main->getLastError(),'Invalid Groups');
-
+		$this->Main->resetError();
 
 		$this->Main->setID(1);
-		$this->assertEquals($this->Contact->getLastError(),NULL);
+		$this->assertEquals($this->Main->getLastError(),NULL);
 
 		$this->Main->setID(3);
-		$this->assertEquals($this->Contact->getLastError(),"Invalid ID");
+		$this->assertEquals($this->Main->getLastError(),"Invalid ID");
 
   }
 
