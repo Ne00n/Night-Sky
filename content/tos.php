@@ -1,6 +1,4 @@
 <div class="container col-sm-4 col-md-offset-4">
-    <div class="row main">
-
       <h2>Night-Sky Terms of Service</h2>
 
       <h3>1. Terms</h3>
@@ -46,7 +44,5 @@
       <h3>7. Modifications</h3>
 
         <p>Night-Sky may revise these terms of service for its website at any time without notice. By using this website you are agreeing to be bound by the then current version of these terms of service.</p>
-
-      </div>
       <center><a href="index.php?p=login">Login</a> - <a href="index.php?p=tos">Terms of Service</a> - <a href="index.php?p=privacy">Privacy</a></center>
 </div>

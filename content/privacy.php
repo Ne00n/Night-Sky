@@ -1,6 +1,4 @@
 <div class="container col-sm-4 col-md-offset-4">
-    <div class="row main">
-
       <h2>Privacy Policy</h2>
 
         <p>Your privacy is important to us.</p>
@@ -18,7 +16,5 @@
         </ul>
 
         <p>We are committed to conducting our business in accordance with these principles in order to ensure that the confidentiality of personal information is protected and maintained. Night-Sky may change this privacy policy from time to time at Night-Sky's sole discretion.</p>
-
-      </div>
       <center><a href="index.php?p=login">Login</a> - <a href="index.php?p=tos">Terms of Service</a> - <a href="index.php?p=privacy">Privacy</a></center>
 </div>

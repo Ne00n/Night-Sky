@@ -5,7 +5,6 @@ $U = new User($DB);
 ?>
 
 <div class="container col-sm-4 col-md-offset-4">
-    <div class="row main">
       <?php
 
       $Login = new Login($DB);
@@ -100,19 +99,19 @@ $U = new User($DB);
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 if ($U->getlastError() == "" AND $U->getlastWarning() == "") {
-                  echo '<div class="alert alert-success" role="alert"><center>Success, confirm your email to enable your Account.</center></div>';
+                  echo '<div class="form-group"><div class="alert alert-success" role="alert"><center>Success, confirm your email to enable your Account.</center></div></div>';
                   $Login->addtoBlacklist($_SERVER['REMOTE_ADDR'],"register_blacklist");
                 } elseif ($U->getlastWarning() != "") {
-                  echo '<div class="alert alert-warning" role="alert"><center>'.$U->getlastWarning().'</center></div>';
+                  echo '<div class="form-group"><div class="alert alert-warning" role="alert"><center>'.$U->getlastWarning().'</center></div></div>';
                 } else {
-                  echo '<div class="alert alert-danger" role="alert"><center>'.$U->getLastError().'</center></div>';
+                  echo '<div class="form-group"><div class="alert alert-danger" role="alert"><center>'.$U->getLastError().'</center></div></div>';
                 }
 
             }
 
           ?>
 
-          <div class="form-group ">
+          <div class="form-group">
             <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Register</button>
           </div>
 
@@ -122,6 +121,5 @@ $U = new User($DB);
             <center><a href="index.php">Login</a> - <a href="index.php?p=tos">Terms of Service</a> - <a href="index.php?p=privacy">Privacy</a></center>
           </div>
         </form>
-      </div>
     </div>
   </div>
