@@ -110,7 +110,7 @@ if ($Login->isLoggedIN()) {
                       <div class="input-group-addon">
                      <span class="fa fa-group"></span>
                       </div>
-                      <select class="form-control input-sm chosen-select" data-placeholder="Choose a Group" name="email[]" multiple tabindex="8">
+                      <select class="selectpicker form-control" data-size="3" name="email[]" multiple>
                         <?php
                         $group_ids = array();
 
@@ -247,7 +247,7 @@ if ($Login->isLoggedIN()) {
                       <div class="input-group-addon">
                      <span class="fa fa-group"></span>
                       </div>
-                      <select class="form-control input-sm chosen-select" data-placeholder="Choose a Group" name="email[]" multiple tabindex="8">
+                      <select class="selectpicker form-control" data-size="3" name="email[]" multiple>
                         <?php
                         $query = "SELECT ID,Name FROM groups WHERE USER_ID=? GROUP BY ID";
                         $USER_ID = $Login->getUserID();
