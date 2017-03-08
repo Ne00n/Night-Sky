@@ -29,9 +29,9 @@
         $emails = array();
 
         //Fetch all Contacts which are assigned to this Check
-        $query = "SELECT emails.EMail FROM groups_checks INNER JOIN groups_emails ON groups_emails.GroupID=groups_checks.GroupID INNER JOIN emails ON emails.ID=groups_emails.EmailID WHERE groups_checks.CheckID =? AND emails.Status = 1 GROUP BY emails.EMail";
+        $query = "SELECT emails.EMail FROM groups_checks INNER JOIN groups_emails ON groups_emails.GroupID=groups_checks.GroupID INNER JOIN emails ON emails.ID=groups_emails.EmailID WHERE groups_checks.CheckID = ? AND emails.Status = 1 AND emails.USER_ID = ? GROUP BY emails.EMail";
         $stmt = $DB->GetConnection()->prepare($query);
-        $stmt->bind_param('i', $row['ID']);
+        $stmt->bind_param('ii', $row['ID'],$row['USER_ID']);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row_emails = $result->fetch_assoc()) {
