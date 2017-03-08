@@ -17,7 +17,7 @@ if ($Login->isLoggedIN()) {
         <table class="table">
         <thead>
           <tr>
-            <th>Time</th>
+            <th>Time (CET)</th>
             <th>Status</th>
           </tr>
         </thead>
