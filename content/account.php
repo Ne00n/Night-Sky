@@ -66,9 +66,7 @@ if ($Login->isLoggedIN()) {
                 }
 
               } else {
-
                   echo '<div class="alert alert-danger" role="alert"><center>Token Verification Failed</center></div>';
-
               }
 
             }
@@ -112,9 +110,7 @@ if ($Login->isLoggedIN()) {
                   }
 
                 } else {
-
                     echo '<div class="alert alert-danger" role="alert"><center>Token Verification Failed</center></div>';
-
                 }
 
               }
