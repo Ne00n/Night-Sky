@@ -68,6 +68,14 @@ CREATE TABLE `remote` (
   `Online` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE `status_pages` (
+  `ID` int(11) NOT NULL,
+  `UserID` int(11) NOT NULL,
+  `GroupID` int(11) NOT NULL,
+  `Name` varchar(50) NOT NULL,
+  `Token` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE `threads` (
   `THREAD_ID` varchar(11) NOT NULL,
   `THREAD_LOCK` int(1) NOT NULL DEFAULT '0'
@@ -116,6 +124,10 @@ ALTER TABLE `register_blacklist`
 ALTER TABLE `remote`
   ADD PRIMARY KEY (`ID`);
 
+ALTER TABLE `status_pages`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `Token` (`Token`);
+
 ALTER TABLE `threads`
   ADD PRIMARY KEY (`THREAD_ID`);
 
@@ -142,6 +154,8 @@ ALTER TABLE `login_blacklist`
 ALTER TABLE `register_blacklist`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `remote`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `status_pages`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `users`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
