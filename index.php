@@ -65,6 +65,10 @@ if (Page::startsWith($p,"account")) {
   include 'content/account.php';
 }
 
+if (Page::startsWith($p,"status-page")) {
+  include 'content/status-page.php';
+}
+
 if ($p=="logout") {
   session_unset();
   session_destroy();

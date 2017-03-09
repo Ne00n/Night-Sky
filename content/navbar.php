@@ -31,6 +31,12 @@
             echo '<li><a href="index.php?p=contact">Contacts</a></li>';
           }
 
+          if (Page::startsWith($p,"status-page")) {
+             echo '<li class="active"><a href="index.php?p=status-page">Status Page</a></li>';
+          } else {
+            echo '<li><a href="index.php?p=status-page">Status Page</a></li>';
+          }
+
            ?>
         </ul>
 
