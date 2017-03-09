@@ -28,7 +28,7 @@ $servers = $SP->getServersbyToken($token);
   <div class="container">
       <div class="row">
         <div class="col-md-12 col-sm-offset-2">
-          <h1><?php echo Page::escape($servers['name']); ?></h1>
+          <h3><?php echo Page::escape($servers['name']); ?></h3>
         </div>
       </div>
       <div class="row clearfix">
@@ -54,8 +54,8 @@ $servers = $SP->getServersbyToken($token);
 
                             echo '<div class="list-group-item">
                                 <h4 class="list-group-item-heading">'.Page::escape($row['Name']).'
-                                  <span class="pull-right" style="font-size:17px;">
-                                    <div class="text-'.($row['Status'] == 1 ? "success" : "danger").'">'.($row['Status'] == 1 ? "Operational" : "Not Operational").'</div>
+                                  <span class="pull-right">
+                                    <div class="text-'.($row['Status'] == 1 ? "success" : "danger").'" id="fs-small">'.($row['Status'] == 1 ? "Operational" : "Not Operational").'</div>
                                   </span>
                                 </h4>
                             </div>';
