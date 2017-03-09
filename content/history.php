@@ -47,6 +47,9 @@ if ($Login->isLoggedIN()) {
 
         </tbody>
       </table>
+      <div class="form-group">
+        <a href="index.php?p=main"><button class="btn btn-primary" type="button">Go back</button></a>
+      </div>
       </div>
     </div>
     <center><a href="index.php?p=tos">Terms of Service</a> - <a href="index.php?p=privacy">Privacy</a></center>
