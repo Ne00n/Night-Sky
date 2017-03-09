@@ -53,10 +53,11 @@ $servers = $SP->getServersbyToken($token);
                           if ($key !== "operational" && $key !== "name") {
 
                             echo '<div class="list-group-item">
-                                <h4 class="list-group-item-heading">'.Page::escape($row['Name']).'</h4>
-                                <p class="list-group-item-text">
-                                    <span class="label label-'.($row['Status'] == 1 ? "success" : "danger").'">'.($row['Status'] == 1 ? "Operational" : "Not Operational").'</span>
-                                </p>
+                                <h4 class="list-group-item-heading">'.Page::escape($row['Name']).'
+                                  <span class="pull-right" style="font-size:17px;">
+                                    <div class="text-'.($row['Status'] == 1 ? "success" : "danger").'">'.($row['Status'] == 1 ? "Operational" : "Not Operational").'</div>
+                                  </span>
+                                </h4>
                             </div>';
 
                           }
