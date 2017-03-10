@@ -116,6 +116,7 @@ class StatusPage {
     //Fetch all Servers which are assigned to this Token
 
     $servers = array("operational" => 1);
+    if(!preg_match("/^[a-zA-Z0-9]+$/",$token)){ return $servers;}
 
     $query = "SELECT checks.Name,checks.ONLINE,status_pages.Name as SName FROM status_pages INNER JOIN groups_checks ON status_pages.GroupID=groups_checks.GroupID INNER JOIN checks ON checks.ID=groups_checks.CheckID WHERE status_pages.Token = ? ";
     $stmt = $this->DB->GetConnection()->prepare($query);
