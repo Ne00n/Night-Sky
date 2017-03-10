@@ -27,10 +27,11 @@ if ($Login->isLoggedIN()) {
 
         $history_id = str_replace("history?id=", "", $p);
 
-        if ($Login->checkHistoryID($history_id)) {
+        $H = new History($DB,$Login);
 
-          $H = new History($DB);
-          $data = $H->getHistory($Login->getUserID(),$history_id);
+        if ($H->checkHistoryID($history_id)) {
+
+          $data = $H->getHistory($history_id);
 
           foreach ($data as $key => $element) {
 

@@ -144,27 +144,6 @@ class Verify {
 
    }
 
-   public function checkHistoryID($id) {
-     if(!preg_match("/^[0-9]+$/",$id)){ return false;}
-
-      $user_id = $this->getUserID();
-
-     $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM history WHERE CHECK_ID = ? AND USER_ID = ? LIMIT 1");
-     $stmt->bind_param('ii', $id,$user_id);
-     $rc = $stmt->execute();
-     if ( false===$rc ) { $this->error = "MySQL Error"; }
-     $stmt->bind_result($result);
-     $stmt->fetch();
-     $stmt->close();
-
-     if (isset($result)) {
-       return true;
-     } else {
-       return false;
-     }
-
-    }
-
    public function checkCheckID($id) {
      if(!preg_match("/^[0-9]+$/",$id)){ return false;}
 

@@ -10,6 +10,7 @@ include 'class/Page.php';
 include 'class/Contact.php';
 include 'class/User.php';
 include 'class/Group.php';
+include 'class/History.php';
 include 'class/LoadBalancer.php';
 include 'class/StatusPage.php';
 //Load Test files
