@@ -32,9 +32,9 @@
           }
 
           if (Page::startsWith($p,"status-page")) {
-             echo '<li class="active"><a href="index.php?p=status-page">Status Page</a></li>';
+             echo '<li class="active"><a href="index.php?p=status-page">Status Pages</a></li>';
           } else {
-            echo '<li><a href="index.php?p=status-page">Status Page</a></li>';
+            echo '<li><a href="index.php?p=status-page">Status Pages</a></li>';
           }
 
            ?>
