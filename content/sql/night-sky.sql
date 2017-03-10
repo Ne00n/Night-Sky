@@ -4,7 +4,6 @@ SET time_zone = "+00:00";
 CREATE TABLE `checks` (
   `ID` int(11) NOT NULL,
   `USER_ID` int(11) NOT NULL,
-  `EMAIL_ID` int(11) NOT NULL,
   `ENABLED` int(1) NOT NULL DEFAULT '1',
   `SLOT` int(1) NOT NULL,
   `ONLINE` int(1) NOT NULL DEFAULT '0',
