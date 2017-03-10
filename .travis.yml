@@ -13,4 +13,4 @@ php:
   - '7.0'
   - '7.1'
 
-script: phpunit content/tests/main.php
+script: phpunit content/tests/Main.php
