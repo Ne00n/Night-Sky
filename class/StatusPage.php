@@ -138,11 +138,11 @@ class StatusPage {
   public function checkLimit() {
     $user_id = $this->Verify->getUserID();
 
-    $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM groups WHERE USER_ID = ?");
+    $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM status_pages WHERE UserID = ?");
     $stmt->bind_param('i', $user_id);
     $stmt->execute();
     $stmt->store_result();
-    if ($stmt->num_rows < $this->Verify->getGroupLimit()) {
+    if ($stmt->num_rows < $this->Verify->getStatusLimit()) {
       return true;
     }
     $stmt->close();

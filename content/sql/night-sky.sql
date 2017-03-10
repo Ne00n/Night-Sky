@@ -4,6 +4,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `checks` (
   `ID` int(11) NOT NULL,
   `USER_ID` int(11) NOT NULL,
+  `EMAIL_ID` int(11) NOT NULL,
   `ENABLED` int(1) NOT NULL DEFAULT '1',
   `SLOT` int(1) NOT NULL,
   `ONLINE` int(1) NOT NULL DEFAULT '0',
@@ -88,10 +89,11 @@ CREATE TABLE `users` (
   `Rank` int(11) NOT NULL,
   `enabled` int(1) NOT NULL DEFAULT '0',
   `activation_hash` varchar(40) NOT NULL,
-  `Check_Limit` int(11) NOT NULL DEFAULT '10',
+  `Check_Limit` int(11) NOT NULL DEFAULT '15',
   `Contact_Limit` int(11) NOT NULL DEFAULT '4',
   `Same_IP_Limit` int(11) NOT NULL DEFAULT '2',
-  `Group_Limit` int(11) NOT NULL DEFAULT '15'
+  `Group_Limit` int(11) NOT NULL DEFAULT '15',
+  `StatusPage_Limit` int(11) NOT NULL DEFAULT '4'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 

@@ -10,15 +10,17 @@ class Verify {
   private $contact_limit = 0;
   private $check_ip_limit = 0;
   private $group_limit = 0;
+  private $status_limit = 0;
 
   public function __construct($DB,$testing = false,$user_id = 0) {
     $this->DB = $DB;
     if ($testing === true && php_sapi_name() == 'cli') {
       $this->user_id = $user_id;
       $this->contact_limit = 4;
-      $this->check_limit = 10;
+      $this->check_limit = 15;
       $this->check_ip_limit = 2;
       $this->group_limit = 15;
+      $this->status_limit = 4;
     }
   }
 
@@ -52,11 +54,11 @@ class Verify {
   public function isLoggedIN() {
     if(isset($_SESSION['user_id']) AND preg_match("/^[0-9]+$/",$_SESSION['user_id'])){
 
-      $stmt = $this->DB->GetConnection()->prepare("SELECT Rank,ID,Check_Limit,Contact_Limit,Same_IP_Limit,Group_Limit FROM users WHERE ID = ? AND enabled = 1 LIMIT 1");
+      $stmt = $this->DB->GetConnection()->prepare("SELECT Rank,ID,Check_Limit,Contact_Limit,Same_IP_Limit,Group_Limit,StatusPage_Limit FROM users WHERE ID = ? AND enabled = 1 LIMIT 1");
       $stmt->bind_param('i', $_SESSION['user_id']);
       $rc = $stmt->execute();
       if ( false===$rc ) { $this->error = "MySQL Error"; }
-      $stmt->bind_result($db_rank,$db_id,$db_check_limit,$db_contact_limit,$db_same_ip_limit,$db_group_limit);
+      $stmt->bind_result($db_rank,$db_id,$db_check_limit,$db_contact_limit,$db_same_ip_limit,$db_group_limit,$db_status_limit);
       $stmt->fetch();
       $stmt->close();
 
@@ -66,6 +68,7 @@ class Verify {
       $this->check_limit = $db_check_limit;
       $this->check_ip_limit = $db_same_ip_limit;
       $this->group_limit = $db_group_limit;
+      $this->status_limit = $db_status_limit;
 
       if ($db_id != "") {
         return true;
@@ -197,6 +200,10 @@ class Verify {
 
   public function getGroupLimit() {
     return $this->group_limit;
+  }
+
+  public function getStatusLimit() {
+    return $this->status_limit;
   }
 
   public function getLastError() {
