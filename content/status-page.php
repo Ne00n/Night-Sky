@@ -41,7 +41,7 @@ if ($Login->isLoggedIN()) {
 
         ?>
 
-          <p>Are you sure, that you want to delete this Group?</p>
+          <p>Are you sure, that you want to delete this Status Page?</p>
 
           <form class="form-horizontal" action="index.php?p=status-page?remove=<?= Page::escape($status_id) ?>" method="post">
             <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
