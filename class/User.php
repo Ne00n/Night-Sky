@@ -14,7 +14,7 @@
 
     public function registerUser($username,$email,$password,$password_repeat,$code,$testing = false) {
       if ($password != $password_repeat) { $this->error = "Passwords are not equal"; }
-      if (strlen($password) < 10 ) {$this->error = "The Password to short."; $error = true;}
+      if (strlen($password) < 8 ) {$this->error = "The Password to short."; $error = true;}
       if (strlen($password) > 160 ) {$this->error = "The Password is to long."; $error = true;}
       if (strlen($username) < 3 ) {$this->error = "The Username is to short."; $error = true;}
       if (strlen($username) > 50 ) {$this->error = "The Username is to long."; $error = true;}
