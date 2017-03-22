@@ -18,7 +18,7 @@ class Main {
 
   public function addCheck($IP,$PORT,$groups,$NAME) {
     if (!filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) { $this->error = "Invalid IP."; }
-    if(!preg_match("/^[a-zA-Z0-9._\- ]+$/",$NAME)){ $this->error = "The Name contains invalid letters.";}
+    if(!preg_match("/^[a-zA-Z0-9._\-, ]+$/",$NAME)){ $this->error = "The Name contains invalid letters.";}
     if(!preg_match("/^[0-9]+$/",$PORT)){ $this->error = "Invalid Port.";}
     if (strlen($NAME) > 50) {$this->error = "The Name is to long";}
     if (strlen($NAME) < 3) {$this->error = "The Name is to short";}
@@ -57,7 +57,7 @@ class Main {
 
   public function updateCheck($IP,$PORT,$groups,$NAME) {
     if (!filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) { $this->error = "Invalid IP."; }
-    if(!preg_match("/^[a-zA-Z0-9._\- ]+$/",$NAME)){ $this->error = "The Name contains invalid letters.";}
+    if(!preg_match("/^[a-zA-Z0-9._\-, ]+$/",$NAME)){ $this->error = "The Name contains invalid letters.";}
     if(!preg_match("/^[0-9]+$/",$PORT)){ $this->error = "Invalid Port.";}
     if (strlen($NAME) > 50) {$this->error = "The Name is to long";}
     if (strlen($NAME) < 3) {$this->error = "The Name is to short";}
