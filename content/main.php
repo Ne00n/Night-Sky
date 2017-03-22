@@ -52,7 +52,6 @@ if ($Login->isLoggedIN()) {
 
           $M = new Main($DB,$Login);
           $M->setID($check_id);
-          $M->getData();
 
           if ($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['confirm'])) {
 
@@ -72,6 +71,8 @@ if ($Login->isLoggedIN()) {
             }
 
           }
+
+          $M->getData();
 
         ?><form class="form-horizontal" action="index.php?p=main?edit=<?php echo Page::escape($check_id); ?>" method="post">
             <div class="form-group">
