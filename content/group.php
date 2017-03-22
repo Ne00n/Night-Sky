@@ -46,7 +46,7 @@ if ($Login->isLoggedIN()) {
           <form class="form-horizontal" action="index.php?p=group?remove=<?= Page::escape($group_id) ?>" method="post">
             <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
             <div class="form-group">
-                <button type="submit" name="confirm" class="btn btn-danger">Yes</button><a href="index.php?p=contact"><button class="btn btn-primary" type="button">No</button></a>
+                <button type="submit" name="confirm" class="btn btn-danger">Yes</button><a href="index.php?p=group"><button class="btn btn-primary" type="button">No</button></a>
             </div>
           </form>
 
