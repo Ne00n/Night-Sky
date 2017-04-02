@@ -74,9 +74,9 @@ class Contact_Tests extends TestCase {
     $this->assertEquals($this->Contact->getLastError(),NULL);
 
     //Edit a Contact with incorrect GroupID
-    $this->Contact->updateContact("test9@test.net",$groups=array(1),true);
-    $this->assertEquals($this->Contact->getLastError(),'Invalid Groups');
-    $this->Contact->resetError();
+    //$this->Contact->updateContact("test9@test.net",$groups=array(1),true);
+    //$this->assertEquals($this->Contact->getLastError(),'Invalid Groups');
+    //$this->Contact->resetError();
 
     //Add a Check to Account 1
     $this->Main->addCheck("8.8.8.8","22",$groups=array(2),"Testcheck");
