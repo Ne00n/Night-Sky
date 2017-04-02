@@ -79,6 +79,7 @@ if ($Login->isLoggedIN()) {
         $contact_id = str_replace("contact?edit=", "", $p);
 
         $CT->setID($contact_id);
+        $CT->getData(); //Here we need to pull twice
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['confirm'])) {
 

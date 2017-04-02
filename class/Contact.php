@@ -49,12 +49,12 @@ class Contact {
 
   }
 
-  public function updateContact($EMail,$groups,$testing = false) {
-    if (!filter_var($EMail, FILTER_VALIDATE_EMAIL)) { $this->error = "Invalid Email."; }
-    if (strlen($EMail) > _max_Mail) {$this->error = "The Email is to long";}
-    if (strlen($EMail) < _min_Mail) {$this->error = "The Email is to short";}
-    if ($this->email != $EMail) {
-      if ($this->checkifEMailExists($EMail) == true) {$this->error = "The Email exists.";}
+  public function updateContact($mail,$groups,$testing = false) {
+    if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) { $this->error = "Invalid Email."; }
+    if (strlen($mail) > _max_Mail) {$this->error = "The Email is to long";}
+    if (strlen($mail) < _min_Mail) {$this->error = "The Email is to short";}
+    if ($this->email != $mail) {
+      $this->error = "Add a new Contact if you want to change your email and conntect it to the same Group";
     }
 
     if ($this->error == "") { $this->processGroups($groups); }
@@ -62,7 +62,7 @@ class Contact {
     if ($this->error == "") {
 
       $stmt = $this->DB->GetConnection()->prepare("UPDATE emails SET EMail = ? WHERE ID = ?");
-      $stmt->bind_param('si', $EMail,$this->id);
+      $stmt->bind_param('si', $mail,$this->id);
       $rc = $stmt->execute();
       if ( false===$rc ) { $this->error = "MySQL Error"; }
       $stmt->close();
@@ -72,23 +72,23 @@ class Contact {
   }
 
   public function removeContact() {
-        if ($this->error == "") {
+    if ($this->error == "") {
 
-          //Delete email
-          $stmt = $this->DB->GetConnection()->prepare("DELETE FROM emails WHERE ID = ?");
-          $stmt->bind_param('i', $this->id);
-          $rc = $stmt->execute();
-          if ( false===$rc ) { $this->error = "MySQL Error"; }
-          $stmt->close();
+      //Delete email
+      $stmt = $this->DB->GetConnection()->prepare("DELETE FROM emails WHERE ID = ?");
+      $stmt->bind_param('i', $this->id);
+      $rc = $stmt->execute();
+      if ( false===$rc ) { $this->error = "MySQL Error"; }
+      $stmt->close();
 
-          //Remove all existing links to Groups from this email
-          $stmt = $this->DB->GetConnection()->prepare("DELETE FROM groups_emails WHERE EmailID = ?");
-          $stmt->bind_param('i', $this->id);
-          $rc = $stmt->execute();
-          if ( false===$rc ) { $this->error = "MySQL Error"; }
-          $stmt->close();
+      //Remove all existing links to Groups from this email
+      $stmt = $this->DB->GetConnection()->prepare("DELETE FROM groups_emails WHERE EmailID = ?");
+      $stmt->bind_param('i', $this->id);
+      $rc = $stmt->execute();
+      if ( false===$rc ) { $this->error = "MySQL Error"; }
+      $stmt->close();
 
-        }
+    }
   }
 
   private function processGroups($groups) {
