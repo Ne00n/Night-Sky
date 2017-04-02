@@ -15,8 +15,8 @@ class Group {
 
   public function addGroup($Name) {
     if(!preg_match(_regex_NAME,$Name)){ $this->error = "The Group contains invalid letters.";}
-    if (strlen($Name) > 50) {$this->error = "The Group is to long";}
-    if (strlen($Name) < 3) {$this->error = "The Group is to short";}
+    if (strlen($Name) > _max_Name) {$this->error = "The Group is to long";}
+    if (strlen($Name) < _min_Name) {$this->error = "The Group is to short";}
     if (!$this->checkLimit()) { $this->error = "Limit reached";}
 
     if ($this->error == "") {
@@ -34,8 +34,8 @@ class Group {
 
   public function editGroup($Name) {
     if(!preg_match(_regex_NAME,$Name)){ $this->error = "The Group contains invalid letters.";}
-    if (strlen($Name) > 50) {$this->error = "The Group is to long";}
-    if (strlen($Name) < 3) {$this->error = "The Group is to short";}
+    if (strlen($Name) > _max_Name) {$this->error = "The Group is to long";}
+    if (strlen($Name) < _min_Name) {$this->error = "The Group is to short";}
 
     if ($this->error == "") {
 

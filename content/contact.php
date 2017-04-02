@@ -79,7 +79,6 @@ if ($Login->isLoggedIN()) {
         $contact_id = str_replace("contact?edit=", "", $p);
 
         $CT->setID($contact_id);
-        $CT->getData();
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['confirm'])) {
 
@@ -96,7 +95,11 @@ if ($Login->isLoggedIN()) {
           } else {
               echo '<div class="alert alert-danger" role="alert"><center>Token Verification Failed</center></div>';
           }
-        } ?>
+        }
+
+        $CT->getData();
+
+        ?>
 
         <form class="form-horizontal" action="index.php?p=contact?edit=<?php echo Page::escape($contact_id); ?>" method="post">
           <div class="form-group">

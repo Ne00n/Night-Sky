@@ -16,8 +16,8 @@ class StatusPage {
 
   public function addPage($name,$group) {
     if(!preg_match(_regex_NAME,$name)){ $this->error = "The Name contains invalid letters.";}
-    if (strlen($name) > 50) {$this->error = "The Name is to long";}
-    if (strlen($name) < 3) {$this->error = "The Name is to short";}
+    if (strlen($name) > _max_Name) {$this->error = "The Name is to long";}
+    if (strlen($name) < _min_Name) {$this->error = "The Name is to short";}
     if (!$this->checkLimit()) { $this->error = "Limit reached";}
 
     $GR = new Group($this->DB,$this->Verify);
@@ -39,8 +39,8 @@ class StatusPage {
 
   public function editPage($name,$group) {
     if(!preg_match(_regex_NAME,$name)){ $this->error = "The Name contains invalid letters.";}
-    if (strlen($name) > 50) {$this->error = "The Group is to long";}
-    if (strlen($name) < 3) {$this->error = "The Group is to short";}
+    if (strlen($name) > _max_Name) {$this->error = "The Group is to long";}
+    if (strlen($name) < _min_Name) {$this->error = "The Group is to short";}
 
     $GR = new Group($this->DB,$this->Verify);
     if ($GR->checkGroupID($group) === false) { $this->error = "Invalid Group"; }

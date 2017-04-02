@@ -25,10 +25,10 @@ class Verify {
   }
 
   public function ValidateLogin($User,$Password) {
-    if (strlen($User) < 3) { $this->error = "The Username is to short.";}
-    if (strlen($User) > 50) { $this->error = "The Username is to long.";}
-    if (strlen($Password) < 8) { $this->error = "The Password is to short.";}
-    if (strlen($Password) > 160) { $this->error = "The Password is to long.";}
+    if (strlen($User) < _min_Name) { $this->error = "The Username is to short.";}
+    if (strlen($User) > _max_Name) { $this->error = "The Username is to long.";}
+    if (strlen($Password) < _min_Password) { $this->error = "The Password is to short.";}
+    if (strlen($Password) > _max_Password) { $this->error = "The Password is to long.";}
     if(!preg_match(_regex_USERNAME,$User)){ $this->error = "The Username contains invalid letters.";}
 
     if ($this->error == "") {

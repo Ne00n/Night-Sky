@@ -14,10 +14,10 @@
 
     public function registerUser($username,$email,$password,$password_repeat,$code,$testing = false) {
       if ($password != $password_repeat) { $this->error = "Passwords are not equal"; }
-      if (strlen($password) < 8 ) {$this->error = "The Password to short."; $error = true;}
-      if (strlen($password) > 160 ) {$this->error = "The Password is to long."; $error = true;}
-      if (strlen($username) < 3 ) {$this->error = "The Username is to short."; $error = true;}
-      if (strlen($username) > 50 ) {$this->error = "The Username is to long."; $error = true;}
+      if (strlen($password) < _min_Password) {$this->error = "The Password to short."; $error = true;}
+      if (strlen($password) > _max_Password) {$this->error = "The Password is to long."; $error = true;}
+      if (strlen($username) < _min_Name) {$this->error = "The Username is to short."; $error = true;}
+      if (strlen($username) > _max_Name) {$this->error = "The Username is to long."; $error = true;}
       if ($code == "LET") {
         //Okay
       } else {
@@ -97,8 +97,8 @@
     }
 
     public function changePassword($old_pw,$new_pw,$new_pw_2) {
-      if (strlen($new_pw) < 10 ) {$this->error = "Passwords to short."; }
-      if (strlen($new_pw) > 160 ) {$this->error = "Passwords are to long."; }
+      if (strlen($new_pw) < _min_Password) {$this->error = "Passwords to short."; }
+      if (strlen($new_pw) > _max_Password) {$this->error = "Passwords are to long."; }
       if ($new_pw != $new_pw_2) {$this->error = "Passwords not equal."; }
 
       $stmt = $this->DB->GetConnection()->prepare("SELECT Password FROM users WHERE ID = ?");
@@ -127,8 +127,8 @@
     }
 
     public function deleteAccount($current_password) {
-      if (strlen($current_password) < 10 ) {$this->error = "Password to short."; }
-      if (strlen($current_password) > 160 ) {$this->error = "Password is to long."; }
+      if (strlen($current_password) < _min_Password ) {$this->error = "Password to short."; }
+      if (strlen($current_password) > _max_Password ) {$this->error = "Password is to long."; }
 
       $user_id = $this->Verify->getUserID();
 

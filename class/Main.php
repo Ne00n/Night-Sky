@@ -20,8 +20,8 @@ class Main {
     if (!filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) { $this->error = "Invalid IP."; }
     if(!preg_match(_regex_NAME,$NAME)){ $this->error = "The Name contains invalid letters.";}
     if(!preg_match(_regex_PORT,$PORT)){ $this->error = "Invalid Port.";}
-    if (strlen($NAME) > 50) {$this->error = "The Name is to long";}
-    if (strlen($NAME) < 3) {$this->error = "The Name is to short";}
+    if (strlen($NAME) > _max_Name) {$this->error = "The Name is to long";}
+    if (strlen($NAME) < _min_Name) {$this->error = "The Name is to short";}
     if ($PORT > 65535) {$this->error = "The Port is to big";}
     if ($PORT < 1) {$this->error = "The Port should be at least 1";}
     if (!$this->checkLimit()) { $this->error = "Limit reached";}
@@ -59,8 +59,8 @@ class Main {
     if (!filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) { $this->error = "Invalid IP."; }
     if(!preg_match(_regex_NAME,$NAME)){ $this->error = "The Name contains invalid letters.";}
     if(!preg_match(_regex_PORT,$PORT)){ $this->error = "Invalid Port.";}
-    if (strlen($NAME) > 50) {$this->error = "The Name is to long";}
-    if (strlen($NAME) < 3) {$this->error = "The Name is to short";}
+    if (strlen($NAME) > _max_Name) {$this->error = "The Name is to long";}
+    if (strlen($NAME) < _min_Name) {$this->error = "The Name is to short";}
     if ($PORT > 65535) {$this->error = "The Port is to big";}
     if ($PORT < 1) {$this->error = "The Port should be at least 1";}
     if ($this->ip != $IP) {
