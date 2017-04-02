@@ -1,7 +1,8 @@
 <?php
 
 include 'content/header.html';
-include 'content/config.php';
+include 'content/configs/config.php';
+include 'content/configs/regex.php';
 
 function dat_loader($class) {
     include 'class/' . $class . '.php';

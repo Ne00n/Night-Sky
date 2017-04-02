@@ -29,7 +29,7 @@ class Verify {
     if (strlen($User) > 50) { $this->error = "The Username is to long.";}
     if (strlen($Password) < 8) { $this->error = "The Password is to short.";}
     if (strlen($Password) > 160) { $this->error = "The Password is to long.";}
-    if(!preg_match("/^[a-zA-Z0-9]+$/",$User)){ $this->error = "The Username contains invalid letters.";}
+    if(!preg_match(_regex_USERNAME,$User)){ $this->error = "The Username contains invalid letters.";}
 
     if ($this->error == "") {
 
@@ -52,7 +52,7 @@ class Verify {
   }
 
   public function isLoggedIN() {
-    if(isset($_SESSION['user_id']) AND preg_match("/^[0-9]+$/",$_SESSION['user_id'])){
+    if(isset($_SESSION['user_id']) AND preg_match(_regex_ID,$_SESSION['user_id'])){
 
       $stmt = $this->DB->GetConnection()->prepare("SELECT Rank,ID,Check_Limit,Contact_Limit,Same_IP_Limit,Group_Limit,StatusPage_Limit FROM users WHERE ID = ? AND enabled = 1 LIMIT 1");
       $stmt->bind_param('i', $_SESSION['user_id']);
@@ -82,7 +82,7 @@ class Verify {
   }
 
   public function checkHash($key) {
-    if(!preg_match("/^[a-zA-Z0-9]+$/",$key)){ return false;}
+    if(!preg_match(_regex_TOKEN,$key)){ return false;}
     if (strlen($key) != 40) {return false;}
 
     $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM users WHERE activation_hash = ? AND enabled = 0 LIMIT 1");
@@ -101,7 +101,7 @@ class Verify {
    }
 
    public function checkEmailHash($key) {
-     if(!preg_match("/^[a-zA-Z0-9]+$/",$key)){ return false;}
+     if(!preg_match(_regex_TOKEN,$key)){ return false;}
      if (strlen($key) != 40) {return false;}
 
      $stmt = $this->DB->GetConnection()->prepare("SELECT ID FROM emails WHERE activation_hash = ? AND Status = 0 LIMIT 1");
@@ -120,7 +120,7 @@ class Verify {
     }
 
   public function checkContactID($id,$status_check = 1) {
-    if(!preg_match("/^[0-9]+$/",$id)){ return false;}
+    if(!preg_match(_regex_ID,$id)){ return false;}
 
      $user_id = $this->getUserID();
 
@@ -145,7 +145,7 @@ class Verify {
    }
 
    public function checkCheckID($id) {
-     if(!preg_match("/^[0-9]+$/",$id)){ return false;}
+     if(!preg_match(_regex_ID,$id)){ return false;}
 
      $user_id = $this->getUserID();
 

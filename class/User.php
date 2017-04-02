@@ -30,7 +30,7 @@
         if ($this->checkifEMailExists($email) == true) {$this->error = "Email exists.";}
       }
 
-      if(!preg_match("/^[a-zA-Z0-9]+$/",$username)){
+      if(!preg_match(_regex_USERNAME,$username)){
          $this->error = "Invalid Username (A-Z,a-z,0-9)";
        } else {
          if ($this->checkifUserExists($username) == true) {$this->error = "Username exists.";}

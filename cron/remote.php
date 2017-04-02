@@ -2,7 +2,7 @@
 
 if (php_sapi_name() == 'cli') {
 
-  include '../content/config.php';
+  include '../content/configs/config.php';
 
   function dat_loader($class) {
       include '../class/' . $class . '.php';

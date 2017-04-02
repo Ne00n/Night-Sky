@@ -14,7 +14,7 @@ class Group {
   }
 
   public function addGroup($Name) {
-    if(!preg_match("/^[a-zA-Z0-9._\- ]+$/",$Name)){ $this->error = "The Group contains invalid letters.";}
+    if(!preg_match(_regex_NAME,$Name)){ $this->error = "The Group contains invalid letters.";}
     if (strlen($Name) > 50) {$this->error = "The Group is to long";}
     if (strlen($Name) < 3) {$this->error = "The Group is to short";}
     if (!$this->checkLimit()) { $this->error = "Limit reached";}
@@ -33,7 +33,7 @@ class Group {
   }
 
   public function editGroup($Name) {
-    if(!preg_match("/^[a-zA-Z0-9._\- ]+$/",$Name)){ $this->error = "The Group contains invalid letters.";}
+    if(!preg_match(_regex_NAME,$Name)){ $this->error = "The Group contains invalid letters.";}
     if (strlen($Name) > 50) {$this->error = "The Group is to long";}
     if (strlen($Name) < 3) {$this->error = "The Group is to short";}
 
@@ -67,7 +67,7 @@ class Group {
   }
 
   public function checkGroupID($id) {
-    if(!preg_match("/^[0-9]+$/",$id)){ return false;}
+    if(!preg_match(_regex_ID,$id)){ return false;}
 
     $user_id = $this->Verify->getUserID();
 

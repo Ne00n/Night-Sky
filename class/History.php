@@ -22,7 +22,7 @@ class History {
   }
 
   public function checkHistoryID($id) {
-    if(!preg_match("/^[0-9]+$/",$id)){ $this->error = 'Invalid ID'; return false;}
+    if(!preg_match(_regex_ID,$id)){ $this->error = 'Invalid ID'; return false;}
 
     $userID = $this->Verify->getUserID();
 
@@ -45,7 +45,7 @@ class History {
   public function getHistory($checkID) {
     $data = array();
 
-    if(!preg_match("/^[0-9]+$/",$checkID)){ $this->error = 'Invalid ID'; return $data;}
+    if(!preg_match(_regex_ID,$checkID)){ $this->error = 'Invalid ID'; return $data;}
 
     $userID = $this->Verify->getUserID();
 

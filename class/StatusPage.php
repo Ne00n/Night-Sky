@@ -15,7 +15,7 @@ class StatusPage {
   }
 
   public function addPage($name,$group) {
-    if(!preg_match("/^[a-zA-Z0-9._\- ]+$/",$name)){ $this->error = "The Name contains invalid letters.";}
+    if(!preg_match(_regex_NAME,$name)){ $this->error = "The Name contains invalid letters.";}
     if (strlen($name) > 50) {$this->error = "The Name is to long";}
     if (strlen($name) < 3) {$this->error = "The Name is to short";}
     if (!$this->checkLimit()) { $this->error = "Limit reached";}
@@ -38,7 +38,7 @@ class StatusPage {
   }
 
   public function editPage($name,$group) {
-    if(!preg_match("/^[a-zA-Z0-9._\- ]+$/",$name)){ $this->error = "The Name contains invalid letters.";}
+    if(!preg_match(_regex_NAME,$name)){ $this->error = "The Name contains invalid letters.";}
     if (strlen($name) > 50) {$this->error = "The Group is to long";}
     if (strlen($name) < 3) {$this->error = "The Group is to short";}
 
@@ -69,7 +69,7 @@ class StatusPage {
   }
 
   public function checkPageID($id) {
-    if(!preg_match("/^[0-9]+$/",$id)){ return false;}
+    if(!preg_match(_regex_ID,$id)){ return false;}
 
     $user_id = $this->Verify->getUserID();
 
@@ -116,7 +116,7 @@ class StatusPage {
     //Fetch all Servers which are assigned to this Token
 
     $servers = array("operational" => 1);
-    if(!preg_match("/^[a-zA-Z0-9]+$/",$token)){ return $servers;}
+    if(!preg_match(_regex_TOKEN,$token)){ return $servers;}
 
     $query = "SELECT checks.Name,checks.ONLINE,status_pages.Name as SName FROM status_pages INNER JOIN groups_checks ON status_pages.GroupID=groups_checks.GroupID INNER JOIN checks ON checks.ID=groups_checks.CheckID WHERE status_pages.Token = ? ";
     $stmt = $this->DB->GetConnection()->prepare($query);
