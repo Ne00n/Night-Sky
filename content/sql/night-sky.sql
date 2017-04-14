@@ -9,7 +9,8 @@ CREATE TABLE `checks` (
   `ONLINE` int(1) NOT NULL DEFAULT '0',
   `NAME` varchar(50) NOT NULL,
   `IP` varchar(50) NOT NULL,
-  `PORT` int(11) NOT NULL
+  `PORT` int(11) NOT NULL,
+  `Check_Interval` int(2) NOT NULL DEFAULT '10'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `emails` (
@@ -88,11 +89,11 @@ CREATE TABLE `users` (
   `Rank` int(11) NOT NULL,
   `enabled` int(1) NOT NULL DEFAULT '0',
   `activation_hash` varchar(40) NOT NULL,
-  `Check_Limit` int(11) NOT NULL DEFAULT '15',
+  `Check_Limit` int(11) NOT NULL DEFAULT '10',
   `Contact_Limit` int(11) NOT NULL DEFAULT '4',
   `Same_IP_Limit` int(11) NOT NULL DEFAULT '2',
   `Group_Limit` int(11) NOT NULL DEFAULT '15',
-  `StatusPage_Limit` int(11) NOT NULL DEFAULT '4'
+  `StatusPage_Limit` int(11) DEFAULT '4'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
