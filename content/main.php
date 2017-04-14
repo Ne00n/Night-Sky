@@ -52,12 +52,13 @@ if ($Login->isLoggedIN()) {
 
           $M = new Main($DB,$Login);
           $M->setID($check_id);
+          $M->getData();
 
           if ($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['confirm'])) {
 
             if ($_POST['Token'] == $_SESSION['Token']) {
 
-              $M->updateCheck($_POST['ip'],$_POST['port'],$_POST['email'],$_POST['name']);
+              $M->updateCheck($_POST['ip'],$_POST['port'],$_POST['email'],$_POST['name'],$_POST['interval']);
 
                if ($M->getlastError() == "") {
                  echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
@@ -106,7 +107,7 @@ if ($Login->isLoggedIN()) {
             <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
 
             <div class="form-group">
-                  <div class="col-sm-8 col-sm-offset-2">
+                  <div class="col-sm-6 col-sm-offset-2">
                     <div class="input-group">
                       <div class="input-group-addon">
                      <span class="fa fa-group"></span>
@@ -137,6 +138,24 @@ if ($Login->isLoggedIN()) {
                       </select>
                      </div>
                 </div>
+                <div class="col-sm-2">
+                  <div class="input-group">
+                   <div class="input-group-addon">
+                  <span class="fa fa-hourglass-end"></span>
+                   </div>
+                    <select class="selectpicker form-control input-sm" data-size="4" data-style="btn-default btn-sm" name="interval">
+                      <?php
+                      for ($i =10; $i <= 60; $i = $i + 10) {
+                        if ($M->getInterval() == $i) {
+                            echo '<option selected>'.$i.'</option>';
+                        } elseif ($i != 40 && $i != 50) {
+                            echo '<option>'.$i.'</option>';
+                        }
+                      }
+                      ?>
+                    </select>
+                  </div>
+                </div>
             </div>
             <div class="form-group">
                 <button type="submit" name="confirm" class="btn btn-primary">Save</button>
@@ -163,9 +182,7 @@ if ($Login->isLoggedIN()) {
               }
 
             } else {
-
                 echo '<div class="alert alert-danger" role="alert"><center>Token Verification Failed</center></div>';
-
             }
 
           } else {
@@ -181,7 +198,6 @@ if ($Login->isLoggedIN()) {
               </div>
             </form>
 
-
             <?php
           }
 
@@ -194,7 +210,7 @@ if ($Login->isLoggedIN()) {
             if ($_POST['Token'] == $_SESSION['Token']) {
 
               $M = new Main($DB,$Login);
-              $M->addCheck($_POST['ip'],$_POST['port'],$_POST['email'],$_POST['name']);
+              $M->addCheck($_POST['ip'],$_POST['port'],$_POST['email'],$_POST['name'],$_POST['interval']);
 
                if ($M->getlastError() == "") {
                  echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
@@ -204,9 +220,7 @@ if ($Login->isLoggedIN()) {
                }
 
             } else {
-
                 echo '<div class="alert alert-danger" role="alert"><center>Token Verification Failed</center></div>';
-
             }
 
           } ?>
@@ -243,7 +257,7 @@ if ($Login->isLoggedIN()) {
             <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
 
             <div class="form-group">
-                  <div class="col-sm-8 col-sm-offset-2">
+                  <div class="col-sm-6 col-sm-offset-2">
                     <div class="input-group">
                       <div class="input-group-addon">
                      <span class="fa fa-group"></span>
@@ -262,6 +276,22 @@ if ($Login->isLoggedIN()) {
                         $stmt->close(); ?>
                       </select>
                      </div>
+                </div>
+                <div class="col-sm-2">
+                  <div class="input-group">
+                   <div class="input-group-addon">
+                  <span class="fa fa-hourglass-end"></span>
+                   </div>
+                    <select class="selectpicker form-control input-sm" data-size="4" data-style="btn-default btn-sm" name="interval">
+                      <?php
+                      for ($i =10; $i <= 60; $i = $i + 10) {
+                            if ($i != 40 && $i != 50) {
+                              echo '<option>'.$i.'</option>';
+                            }
+                      }
+                      ?>
+                    </select>
+                  </div>
                 </div>
             </div>
             <div class="form-group">

@@ -16,7 +16,7 @@
       $checks = array();
       $checks_out = array();
 
-      $query = "SELECT SLOT,ID,IP,PORT,USER_ID,NAME FROM checks WHERE ENABLED = 1 AND SLOT = ? ORDER by ID";
+      $query = "SELECT SLOT,ID,IP,PORT,USER_ID,NAME,Check_Interval FROM checks WHERE ENABLED = 1 AND SLOT = ? ORDER by ID";
       $stmt = $DB->GetConnection()->prepare($query);
       $stmt->bind_param('i', $i);
       $stmt->execute();
@@ -40,7 +40,7 @@
         }
 
         //Here we need all details
-        $checks_out[$row['SLOT']][$row['ID']] = array("IP" => $row['IP'],"PORT" => $row['PORT'],"EMAIL" => $emails,"NAME" => $row['NAME'],"USER_ID" => $row['USER_ID']);
+        $checks_out[$row['SLOT']][$row['ID']] = array("IP" => $row['IP'],"PORT" => $row['PORT'],"EMAIL" => $emails,"NAME" => $row['NAME'],"USER_ID" => $row['USER_ID'],"INTERVAL" => $row['Check_Interval']);
       }
 
       return $checks_out;
@@ -54,16 +54,17 @@
 
     $Verify = new Verify($DB);
 
-    $options = getopt("T:I:");
+    $options = getopt("T:I:W:");
 
     $threadID = $options['T'];
+    $time = $options['W'];
     $i = $options['I'];
 
     $Checks = fetchAll($DB,$threadID);
 
     $Check_Thread = array_slice($Checks[$threadID], $i, $i +5, true);
 
-    $CS = new CronjobServ($threadID,$i,$Check_Thread,$Remote);
+    $CS = new CronjobServ($threadID,$i,$Check_Thread,$Remote,$time);
     $CS->run();
 
   }

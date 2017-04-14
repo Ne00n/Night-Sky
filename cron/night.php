@@ -42,7 +42,7 @@ if (php_sapi_name() == 'cli') {
 
           if (isset($Checks[$i])) {
             echo("Night Base\n");
-            $CB = new CronjobBase($i,$Checks);
+            $CB = new CronjobBase($i,$Checks,$i_out);
             $CB->run();
           } else {
             printf("Night Base No Job\n",$i);

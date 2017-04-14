@@ -10,13 +10,15 @@ class CronjobServ {
   private $threadId;
   private $Check;
   private $Remote;
+  private $time;
   private $error;
 
-  public function __construct($in_slot,$in_threadId,$in_Check,$in_Remote) {
+  public function __construct($in_slot,$in_threadId,$in_Check,$in_Remote,$in_Time) {
       $this->threadId = $in_threadId;
       $this->slot = $in_slot;
       $this->Check = $in_Check;
       $this->Remote = $in_Remote;
+      $this->time = $in_Time;
   }
 
   public function run() {
@@ -46,74 +48,84 @@ class CronjobServ {
         #Lock the Thread
         $T->setLock();
 
+        $interval['1'] = array(10,30,60); //0
+        $interval['2'] = array(10,20); //10
+        $interval['3'] = array(10); //20...
+        $interval['4'] = array(10,20,30);
+        $interval['5'] = array(10);
+        $interval['6'] = array(10,20);
+
         foreach ($this->Check as $key => $element) {
 
-          $CS->checkAvailability($element['IP'],$element['PORT']);
+          //Check if we need to run in case its a different interval
+          if (in_array($element['INTERVAL'], $interval[$this->time])) {
 
-          $S->setID($key);
-          $S->getOnlineStatus();
+            $CS->checkAvailability($element['IP'],$element['PORT']);
 
-          if ($CS->getStatus() === false) {
+            $S->setID($key);
+            $S->getOnlineStatus();
 
-            //Online => Offline
-            if ($S->getStatus() === 1) {
+            if ($CS->getStatus() === false) {
 
-              $S->setStatus(0);
+              //Online => Offline
+              if ($S->getStatus() === 1) {
 
-              $time = time();
+                $S->setStatus(0);
 
-              $email = 'Server '.Page::escape($element['NAME']).' went offline. Detected: '.date("d.m.Y H:i:s",Page::escape($time));
-              $email .= "\n\n";
-              foreach ($CS->getStatusDetail() as $serv => $elementary) {
-                $email .= $elementary['Location'].": ".$elementary['Reason']."\n";
-              }
+                $time = time();
 
-              if (!empty($element['EMAIL'])) {
-                foreach($element['EMAIL'] as $mail)
-                {
-                  $Mail = new Mail($mail,'Night-Sky - Downtime Alert '.Page::escape($element['NAME']),$email);
-                  $Mail->run();
+                $email = 'Server '.Page::escape($element['NAME']).' went offline. Detected: '.date("d.m.Y H:i:s",Page::escape($time));
+                $email .= "\n\n";
+                foreach ($CS->getStatusDetail() as $serv => $elementary) {
+                  $email .= $elementary['Location'].": ".$elementary['Reason']."\n";
                 }
+
+                if (!empty($element['EMAIL'])) {
+                  foreach($element['EMAIL'] as $mail)
+                  {
+                    $Mail = new Mail($mail,'Night-Sky - Downtime Alert '.Page::escape($element['NAME']),$email);
+                    $Mail->run();
+                  }
+                }
+
+                $H = new History($DB);
+                $H->addHistory($element['USER_ID'],$key,0);
+
+              //Still Offine
+              } elseif ($S->getStatus() === 0) {
+
               }
 
-              $H = new History($DB);
-              $H->addHistory($element['USER_ID'],$key,0);
+            } elseif ($CS->getStatus() === true) {
 
-            //Still Offine
-            } elseif ($S->getStatus() === 0) {
+              //Still Online
+              if ($S->getStatus() === 1) {
 
+              //Offline => Online
+              } elseif ($S->getStatus() === 0) {
 
+                $S->setStatus(1);
+
+                $time = time();
+
+                if (!empty($element['EMAIL'])) {
+                  foreach($element['EMAIL'] as $mail)
+                  {
+                    $Mail = new Mail($mail,'Night-Sky - Uptime Alert '.Page::escape($element['NAME']),'Server '.Page::escape($element['NAME']).' is back Online. Detected: '.date("d.m.Y H:i:s",Page::escape($time)));
+                    $Mail->run();
+                  }
+                }
+
+                $H = new History($DB);
+                $H->addHistory($element['USER_ID'],$key,1);
+
+              }
 
             }
 
-          } elseif ($CS->getStatus() === true) {
-
-            //Still Online
-            if ($S->getStatus() === 1) {
-
-
-
-            //Offline => Online
-            } elseif ($S->getStatus() === 0) {
-
-              $S->setStatus(1);
-
-              $time = time();
-
-              if (!empty($element['EMAIL'])) {
-                foreach($element['EMAIL'] as $mail)
-                {
-                  $Mail = new Mail($mail,'Night-Sky - Uptime Alert '.Page::escape($element['NAME']),'Server '.Page::escape($element['NAME']).' is back Online. Detected: '.date("d.m.Y H:i:s",Page::escape($time)));
-                  $Mail->run();
-                }
-              }
-
-              $H = new History($DB);
-              $H->addHistory($element['USER_ID'],$key,1);
-
-            }
-
-          }
+         } else {
+           echo "Skipped Check for Server: ".$element['NAME'].", interval is set to ".$element['INTERVAL']. " but currently we are at ".($this->time -1)."0"."\n";
+         }
 
         }
 

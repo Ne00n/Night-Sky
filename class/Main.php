@@ -10,13 +10,14 @@ class Main {
   private $port;
   private $ip;
   private $email;
+  private $interval;
 
   public function __construct($DB,$Verify) {
     $this->DB = $DB;
     $this->Verify = $Verify;
   }
 
-  public function addCheck($IP,$PORT,$groups,$NAME) {
+  public function addCheck($IP,$PORT,$groups,$NAME,$interval) {
     if (!filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) { $this->error = "Invalid IP."; }
     if(!preg_match(_regex_NAME,$NAME)){ $this->error = "The Name contains invalid letters.";}
     if(!preg_match(_regex_PORT,$PORT)){ $this->error = "Invalid Port.";}
@@ -28,6 +29,9 @@ class Main {
     if (!$this->checkIPLimit($IP)) { $this->error = "Limit reached";}
     if (!$this->checkIP_Global_Limit($IP)) { $this->error = "Limit reached";}
 
+    $allowed_interval = array('10','20','30','60');
+    if (!in_array($interval, $allowed_interval)) { $this->error = "Invalid Interval"; }
+
     if ($this->error == "") {
 
       $USER_ID = $this->Verify->getUserID();
@@ -37,8 +41,8 @@ class Main {
 
       if ($SLOT != false) {
 
-        $stmt = $this->DB->GetConnection()->prepare("INSERT INTO checks(USER_ID,IP,PORT,SLOT,NAME) VALUES (?,?,?,?,?)");
-        $stmt->bind_param('isiis',$USER_ID, $IP, $PORT,$SLOT,$NAME);
+        $stmt = $this->DB->GetConnection()->prepare("INSERT INTO checks(USER_ID,IP,PORT,SLOT,NAME,Check_Interval) VALUES (?,?,?,?,?,?)");
+        $stmt->bind_param('isiisi',$USER_ID, $IP, $PORT,$SLOT,$NAME,$interval);
         $rc = $stmt->execute();
         if ( false===$rc ) { $this->error = "MySQL Error"; }
         $check_id = $stmt->insert_id;
@@ -55,7 +59,7 @@ class Main {
     }
   }
 
-  public function updateCheck($IP,$PORT,$groups,$NAME) {
+  public function updateCheck($IP,$PORT,$groups,$NAME,$interval) {
     if (!filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) { $this->error = "Invalid IP."; }
     if(!preg_match(_regex_NAME,$NAME)){ $this->error = "The Name contains invalid letters.";}
     if(!preg_match(_regex_PORT,$PORT)){ $this->error = "Invalid Port.";}
@@ -68,12 +72,15 @@ class Main {
       if (!$this->checkIP_Global_Limit($IP)) { $this->error = "Limit reached";}
     }
 
+    $allowed_interval = array('10','20','30','60');
+    if (!in_array($interval, $allowed_interval)) { $this->error = "Invalid Interval"; }
+
     if ($this->error == "") { $this->processGroups($groups); }
 
     if ($this->error == "") {
 
-      $stmt = $this->DB->GetConnection()->prepare("UPDATE checks SET IP = ?, PORT = ?, NAME = ? WHERE ID = ?");
-      $stmt->bind_param('sisi', $IP,$PORT,$NAME,$this->id);
+      $stmt = $this->DB->GetConnection()->prepare("UPDATE checks SET IP = ?, PORT = ?, NAME = ?, Check_Interval = ? WHERE ID = ?");
+      $stmt->bind_param('sisii', $IP,$PORT,$NAME,$interval,$this->id);
       $rc = $stmt->execute();
       if ( false===$rc ) { $this->error = "MySQL Error"; }
       $stmt->close();
@@ -128,17 +135,18 @@ class Main {
   public function getData() {
     if ($this->error == "") {
 
-      $stmt = $this->DB->GetConnection()->prepare("SELECT NAME,IP,PORT FROM checks WHERE ID = ? LIMIT 1");
+      $stmt = $this->DB->GetConnection()->prepare("SELECT NAME,IP,PORT,Check_Interval FROM checks WHERE ID = ? LIMIT 1");
       $stmt->bind_param('i', $this->id);
       $rc = $stmt->execute();
       if ( false===$rc ) { $this->error = "MySQL Error"; }
-      $stmt->bind_result($db_name,$db_ip,$db_port);
+      $stmt->bind_result($db_name,$db_ip,$db_port,$db_interval);
       $stmt->fetch();
       $stmt->close();
 
       $this->name = $db_name;
       $this->port = $db_port;
       $this->ip = $db_ip;
+      $this->interval = $db_interval;
 
     }
   }
@@ -262,6 +270,9 @@ class Main {
     return $this->port;
   }
 
+  public function getInterval() {
+    return $this->interval;
+  }
 }
 
 ?>
