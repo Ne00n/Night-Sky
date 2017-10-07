@@ -46,6 +46,17 @@ class Verify {
           $this->user_id = $db_id;
       } else {
           $this->user_id = $db_id;
+          if (password_needs_rehash($db_password, PASSWORD_DEFAULT,["cost" => 12])) {
+            $db_password = password_hash($Password, PASSWORD_DEFAULT,["cost" => 12]);
+
+            $stmt = $this->DB->GetConnection()->prepare("UPDATE users SET Password = ?  WHERE ID = ?");
+            $stmt->bind_param('si', $db_password,$db_id);
+            $rc = $stmt->execute();
+            if ( false===$rc ) { $this->error = "MySQL Error"; }
+            $stmt->close();
+
+          }
+
       }
 
     }
