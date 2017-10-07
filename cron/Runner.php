@@ -11,14 +11,16 @@
 
     spl_autoload_register('dat_loader');
 
-    function fetchAll($DB,$i) {
+    function fetchAll($DB,$threadID,$i) {
 
       $checks = array();
       $checks_out = array();
 
-      $query = "SELECT SLOT,ID,IP,PORT,USER_ID,NAME,Check_Interval FROM checks WHERE ENABLED = 1 AND SLOT = ? ORDER by ID";
+      $iMax = $i +5;
+
+      $query = "SELECT SLOT,ID,IP,PORT,USER_ID,NAME,Check_Interval FROM checks WHERE ENABLED = 1 AND SLOT = ? ORDER by ID LIMIT ?,?";
       $stmt = $DB->GetConnection()->prepare($query);
-      $stmt->bind_param('i', $i);
+      $stmt->bind_param('iii', $threadID,$i,$iMax);
       $stmt->execute();
       $result = $stmt->get_result();
       while ($row = $result->fetch_assoc()) {
@@ -60,7 +62,7 @@
     $time = $options['W'];
     $i = $options['I'];
 
-    $Checks = fetchAll($DB,$threadID);
+    $Checks = fetchAll($DB,$threadID,$i);
 
     $Check_Thread = array_slice($Checks[$threadID], $i, $i +5, true);
 
