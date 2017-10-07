@@ -30,6 +30,8 @@ if (php_sapi_name() == 'cli') {
 
   $Verify = new Verify($DB);
 
+  $Checks = fetchAll($DB);
+
   for ($i_out = 1; $i_out <= 6; $i_out++) {
 
     if (Page::check_page("google.com") || Page::check_page("wikipedia.org")) {
@@ -37,9 +39,6 @@ if (php_sapi_name() == 'cli') {
 
       $start = microtime(true);
       for ($i = 1; $i <= 10; $i++) {
-
-          $Checks = fetchAll($DB);
-
           if (isset($Checks[$i])) {
             echo("Night Base\n");
             $CB = new CronjobBase($i,$Checks,$i_out);
