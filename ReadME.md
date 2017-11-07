@@ -1,4 +1,10 @@
-10 Seconds Interval Port Monitoring
+# Night-Sky
+
+10s Interval Port Monitoring
+
+Night-Sky is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+You should have received a copy of the license along with this
+work. If not, see https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 - PHP 7.0+, using BackgroundProcess
 - Run a Slot every Second, each Slot can run multiple Processes, 5 Servers are assigned to each Process
@@ -7,12 +13,12 @@
 - Limit of 20 Users for the Start, 10 Checks for each User
 - Email notifications via local Mail function (relayed to MXRoute)
 - Block the current Thread if the previous one is still Running
-- Database Backend: MySQL
+- Database Backend: PHP, MariaDB
 - Frontend: PHP+HTML (PHP 7.0+ / Bootstrap / Font Awesome)
 
 QuickSetup:
 
-1. Create a User+DB, Import the SQL file
-2. Update config.php with your Login details and make SURE to change "Domain"
-3. Put night.php and remote.php into Crontab to run every 60 seconds
+1. Create a User+DB, Import the content/sql/night-sky.sql
+2. Update content/configs/config.php with your Database details and make SURE to change "Domain", otherwise Cookies wont work.
+3. Put cron/night.php and cron/remote.php into Crontab to run every 60 seconds
 4. Deploy some Remote Servers and add them to the table remote
