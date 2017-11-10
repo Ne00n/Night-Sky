@@ -20,5 +20,7 @@ QuickSetup:
 
 1. Create a User+DB, Import the content/sql/night-sky.sql
 2. Update content/configs/config.php with your Database details and make SURE to change "Domain", otherwise Cookies wont work.
+Make SURE to use a Domain with SSL enabled otherwise you will not get any cookies.
 3. Put cron/night.php and cron/remote.php into Crontab to run every 60 seconds
 4. Deploy some Remote Servers and add them to the table remote
+The Field IP can be also contain a URL like "check.domain.com", make sure the Domain is reachable over TLS, plain wont work.
