@@ -2,6 +2,8 @@
 
 10s Interval Port Monitoring
 
+[![Build Status](https://travis-ci.org/Ne00n/Night-Sky.svg?branch=Release)](https://travis-ci.org/Ne00n/Night-Sky)
+
 Night-Sky is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 You should have received a copy of the license along with this
 work. If not, see https://creativecommons.org/licenses/by-nc-sa/4.0/
@@ -14,7 +16,7 @@ work. If not, see https://creativecommons.org/licenses/by-nc-sa/4.0/
 - Email notifications via local Mail function (relayed to MXRoute)
 - Block the current Thread if the previous one is still Running
 - Database Backend: PHP, MariaDB
-- Frontend: PHP+HTML (PHP 7.0+ / Bootstrap / Font Awesome)
+- Frontend: PHP+HTML (Bootstrap 3 / Font Awesome)
 
 QuickSetup:
 
