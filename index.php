@@ -17,14 +17,12 @@ if (!isset($_SESSION['Token'])) {
     $_SESSION['Token'] = bin2hex(random_bytes(40));
 }
 
+$p = 'login';
+
 if (isset($_GET["p"])) {
   $p = $_GET["p"];
 } elseif (isset($_GET["key"])) {
   $k = $_GET["key"];
-}
-
-if(!isset($p)) {
-  $p="login";
 }
 
 $DB = new Database;
