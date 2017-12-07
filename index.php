@@ -32,45 +32,25 @@ $DB->InitDB();
 
 if ($p == "login") {
   include 'content/login.php';
-}
-
-if (Page::startsWith($p,"register")) {
+} elseif (Page::startsWith($p,"register")) {
   include 'content/register.php';
-}
-
-if (Page::startsWith($p,"main")) {
+} elseif (Page::startsWith($p,"main")) {
   include 'content/main.php';
-}
-
-if (Page::startsWith($p,"group")) {
+} elseif (Page::startsWith($p,"group")) {
   include 'content/group.php';
-}
-
-if (Page::startsWith($p,"contact")) {
+} elseif (Page::startsWith($p,"contact")) {
   include 'content/contact.php';
-}
-
-if (Page::startsWith($p,"history")) {
+} elseif (Page::startsWith($p,"history")) {
   include 'content/history.php';
-}
-
-if (Page::startsWith($p,"tos")) {
+} elseif (Page::startsWith($p,"tos")) {
   include 'content/tos.php';
-}
-
-if (Page::startsWith($p,"privacy")) {
+} elseif (Page::startsWith($p,"privacy")) {
   include 'content/privacy.php';
-}
-
-if (Page::startsWith($p,"account")) {
+} elseif (Page::startsWith($p,"account")) {
   include 'content/account.php';
-}
-
-if (Page::startsWith($p,"status-page")) {
+} elseif (Page::startsWith($p,"status-page")) {
   include 'content/status-page.php';
-}
-
-if ($p=="logout") {
+} elseif ($p=="logout") {
   session_unset();
   session_destroy();
   header('Location: index.php?p=login');
