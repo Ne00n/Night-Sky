@@ -19,9 +19,9 @@ class User_Tests extends TestCase {
   public function launch() {
     $this->switchtoID(1);
     //Add Account 1 and Generate some Random Password
-    $password = Page::randomPassword();
-    echo "Password used: ".$password;
-    $activation_hash = $this->User->registerUser("Tester","test@test.com",$password,$password,"LET",true); //Which as obviously the ID 1
+    $password1 = Page::randomPassword();
+    echo "Password for Account 1 used: ".$password1."\n";
+    $activation_hash = $this->User->registerUser("Tester","test@test.com",$password1,$password1,"LET",true); //Which as obviously the ID 1
     $this->assertEquals($this->User->getLastError(),NULL);
     #Validate our Hash that the Object gave us
     $this->assertEquals($this->Verify->checkHash($activation_hash),true);
@@ -34,7 +34,9 @@ class User_Tests extends TestCase {
     $this->assertEquals($this->Verify->checkHash($activation_hash.'a'),false);
 
     //Add Account 2
-    $activation_hash = $this->User->registerUser("Tester2","test3@test.com",$password,$password,"LET",true); //Which has obviously the ID 2
+    $password2 = Page::randomPassword();
+    echo "Password for Account 2 used: ".$password2."\n";
+    $activation_hash = $this->User->registerUser("Tester2","test3@test.com",$password2,$password2,"LET",true); //Which has obviously the ID 2
     $this->assertEquals($this->User->getLastError(),NULL);
     #Validate our Hash that the Object gave us
     $this->assertEquals($this->Verify->checkHash($activation_hash),true);
@@ -47,13 +49,16 @@ class User_Tests extends TestCase {
     $this->assertEquals($this->Verify->checkHash($activation_hash.'a'),false);
 
     //Check if the Login works fine with Account 1
-    $this->Verify->ValidateLogin("Tester",$password);
+    $this->Verify->ValidateLogin("Tester",$password1);
     $this->assertEquals($this->Verify->getLastError(),NULL);
     //Check if the Login works fine with Account 2
-    $this->Verify->ValidateLogin("Tester2",$password);
+    $this->Verify->ValidateLogin("Tester2",$password2);
     $this->assertEquals($this->Verify->getLastError(),NULL);
     //Check a incorrect password on Account 1
-    $this->Verify->ValidateLogin("Tester",$password.'a');
+    $this->Verify->ValidateLogin("Tester",$password1.'a');
+    $this->assertEquals($this->Verify->getLastError(),"Incorrect Login details");
+    //Check a incorrect password on Account 2
+    $this->Verify->ValidateLogin("Tester2",'a'.$password2);
     $this->assertEquals($this->Verify->getLastError(),"Incorrect Login details");
   }
 }
