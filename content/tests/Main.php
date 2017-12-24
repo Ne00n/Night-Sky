@@ -1,8 +1,8 @@
 <?php
 
 #Load config
-include 'content/configs/config.php';
-include 'content/configs/regex.php';
+include 'content/configs/config.example.php';
+include 'content/configs/regex.example.php';
 #Load needed Class files
 include 'class/Database.php';
 include 'class/Verify.php';
