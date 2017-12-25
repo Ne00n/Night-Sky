@@ -1,5 +1,7 @@
 <?php
 
+die();
+
 function dat_loader($class) {
     include '../../class/' . $class . '.php';
 }
