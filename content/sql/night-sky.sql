@@ -4,20 +4,20 @@ SET time_zone = "+00:00";
 CREATE TABLE `checks` (
   `ID` int(11) NOT NULL,
   `USER_ID` int(11) NOT NULL,
-  `ENABLED` int(1) NOT NULL DEFAULT '1',
+  `ENABLED` int(1) NOT NULL DEFAULT 1,
   `SLOT` int(1) NOT NULL,
-  `ONLINE` int(1) NOT NULL DEFAULT '0',
+  `ONLINE` int(1) NOT NULL DEFAULT 0,
   `NAME` varchar(50) NOT NULL,
   `IP` varchar(50) NOT NULL,
   `PORT` int(11) NOT NULL,
-  `Check_Interval` int(2) NOT NULL DEFAULT '10'
+  `Check_Interval` int(2) NOT NULL DEFAULT 10
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `emails` (
   `ID` int(11) NOT NULL,
   `USER_ID` int(11) NOT NULL,
   `EMail` varchar(50) NOT NULL,
-  `Status` int(1) NOT NULL DEFAULT '0',
+  `Status` int(1) NOT NULL DEFAULT 0,
   `activation_hash` varchar(40) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -66,7 +66,7 @@ CREATE TABLE `remote` (
   `Location` varchar(50) NOT NULL,
   `IP` varchar(50) NOT NULL,
   `Port` int(5) NOT NULL,
-  `Online` int(1) NOT NULL DEFAULT '0'
+  `Online` int(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `status_pages` (
@@ -79,7 +79,7 @@ CREATE TABLE `status_pages` (
 
 CREATE TABLE `threads` (
   `THREAD_ID` varchar(11) NOT NULL,
-  `THREAD_LOCK` int(1) NOT NULL DEFAULT '0'
+  `THREAD_LOCK` int(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `users` (
@@ -87,13 +87,27 @@ CREATE TABLE `users` (
   `Username` varchar(50) NOT NULL,
   `Password` varchar(255) NOT NULL,
   `Rank` int(11) NOT NULL,
-  `enabled` int(1) NOT NULL DEFAULT '0',
+  `enabled` int(1) NOT NULL DEFAULT 0,
   `activation_hash` varchar(40) NOT NULL,
-  `Check_Limit` int(11) NOT NULL DEFAULT '10',
-  `Contact_Limit` int(11) NOT NULL DEFAULT '4',
-  `Same_IP_Limit` int(11) NOT NULL DEFAULT '2',
-  `Group_Limit` int(11) NOT NULL DEFAULT '15',
-  `StatusPage_Limit` int(11) DEFAULT '4'
+  `Check_Limit` int(11) NOT NULL DEFAULT 10,
+  `Contact_Limit` int(11) NOT NULL DEFAULT 4,
+  `Same_IP_Limit` int(11) NOT NULL DEFAULT 2,
+  `Group_Limit` int(11) NOT NULL DEFAULT 15,
+  `StatusPage_Limit` int(11) DEFAULT 4,
+  `WebHookLimit` int(11) NOT NULL DEFAULT 15
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `webhooks` (
+  `ID` int(11) NOT NULL,
+  `UserID` int(11) NOT NULL,
+  `GroupID` int(11) NOT NULL,
+  `Name` varchar(50) NOT NULL,
+  `urlDown` varchar(200) NOT NULL,
+  `jsonDown` text NOT NULL,
+  `headersDown` text NOT NULL,
+  `urlUp` varchar(200) NOT NULL,
+  `jsonUp` text NOT NULL,
+  `headersUp` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
@@ -138,6 +152,9 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `Username` (`Username`),
   ADD UNIQUE KEY `activation_hash` (`activation_hash`);
 
+ALTER TABLE `webhooks`
+  ADD PRIMARY KEY (`ID`);
+
 
 ALTER TABLE `checks`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
@@ -160,4 +177,6 @@ ALTER TABLE `remote`
 ALTER TABLE `status_pages`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `users`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `webhooks`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
