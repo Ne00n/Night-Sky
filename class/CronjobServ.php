@@ -3,6 +3,7 @@
 include 'CronjobServ/ThreadLock.php';
 include 'CronjobServ/Status.php';
 include 'CronjobServ/CheckServ.php';
+include 'CronjobServ/WebHookRequest.php';
 
 class CronjobServ {
 
@@ -74,6 +75,7 @@ class CronjobServ {
 
                 $time = time();
 
+                //Mail
                 $email = 'Server '.Page::escape($element['NAME']).' went offline. Detected: '.date("d.m.Y H:i:s",Page::escape($time));
                 $email .= "\n\n";
                 foreach ($CS->getStatusDetail() as $serv => $elementary) {
@@ -88,6 +90,16 @@ class CronjobServ {
                   }
                 }
 
+                //WebHook
+                if (!empty($element['WEBHOOK'])) {
+                  foreach($element['WEBHOOK'] as $webhook)
+                  {
+                    $WH = new WebHookRequest();
+                    $WH->run($webhook['urlDown'],$webhook['jsonDown'],$webhook['headersDown']);
+                  }
+                }
+
+                //History
                 $H = new History($DB);
                 $H->addHistory($element['USER_ID'],$key,0);
 
@@ -108,6 +120,7 @@ class CronjobServ {
 
                 $time = time();
 
+                //Mail
                 if (!empty($element['EMAIL'])) {
                   foreach($element['EMAIL'] as $mail)
                   {
@@ -116,6 +129,16 @@ class CronjobServ {
                   }
                 }
 
+                //WebHook
+                if (!empty($element['WEBHOOK'])) {
+                  foreach($element['WEBHOOK'] as $webhook)
+                  {
+                    $WH = new WebHookRequest();
+                    $WH->run($webhook['urlUp'],$webhook['jsonUp'],$webhook['headersUp']);
+                  }
+                }
+
+                //History
                 $H = new History($DB);
                 $H->addHistory($element['USER_ID'],$key,1);
 
