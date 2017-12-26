@@ -11,6 +11,7 @@ class Verify {
   private $check_ip_limit = 0;
   private $group_limit = 0;
   private $status_limit = 0;
+  private $webHookLimit = 0;
 
   public function __construct($DB,$testing = false,$user_id = 0) {
     $this->DB = $DB;
@@ -21,6 +22,7 @@ class Verify {
       $this->check_ip_limit = 2;
       $this->group_limit = 15;
       $this->status_limit = 4;
+      $this->webHookLimit = 15;
     }
   }
 
@@ -65,11 +67,11 @@ class Verify {
   public function isLoggedIN() {
     if(isset($_SESSION['user_id']) AND preg_match(_regex_ID,$_SESSION['user_id'])){
 
-      $stmt = $this->DB->GetConnection()->prepare("SELECT Rank,ID,Check_Limit,Contact_Limit,Same_IP_Limit,Group_Limit,StatusPage_Limit FROM users WHERE ID = ? AND enabled = 1 LIMIT 1");
+      $stmt = $this->DB->GetConnection()->prepare("SELECT Rank,ID,Check_Limit,Contact_Limit,Same_IP_Limit,Group_Limit,StatusPage_Limit,WebHookLimit FROM users WHERE ID = ? AND enabled = 1 LIMIT 1");
       $stmt->bind_param('i', $_SESSION['user_id']);
       $rc = $stmt->execute();
       if ( false===$rc ) { $this->error = "MySQL Error"; }
-      $stmt->bind_result($db_rank,$db_id,$db_check_limit,$db_contact_limit,$db_same_ip_limit,$db_group_limit,$db_status_limit);
+      $stmt->bind_result($db_rank,$db_id,$db_check_limit,$db_contact_limit,$db_same_ip_limit,$db_group_limit,$db_status_limit,$db_webhook_limit);
       $stmt->fetch();
       $stmt->close();
 
@@ -80,6 +82,7 @@ class Verify {
       $this->check_ip_limit = $db_same_ip_limit;
       $this->group_limit = $db_group_limit;
       $this->status_limit = $db_status_limit;
+      $this->webHookLimit = $db_webhook_limit;
 
       if ($db_id != "") {
         return true;
@@ -194,6 +197,10 @@ class Verify {
 
   public function getStatusLimit() {
     return $this->status_limit;
+  }
+
+  public function getWebHookLimit() {
+    return $this->webHookLimit;
   }
 
   public function getLastError() {

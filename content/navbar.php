@@ -31,10 +31,16 @@
             echo '<li><a href="index.php?p=contact">Contacts</a></li>';
           }
 
-          if (Page::startsWith($p,"status-page")) {
-             echo '<li class="active"><a href="index.php?p=status-page">Status Pages</a></li>';
+          if (Page::startsWith($p,"webhook")) {
+             echo '<li class="active"><a href="index.php?p=webhook">WebHooks</a></li>';
           } else {
-            echo '<li><a href="index.php?p=status-page">Status Pages</a></li>';
+            echo '<li><a href="index.php?p=webhook">WebHooks</a></li>';
+          }
+
+          if (Page::startsWith($p,"status-page")) {
+             echo '<li class="active"><a href="index.php?p=status-page">StatusPages</a></li>';
+          } else {
+            echo '<li><a href="index.php?p=status-page">StatusPages</a></li>';
           }
 
            ?>
