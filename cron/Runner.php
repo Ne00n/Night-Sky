@@ -43,13 +43,13 @@
         }
 
         //Fetch all Webhooks which are assigned to this Check
-        $query = "SELECT webhooks.ID,webhooks.urlDown,webhooks.jsonDown,webhooks.headersDown,webhooks.urlUp,webhooks.jsonUp,webhooks.headersUp FROM groups_checks INNER JOIN webhooks ON groups_checks.GroupID = webhooks.GroupID WHERE groups_checks.CheckID = ? AND webhooks.UserID = ?";
+        $query = "SELECT webhooks.ID,webhooks.urlDown,webhooks.jsonDown,webhooks.headersDown,webhooks.urlUp,webhooks.jsonUp,webhooks.headersUp,webhooks.Method FROM groups_checks INNER JOIN webhooks ON groups_checks.GroupID = webhooks.GroupID WHERE groups_checks.CheckID = ? AND webhooks.UserID = ?";
         $stmt = $DB->GetConnection()->prepare($query);
         $stmt->bind_param('ii', $row['ID'],$row['USER_ID']);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row_webhooks = $result->fetch_assoc()) {
-          $webhooks[$row_webhooks['ID']] = array('urlDown' => $row_webhooks['urlDown'],'jsonDown' => $row_webhooks['jsonDown'],'headersDown' => $row_webhooks['headersDown'],'urlUp' => $row_webhooks['urlUp'],'jsonUp' => $row_webhooks['jsonUp'],'headersUp' => $row_webhooks['headersUp']);
+          $webhooks[$row_webhooks['ID']] = array('urlDown' => $row_webhooks['urlDown'],'jsonDown' => $row_webhooks['jsonDown'],'headersDown' => $row_webhooks['headersDown'],'urlUp' => $row_webhooks['urlUp'],'jsonUp' => $row_webhooks['jsonUp'],'headersUp' => $row_webhooks['headersUp'],'method' => $row_webhooks['Method']);
         }
 
         //Here we need all details

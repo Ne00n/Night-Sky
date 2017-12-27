@@ -64,7 +64,7 @@ if ($Login->isLoggedIN()) {
 
           if ($_POST['Token'] == $_SESSION['Token']) {
 
-            $WH->editHook($_POST['name'],$_POST['urlDown'],$_POST['jsonDown'],$_POST['headersDown'],$_POST['urlUp'],$_POST['jsonUp'],$_POST['headersUp'],$_POST['groups']);
+            $WH->editHook($_POST['name'],$_POST['method'],$_POST['urlDown'],$_POST['jsonDown'],$_POST['headersDown'],$_POST['urlUp'],$_POST['jsonUp'],$_POST['headersUp'],$_POST['groups']);
              if ($WH->getlastError() == "") {
                echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
                $_POST = array();
@@ -143,6 +143,21 @@ if ($Login->isLoggedIN()) {
               </div>
             </div>
             <div class="form-group">
+                  <div class="col-sm-8 col-sm-offset-2">
+                    <div class="input-group">
+                      <div class="input-group-addon">
+                     <span class="fa fa-send-o"></span>
+                      </div>
+                      <select class="selectpicker form-control input-sm" data-size="3" data-style="btn-default btn-sm" name="method">
+                        <?php var_dump($WH->getMethod()); ?>
+                        <option <?php echo ("GET" == $WH->getMethod() ? "selected" : ""); ?>  value="1">GET</option>
+                        <option <?php echo ("POST" == $WH->getMethod() ? "selected" : ""); ?> value="2">POST</option>
+                        <option <?php echo ("PUT" == $WH->getMethod() ? "selected" : ""); ?> value="3">PUT</option>
+                      </select>
+                     </div>
+                </div>
+            </div>
+            <div class="form-group">
               <div class="col-sm-8 col-sm-offset-2">
                 <div class="input-group">
                  <div class="input-group-addon">
@@ -188,7 +203,7 @@ if ($Login->isLoggedIN()) {
 
           if ($_POST['Token'] == $_SESSION['Token']) {
 
-            $WH->addHook($_POST['name'],$_POST['urlDown'],$_POST['jsonDown'],$_POST['headersDown'],$_POST['urlUp'],$_POST['jsonUp'],$_POST['headersUp'],$_POST['groups']);
+            $WH->addHook($_POST['name'],$_POST['method'],$_POST['urlDown'],$_POST['jsonDown'],$_POST['headersDown'],$_POST['urlUp'],$_POST['jsonUp'],$_POST['headersUp'],$_POST['groups']);
              if ($WH->getlastError() == "") {
                echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
                $_POST = array();
@@ -263,6 +278,20 @@ if ($Login->isLoggedIN()) {
                 <textarea type="text" class="form-control input-sm" name="headersUp" rows="3"><?php if(isset($_POST['headersUp'])) {echo Page::escape($_POST['headersUp']);} else { echo '"Content-Type: application/json"'; } ?></textarea>
               </div>
             </div>
+          </div>
+          <div class="form-group">
+                <div class="col-sm-8 col-sm-offset-2">
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                   <span class="fa fa-send-o"></span>
+                    </div>
+                    <select class="selectpicker form-control input-sm" data-size="3" data-style="btn-default btn-sm" name="method">
+                      <option  value="1">GET</option>
+                      <option  value="2">POST</option>
+                      <option  value="3">PUT</option>
+                    </select>
+                   </div>
+              </div>
           </div>
           <div class="form-group">
             <div class="col-sm-8 col-sm-offset-2">

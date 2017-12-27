@@ -95,7 +95,7 @@ class CronjobServ {
                   foreach($element['WEBHOOK'] as $webhook)
                   {
                     $WH = new WebHookRequest();
-                    $WH->run($webhook['urlDown'],$webhook['jsonDown'],$webhook['headersDown']);
+                    $WH->run($webhook['urlDown'],$webhook['method'],$webhook['jsonDown'],$webhook['headersDown']);
                   }
                 }
 
@@ -134,7 +134,7 @@ class CronjobServ {
                   foreach($element['WEBHOOK'] as $webhook)
                   {
                     $WH = new WebHookRequest();
-                    $WH->run($webhook['urlUp'],$webhook['jsonUp'],$webhook['headersUp']);
+                    $WH->run($webhook['urlUp'],$webhook['method'],$webhook['jsonUp'],$webhook['headersUp']);
                   }
                 }
 
