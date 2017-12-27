@@ -102,6 +102,7 @@ CREATE TABLE `webhooks` (
   `UserID` int(11) NOT NULL,
   `GroupID` int(11) NOT NULL,
   `Name` varchar(50) NOT NULL,
+  `Method` varchar(10) NOT NULL,
   `urlDown` varchar(200) NOT NULL,
   `jsonDown` text NOT NULL,
   `headersDown` text NOT NULL,
