@@ -14,12 +14,14 @@ include 'class/Group.php';
 include 'class/History.php';
 include 'class/LoadBalancer.php';
 include 'class/StatusPage.php';
+include 'class/WebHook.php';
 //Load Test files
 include 'content/tests/Contact.php';
 include 'content/tests/Status.php';
 include 'content/tests/User.php';
 include 'content/tests/History.php';
 include 'content/tests/Group.php';
+include 'content/tests/Webhook.php';
 
 use PHPUnit\Framework\TestCase;
 
@@ -58,6 +60,9 @@ class TestsMain extends TestCase {
 		//Run Status Tests
 		$SP = new Status_Tests();
 		$SP->launch();
+		//Run WebHook Tests
+		$WH = new Webhook_Tests();
+		$WH->launch();
   }
 
 	private function CleanUP() {
@@ -89,6 +94,9 @@ class TestsMain extends TestCase {
 		$stmt->execute();
 
 		$stmt = $this->DB->GetConnection()->prepare("TRUNCATE TABLE `status_pages`");
+		$stmt->execute();
+
+		$stmt = $this->DB->GetConnection()->prepare("TRUNCATE TABLE `webhooks`");
 		$stmt->execute();
 	}
 }
