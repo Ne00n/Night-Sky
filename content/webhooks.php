@@ -219,7 +219,7 @@ if ($Login->isLoggedIN()) {
                <div class="input-group-addon">
               <span class="fa fa-file-code-o"></span>
                </div>
-                <textarea type="text" class="form-control input-sm" name="jsonDown"><?php if(isset($_POST['jsonDown'])) {echo Page::escape($_POST['jsonDown']);} else { echo '{ "comment": "wololo! server went to nuts."}'; } ?></textarea>
+                <textarea type="text" class="form-control input-sm" name="jsonDown"><?php if(isset($_POST['jsonDown'])) {echo Page::escape($_POST['jsonDown']);} else { echo '{ "content": "wololo! server went to nuts."}'; } ?></textarea>
               </div>
             </div>
           </div>
@@ -250,7 +250,7 @@ if ($Login->isLoggedIN()) {
                <div class="input-group-addon">
               <span class="fa fa-file-code-o"></span>
                </div>
-                <textarea type="text" class="form-control input-sm" name="jsonUp"><?php if(isset($_POST['jsonUp'])) {echo Page::escape($_POST['jsonUp']);} else { echo '{ "comment": "wololo! its back!."}'; } ?></textarea>
+                <textarea type="text" class="form-control input-sm" name="jsonUp"><?php if(isset($_POST['jsonUp'])) {echo Page::escape($_POST['jsonUp']);} else { echo '{ "content": "wololo! its back!."}'; } ?></textarea>
               </div>
             </div>
           </div>
