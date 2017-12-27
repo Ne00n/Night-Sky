@@ -45,16 +45,16 @@ class WebHook {
 
       $userID = $this->Verify->getUserID();
 
-      preg_match(_regex_HEADERS,$headersDown,$headersDown);
+      preg_match_all(_regex_HEADERS, $headersDown, $headersDown, PREG_SET_ORDER, 0);
       $headersDownOut = "";
       foreach ($headersDown as $element) {
-        $headersDownOut .= $element;
+        $headersDownOut .= $element['0'];
       }
 
-      preg_match(_regex_HEADERS,$headersUp,$headersUp);
+      preg_match_all(_regex_HEADERS, $headersUp, $headersUp, PREG_SET_ORDER, 0);
       $headersUpOut = "";
       foreach ($headersUp as $element) {
-        $headersUpOut .= $element;
+        $headersUpOut .= $element['0'];
       }
 
       $stmt = $this->DB->GetConnection()->prepare("INSERT INTO webhooks(UserID,GroupID,name,urlDown,jsonDown,headersDown,urlUp,jsonUp,headersUP) VALUES (?,?,?,?,?,?,?,?,?)");
@@ -89,16 +89,16 @@ class WebHook {
 
       $userID = $this->Verify->getUserID();
 
-      preg_match(_regex_HEADERS,$headersDown,$headersDown);
+      preg_match_all(_regex_HEADERS, $headersDown, $headersDown, PREG_SET_ORDER, 0);
       $headersDownOut = "";
       foreach ($headersDown as $element) {
-        $headersDownOut .= $element;
+        $headersDownOut .= $element['0'];
       }
 
-      preg_match(_regex_HEADERS,$headersUp,$headersUp);
+        preg_match_all(_regex_HEADERS, $headersUp, $headersUp, PREG_SET_ORDER, 0);
       $headersUpOut = "";
       foreach ($headersUp as $element) {
-        $headersUpOut .= $element;
+        $headersUpOut .= $element['0'];
       }
 
       $stmt = $this->DB->GetConnection()->prepare("UPDATE webhooks SET GroupID = ?,name = ?,urlDown = ?,jsonDown = ?,headersDown = ?,urlUp = ?,jsonUp = ?,headersUP = ? WHERE ID = ?");
