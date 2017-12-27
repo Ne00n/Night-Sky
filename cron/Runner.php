@@ -30,6 +30,7 @@
       foreach($checks as $row)
       {
         $emails = array();
+        $webhooks = array();
 
         //Fetch all Contacts which are assigned to this Check
         $query = "SELECT emails.EMail FROM groups_checks INNER JOIN groups_emails ON groups_emails.GroupID=groups_checks.GroupID INNER JOIN emails ON emails.ID=groups_emails.EmailID WHERE groups_checks.CheckID = ? AND emails.Status = 1 AND emails.USER_ID = ? GROUP BY emails.EMail";
@@ -41,8 +42,18 @@
           $emails[] = $row_emails['EMail'];
         }
 
+        //Fetch all Webhooks which are assigned to this Check
+        $query = "SELECT webhooks.ID,webhooks.urlDown,webhooks.jsonDown,webhooks.headersDown,webhooks.urlUp,webhooks.jsonUp,webhooks.headersUp,webhooks.Method FROM groups_checks INNER JOIN webhooks ON groups_checks.GroupID = webhooks.GroupID WHERE groups_checks.CheckID = ? AND webhooks.UserID = ?";
+        $stmt = $DB->GetConnection()->prepare($query);
+        $stmt->bind_param('ii', $row['ID'],$row['USER_ID']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row_webhooks = $result->fetch_assoc()) {
+          $webhooks[$row_webhooks['ID']] = array('urlDown' => $row_webhooks['urlDown'],'jsonDown' => $row_webhooks['jsonDown'],'headersDown' => $row_webhooks['headersDown'],'urlUp' => $row_webhooks['urlUp'],'jsonUp' => $row_webhooks['jsonUp'],'headersUp' => $row_webhooks['headersUp'],'method' => $row_webhooks['Method']);
+        }
+
         //Here we need all details
-        $checks_out[$row['SLOT']][$row['ID']] = array("IP" => $row['IP'],"PORT" => $row['PORT'],"EMAIL" => $emails,"NAME" => $row['NAME'],"USER_ID" => $row['USER_ID'],"INTERVAL" => $row['Check_Interval']);
+        $checks_out[$row['SLOT']][$row['ID']] = array("IP" => $row['IP'],"PORT" => $row['PORT'],"EMAIL" => $emails,"WEBHOOK" => $webhooks,"NAME" => $row['NAME'],"USER_ID" => $row['USER_ID'],"INTERVAL" => $row['Check_Interval']);
       }
 
       return $checks_out;

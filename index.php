@@ -48,6 +48,8 @@ if ($p == "login") {
   include 'content/account.php';
 } elseif (Page::startsWith($p,"status-page")) {
   include 'content/status-page.php';
+} elseif (Page::startsWith($p,"webhook")) {
+  include 'content/webhooks.php';
 } elseif ($p=="logout") {
   session_unset();
   session_destroy();
