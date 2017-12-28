@@ -34,7 +34,15 @@ if (php_sapi_name() == 'cli') {
 
   for ($i_out = 1; $i_out <= 6; $i_out++) {
 
-    if (Page::check_page("google.com") || Page::check_page("wikipedia.org")) {
+    $connection = false;
+    $probes = array('google.com', 'wikipedia.org', 'facebook.com');
+    foreach($probes as $probe) {
+      if(Page::check_page($probe)) {
+        $connection = true;
+        break;
+      }
+    }
+    if ($connection) {
       echo "Connected to the Internet\n";
 
       $start = microtime(true);

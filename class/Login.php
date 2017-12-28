@@ -10,7 +10,7 @@ class Login {
   }
 
   public function check_blocked_ip($ip_remote,$table = "login_blacklist",$ammount = 3) {
-    if (!$this->isValidIP($ip_remote)) { $ip_remote = 0; }
+    if (!$this->isValidIP($ip_remote)) { return false; }
 
     $time = time();
     $query = "SELECT `id` FROM `".$table."` WHERE (ip_remote = ?) AND timestamp_expires > ? ";
@@ -36,13 +36,9 @@ class Login {
   }
 
   public function addtoBlacklist($ip_remote,$table = "login_blacklist") {
-    if (!$this->isValidIP($ip_remote)) { $ip_remote = 0; }
-
-    $timestamp = time();
-    $expires = strtotime('+30 minutes', $timestamp);
-
+    if (!$this->isValidIP($ip_remote)) { return false; }
     $stmt = $this->DB->GetConnection()->prepare("INSERT INTO ".$table."(ip_remote,timestamp,timestamp_expires) VALUES (?, ?, ?)");
-    $stmt->bind_param('sii', $ip_remote,$timestamp,$expires);
+    $stmt->bind_param('sii', $ip_remote,$_SERVER['REQUEST_TIME'],$_SERVER['REQUEST_TIME']+1800);
     $rc = $stmt->execute();
     if ( false===$rc ) { $this->error = "MySQL Error"; }
     $stmt->close();

@@ -84,15 +84,11 @@ class Verify {
       $this->status_limit = $db_status_limit;
       $this->webHookLimit = $db_webhook_limit;
 
-      if ($db_id != "") {
-        return true;
-      } else {
-        return false;
+      if($stmt->rowCount() == 1) {
+        return true; 
       }
-
-    } else {
-      return false;
     }
+    return false;
   }
 
   public function checkHash($key) {
