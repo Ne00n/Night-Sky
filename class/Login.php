@@ -37,12 +37,8 @@ class Login {
 
   public function addtoBlacklist($ip_remote,$table = "login_blacklist") {
     if (!$this->isValidIP($ip_remote)) { return false; }
-
-    $timestamp = time();
-    $expires = strtotime('+30 minutes', $timestamp);
-
     $stmt = $this->DB->GetConnection()->prepare("INSERT INTO ".$table."(ip_remote,timestamp,timestamp_expires) VALUES (?, ?, ?)");
-    $stmt->bind_param('sii', $ip_remote,$timestamp,$expires);
+    $stmt->bind_param('sii', $ip_remote,$_SERVER['REQUEST_TIME'],$_SERVER['REQUEST_TIME']+1800);
     $rc = $stmt->execute();
     if ( false===$rc ) { $this->error = "MySQL Error"; }
     $stmt->close();
