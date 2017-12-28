@@ -18,11 +18,7 @@
       if (strlen($password) > _max_Password) {$this->error = "The Password is to long."; $error = true;}
       if (strlen($username) < _min_Name) {$this->error = "The Username is to short."; $error = true;}
       if (strlen($username) > _max_Name) {$this->error = "The Username is to long."; $error = true;}
-      if ($code == "LET") {
-        //Okay
-      } else {
-        $this->error = "Invalid Code";
-      }
+      if (!in_array($code, _signUpCodes)) { $this->error = "Invalid Code"; }
 
       if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
          $this->error = "Invalid Email";

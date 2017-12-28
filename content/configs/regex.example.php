@@ -10,7 +10,7 @@ define("_regex_ID",_regex_PORT);
 define("_max_Name",50);
 define("_min_Name",3);
 
-define("_min_URL",1);
+define("_min_URL",3);
 define("_max_URL",200);
 
 define("_min_Password",8);
