@@ -53,7 +53,7 @@
         }
 
         //Here we need all details
-        $checks_out[$row['SLOT']][$row['ID']] = array("IP" => $row['IP'],"PORT" => $row['PORT'],"EMAIL" => $emails,"WEBHOOK" => $webhooks,"NAME" => $row['NAME'],"USER_ID" => $row['USER_ID'],"INTERVAL" => $row['Check_Interval']);
+        $checks_out[$row['ID']] = array("IP" => $row['IP'],"PORT" => $row['PORT'],"EMAIL" => $emails,"WEBHOOK" => $webhooks,"NAME" => $row['NAME'],"USER_ID" => $row['USER_ID'],"INTERVAL" => $row['Check_Interval']);
       }
 
       return $checks_out;
@@ -75,9 +75,7 @@
 
     $Checks = fetchAll($DB,$threadID,$i);
 
-    $Check_Thread = array_slice($Checks[$threadID], $i, $i +5, true);
-
-    $CS = new CronjobServ($threadID,$i,$Check_Thread,$Remote,$time);
+    $CS = new CronjobServ($threadID,$i,$Checks,$Remote,$time);
     $CS->run();
 
   }
