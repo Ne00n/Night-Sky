@@ -7,6 +7,13 @@ function dat_loader($class) {
     include 'class/' . $class . '.php';
 }
 
+function require_auth() {
+    $Login = new Verify($DB);
+    if(!$Login->isLoggedIN()) {
+        exit(header("Location: /index.php"));   
+    }
+}
+
 spl_autoload_register('dat_loader');
 
 session_start();
@@ -26,17 +33,6 @@ if (isset($_GET["p"])) {
 
 $DB = new Database;
 $DB->InitDB();
-
-$auth_pages = array('main', 'group', 'contact', 'history', 'account', 'status-page', 'webhook');
-foreach($auth_pages as $page) {
-    if(Page::startsWith($p, $page)) {
-        $Login = new Verify($DB);
-        if(!$Login->isLoggedIN()) {
-            exit(header("Location: /index.php"));   
-        }
-        break;
-    }
-}
                                      
 include 'content/header.html';
                                      
@@ -45,24 +41,32 @@ if ($p == "login") {
 } elseif (Page::startsWith($p,"register")) {
   include 'content/register.php';
 } elseif (Page::startsWith($p,"main")) {
+  require_auth();
   include 'content/main.php';
 } elseif (Page::startsWith($p,"group")) {
+  require_auth();
   include 'content/group.php';
 } elseif (Page::startsWith($p,"contact")) {
+  require_auth();
   include 'content/contact.php';
 } elseif (Page::startsWith($p,"history")) {
+  require_auth();
   include 'content/history.php';
 } elseif (Page::startsWith($p,"tos")) {
   include 'content/tos.php';
 } elseif (Page::startsWith($p,"privacy")) {
   include 'content/privacy.php';
 } elseif (Page::startsWith($p,"account")) {
+  require_auth();
   include 'content/account.php';
 } elseif (Page::startsWith($p,"status-page")) {
+  require_auth();
   include 'content/status-page.php';
 } elseif (Page::startsWith($p,"webhook")) {
+  require_auth();
   include 'content/webhooks.php';
 } elseif ($p=="logout") {
+  require_auth();
   session_unset();
   session_destroy();
   header('Location: index.php?p=login');
