@@ -113,24 +113,21 @@ class StatusPage {
   }
 
   public function getServersbyToken($token) {
-    //Fetch all Servers which are assigned to this Token
-
-    $servers = array("operational" => 1);
-    if(!preg_match(_regex_TOKEN,$token)){ return $servers;}
-
+    $servers = array('name' => '', 'operational' => 1, 'servers' => array());
+    if(!preg_match(_regex_TOKEN,$token)) { return false; }
     $query = "SELECT checks.Name,checks.ONLINE,status_pages.Name as SName FROM status_pages INNER JOIN groups_checks ON status_pages.GroupID=groups_checks.GroupID INNER JOIN checks ON checks.ID=groups_checks.CheckID WHERE status_pages.Token = ? ";
     $stmt = $this->DB->GetConnection()->prepare($query);
     $stmt->bind_param('s', $token);
     $stmt->execute();
     $result = $stmt->get_result();
     while ($row = $result->fetch_assoc()) {
-      $servers[] = array("Name" => $row['Name'],"Status" => $row['ONLINE']);
+      array_push($servers['servers'], array("Name" => $row['Name'],"Status" => $row['ONLINE']));
       $servers['name'] = $row['SName'];
       if ($row['ONLINE'] == 0) {
-        $servers["operational"] = 0;
+        $servers['operational'] = 0;
       }
     }
-
+    if(sizeof($servers['servers']) { return false; }
     return $servers;
 
   }
