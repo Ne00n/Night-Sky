@@ -20,7 +20,16 @@ include 'content/header.html';
 echo '<body><div class="container">';
 ?>
   <?php
-    if (empty($servers['name'])) {
+    if ($servers == false) {
+  ?>
+  <div class="row">
+    <div class="col-md-12 col-sm-offset-2">
+        <div class="alert alert-danger">Status Page token invalid!</div>
+    </div>
+  </div>
+  <?php
+    }
+    else if (empty($servers['name'])) {
   ?>
   <div class="row">
     <div class="col-md-12 col-sm-offset-2">
