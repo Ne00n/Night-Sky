@@ -113,7 +113,7 @@ class StatusPage {
   }
 
   public function getServersbyToken($token) {
-    $servers = array('servers' => array());
+    $servers = array('name' => '', 'operational' => 1, 'servers' => array());
     if(!preg_match(_regex_TOKEN,$token)) { return false; }
     $query = "SELECT checks.Name,checks.ONLINE,status_pages.Name as SName FROM status_pages INNER JOIN groups_checks ON status_pages.GroupID=groups_checks.GroupID INNER JOIN checks ON checks.ID=groups_checks.CheckID WHERE status_pages.Token = ? ";
     $stmt = $this->DB->GetConnection()->prepare($query);
@@ -127,7 +127,7 @@ class StatusPage {
         $servers['operational'] = 0;
       }
     }
-    if(sizeof($servers['servers'] || empty($servers['name']) { return false; }
+    if(sizeof($servers['servers']) { return false; }
     return $servers;
 
   }
