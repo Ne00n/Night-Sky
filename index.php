@@ -10,7 +10,7 @@ function dat_loader($class) {
 function require_auth() {
     $Login = new Verify($DB);
     if(!$Login->isLoggedIN()) {
-        exit(header("Location: /index.php"));   
+        exit(header("Location: /index.php?p=login"));   
     }
 }
 
