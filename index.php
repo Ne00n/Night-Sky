@@ -1,6 +1,5 @@
 <?php
 
-include 'content/header.html';
 include 'content/configs/config.php';
 include 'content/configs/regex.php';
 
@@ -28,6 +27,19 @@ if (isset($_GET["p"])) {
 $DB = new Database;
 $DB->InitDB();
 
+$auth_pages = array('main', 'group', 'contact', 'history', 'account', 'status-page', 'webhook');
+foreach($auth_pages as $page) {
+    if(Page::startsWith($p, $page)) {
+        $Login = new Verify($DB);
+        if(!$Login->isLoggedIN()) {
+            exit(header("Location: /index.php"));   
+        }
+        break;
+    }
+}
+                                     
+include 'content/header.html';
+                                     
 if ($p == "login") {
   include 'content/login.php';
 } elseif (Page::startsWith($p,"register")) {
