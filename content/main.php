@@ -303,6 +303,7 @@
             <th>Port</th>
             <th>Status</th>
             <th>Online</th>
+            <th>Lastrun</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -312,7 +313,7 @@
 
         $USER_ID = $Login->getUserID();
 
-        $query = "SELECT ID,IP,PORT,ENABLED,ONLINE,NAME FROM checks WHERE USER_ID = ? ";
+        $query = "SELECT ID,IP,PORT,ENABLED,ONLINE,NAME,Lastrun FROM checks WHERE USER_ID = ? ";
         $stmt = $DB->GetConnection()->prepare($query);
         $stmt->bind_param('i', $USER_ID);
         $stmt->execute();
@@ -325,6 +326,7 @@
           echo '<td class="text-left">'.Page::escape($row['PORT']).'</td>';
           echo '<td class="text-left">'.($row['ENABLED'] ? 'Enabled' : 'Disabled').'</td>';
           echo '<td class="text-left">'.($row['ONLINE'] ? 'Yes' : 'No').'</td>';
+          echo '<td class="text-left">'.Page::escape(date("d.m.Y H:i:s",$row['Lastrun'])).'</td>';
           echo '<td class="text-left col-md-3"><a href="index.php?p=main?edit='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-gear"></i></button></a>';
           if ($row['ENABLED'] === 1) {
             echo '<a href="index.php?p=main?disable='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-pause"></i></button></a>';

@@ -33,6 +33,16 @@ class Status {
     }
   }
 
+  public function setLastrun() {
+    $lastrun = time();
+
+    $stmt = $this->DB->GetConnection()->prepare("UPDATE checks SET Lastrun = ?  WHERE ID = ?");
+    $stmt->bind_param('ii', $lastrun,$this->id);
+    $rc = $stmt->execute();
+    if ( false===$rc ) { $this->error = "MySQL Error"; }
+    $stmt->close();
+  }
+
   public function setStatus($status_in) {
     $stmt = $this->DB->GetConnection()->prepare("UPDATE checks SET ONLINE = ?  WHERE ID = ?");
     $stmt->bind_param('ii', $status_in,$this->id);

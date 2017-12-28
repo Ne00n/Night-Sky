@@ -146,6 +146,8 @@ class CronjobServ {
 
             }
 
+            $S->setLastrun();
+
          } else {
            echo "Skipped Check for Server: ".$element['NAME'].", interval is set to ".$element['INTERVAL']. " but currently we are at ".($this->time -1)."0"."\n";
          }
