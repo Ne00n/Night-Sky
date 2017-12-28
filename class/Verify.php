@@ -90,9 +90,8 @@ class Verify {
         return false;
       }
 
-    } else {
-      return false;
     }
+    return false;
   }
 
   public function checkHash($key) {

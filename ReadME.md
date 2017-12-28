@@ -26,4 +26,5 @@ QuickSetup:
 Make SURE to use a Domain with SSL enabled otherwise you will not get any cookies.
 4. Put cron/night.php and cron/remote.php into Crontab to run every 60 seconds
 5. Deploy some Remote Servers and add them to the table remote.<br />
+You can find the files in content/remote/<br />
 The Field IP can be also contain a URL like "check.domain.com", make sure the Domain is reachable over TLS, plain wont work.

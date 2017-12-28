@@ -10,7 +10,8 @@ CREATE TABLE `checks` (
   `NAME` varchar(50) NOT NULL,
   `IP` varchar(50) NOT NULL,
   `PORT` int(11) NOT NULL,
-  `Check_Interval` int(2) NOT NULL DEFAULT 10
+  `Check_Interval` int(2) NOT NULL DEFAULT 10,
+  `Lastrun` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `emails` (

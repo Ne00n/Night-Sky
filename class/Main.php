@@ -91,7 +91,7 @@ class Main {
   private function processGroups($groups) {
     if (count($groups) > 0) {
       $GR = new Group($this->DB,$this->Verify);
-      if (count($groups) < 16) {
+      if (count($groups) <= _groups_limit_global) {
         foreach ($groups as &$id) {
           if ($GR->checkGroupID($id) === false) {
             $this->error = "Invalid Groups";
