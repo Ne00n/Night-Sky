@@ -127,7 +127,7 @@ class StatusPage {
         $servers['operational'] = 0;
       }
     }
-    if(sizeof($servers['servers']) { return false; }
+    if(sizeof($servers['servers'] || empty($servers['name']) { return false; }
     return $servers;
 
   }
