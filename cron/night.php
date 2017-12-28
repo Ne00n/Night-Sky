@@ -42,6 +42,7 @@ if (php_sapi_name() == 'cli') {
         break;
       }
     }
+    
     if ($connection) {
       echo "Connected to the Internet\n";
 
