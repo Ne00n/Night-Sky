@@ -1,8 +1,3 @@
-<?php
-$Login = new Verify($DB);
-if(!$Login->isLoggedIN()) { exit(header("Location: /index.php"); }
-?>
-
 <body>
 
 <?php include 'content/navbar.php'; ?>
