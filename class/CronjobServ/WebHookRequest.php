@@ -8,6 +8,8 @@ class WebHookRequest {
     curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($request, CURLOPT_SSL_VERIFYPEER, true);
     curl_setopt($request, CURLOPT_SSL_VERIFYHOST, 2);
+    curl_setopt($request, CURLOPT_CONNECTTIMEOUT ,5); //Time for connection in seconds
+    curl_setopt($request, CURLOPT_TIMEOUT, 5); //Time for execution in seconds
     curl_setopt($request, CURLOPT_CUSTOMREQUEST, $method);
 
     if ($payload != "") {
