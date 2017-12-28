@@ -13,9 +13,7 @@ spl_autoload_register('dat_loader');
 $DB = new Database;
 $DB->InitDB();
 
-$Verify = array(); //create a dummy Verify, since we need to pass it but we dont access it
-
-$SP = new StatusPage($DB,$Verify);
+$SP = new StatusPage($DB,false);
 
 if (isset($_GET["token"])) {
   $token = $_GET["token"];
