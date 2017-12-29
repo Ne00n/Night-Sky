@@ -1,6 +1,6 @@
 # Night-Sky
 
-10s Interval Port Monitoring
+10,20,30,60s Interval Port Monitoring
 
 [![Build Status](https://travis-ci.org/Ne00n/Night-Sky.svg?branch=Release)](https://travis-ci.org/Ne00n/Night-Sky)
 
