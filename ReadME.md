@@ -20,15 +20,15 @@ work. If not, see https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 QuickSetup:
 
-1. Create a User+DB, Import the content/sql/night-sky.sql
-2. Rename content/configs/config.example.php to config.php and regex.example.php to regex.php
+1. Create a User+DB, Import the content/sql/night-sky.sql.
+2. Rename content/configs/config.example.php to config.php and regex.example.php to regex.php.
 3. Configure content/configs/config.php:
 - _Domain needs to be updated to the Domain you want to use, otherwise Cookies wont work.
-- _mail_sender needs to be updated, to make contact work properly
-- Finally you need to update the Database part, with the Details you created the Database with
+- _mail_sender needs to be updated, to make contact work properly. The mails will get forwarded to the local mailserver.
+- Finally you need to update the Database part, with the Details you created the Database with.
 - Make sure to use TLS on your Domain otherwise cookies will not apply on Plain.
-- The rest can be edited on your needs,
+- The rest can be edited on your needs.
 4. Put cron/night.php and cron/remote.php into Crontab to run every 60 seconds, use a non privileged user for that.
-5. Deploy some Remote Servers and add them to the table remote.<br />
+5. Deploy the file check.php on some remote servers and add them to the table remote.<br />
 - You can find the file for that in content/remote/<br />
 - The Field IP can be also contain a URL like "check.domain.com", make sure the Domain is reachable over TLS, plain wont work.
