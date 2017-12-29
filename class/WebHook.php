@@ -23,8 +23,7 @@ class WebHook {
 
   public function addHook($name,$method,$urlDown,$jsonDown,$headersDown,$urlUp,$jsonUp,$headersUp,$group) {
     if(!preg_match(_regex_NAME,$name)){ $this->error = "The Name contains invalid letters.";}
-    if (strlen($name) > _max_Name) {$this->error = "The Name is to long";}
-    if (strlen($name) < _min_Name) {$this->error = "The Name is to short";}
+    if (strlen($name) > _max_Name OR strlen($name) < _min_Name) {$this->error = "The length of the Name should be between "._min_Name." and "._max_Name.".";}
     if (strlen($urlDown) > _max_URL OR strlen($urlDown) < _min_URL) {$this->error = "The length of the URL should be between "._min_URL." and "._max_URL.".";}
     if (strlen($urlUp) > _max_URL OR strlen($urlUp) < _min_URL) {$this->error = "The length of the URL should be between "._min_URL." and "._max_URL.".";}
     if (!filter_var($urlDown, FILTER_VALIDATE_URL) OR !filter_var($urlUp, FILTER_VALIDATE_URL)  ) { $this->error = "The URL is invalid."; }
@@ -75,8 +74,7 @@ class WebHook {
 
   public function editHook($name,$method,$urlDown,$jsonDown,$headersDown,$urlUp,$jsonUp,$headersUp,$group) {
     if(!preg_match(_regex_NAME,$name)){ $this->error = "The Name contains invalid letters.";}
-    if (strlen($name) > _max_Name) {$this->error = "The Name is to long";}
-    if (strlen($name) < _min_Name) {$this->error = "The Name is to short";}
+    if (strlen($name) > _max_Name OR strlen($name) < _min_Name) {$this->error = "The length of the Name should be between "._min_Name." and "._max_Name.".";}
     if (strlen($urlDown) > _max_URL OR strlen($urlDown) < _min_URL) {$this->error = "The length of the URL should be between "._min_URL." and "._max_URL.".";}
     if (strlen($urlUp) > _max_URL OR strlen($urlUp) < _min_URL) {$this->error = "The length of the URL should be between "._min_URL." and "._max_URL.".";}
     if (!filter_var($urlDown, FILTER_VALIDATE_URL) OR !filter_var($urlUp, FILTER_VALIDATE_URL)  ) { $this->error = "The URL is invalid."; }
