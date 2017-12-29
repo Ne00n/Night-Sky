@@ -52,6 +52,7 @@
        $webhookID = str_replace("webhook?edit=", "", $p);
 
        $WH->setID($webhookID);
+       $WH->getData();
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['confirm'])) {
 
