@@ -157,7 +157,7 @@
                  <div class="input-group-addon">
                 <span class="fa fa-pencil"></span>
                  </div>
-                  <input value="<?php echo Page::escape($WH->getName()); ?>" type="text" class="form-control input-sm" name="name" placeholder="Tracer">
+                  <input value="<?php echo Page::escape($WH->getName()); ?>" type="text" class="form-control input-sm" name="name" placeholder="Bastion">
                 </div>
               </div>
             </div>
@@ -293,7 +293,7 @@
                <div class="input-group-addon">
               <span class="fa fa-pencil"></span>
                </div>
-                <input value="<?php if(isset($_POST['name'])) {echo Page::escape($_POST['name']);} ?>" type="text" class="form-control input-sm" name="name" placeholder="Tracer">
+                <input value="<?php if(isset($_POST['name'])) {echo Page::escape($_POST['name']);} ?>" type="text" class="form-control input-sm" name="name" placeholder="Bastion">
               </div>
             </div>
           </div>
