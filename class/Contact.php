@@ -15,8 +15,7 @@ class Contact {
 
   public function addContact($EMail,$groups,$testing = false) {
     if (!filter_var($EMail, FILTER_VALIDATE_EMAIL)) { $this->error = "Invalid Email."; }
-    if (strlen($EMail) > _max_Mail) {$this->error = "The Email is to long";}
-    if (strlen($EMail) < _min_Mail) {$this->error = "The Email is to short";}
+    if (strlen($EMail) > _max_Mail OR strlen($EMail) < _min_Mail) {$this->error = "The length of the Email should be between "._min_Mail." and "._max_Mail.".";}
     if ($this->checkifEMailExists($EMail) == true) {$this->error = "The Email exists.";}
     if (!$this->checkLimit()) { $this->error = "Limit reached";}
 
@@ -51,8 +50,7 @@ class Contact {
 
   public function updateContact($mail,$groups,$testing = false) {
     if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) { $this->error = "Invalid Email."; }
-    if (strlen($mail) > _max_Mail) {$this->error = "The Email is to long";}
-    if (strlen($mail) < _min_Mail) {$this->error = "The Email is to short";}
+    if (strlen($mail) > _max_Mail OR strlen($mail) < _min_Mail) {$this->error = "The length of the Email should be between "._min_Mail." and "._max_Mail.".";}
     if ($this->email != $mail) {
       $this->error = "Add a new Contact if you want to change your email and conntect it to the same Group";
     }
