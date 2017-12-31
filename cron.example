@@ -1,0 +1,4 @@
+#!/bin/bash
+cd /var/www/html/Night-Sky/cron
+/usr/bin/php night.php
+/usr/bin/php remote.php
