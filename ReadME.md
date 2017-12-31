@@ -28,7 +28,7 @@ QuickSetup:
 - Finally you need to update the Database part, with the Details you created the Database with.
 - Make sure to use TLS on your Domain otherwise cookies will not apply on Plain.
 - The rest can be edited on your needs.
-4. Put cron/night.php and cron/remote.php into Crontab to run every 60 seconds, use a non privileged user for that.
+4. Put cron/night.php and cron/remote.php into Crontab to run every 60 seconds, use a non privileged user for that. => cron.example
 5. Deploy the file check.php on some remote servers and add them to the table remote.<br />
 - You can find the file for that in content/remote/<br />
 - The Field IP can be also contain a URL like "check.domain.com", make sure the Domain is reachable over TLS, plain wont work.
