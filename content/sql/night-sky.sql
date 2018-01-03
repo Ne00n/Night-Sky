@@ -70,6 +70,84 @@ CREATE TABLE `remote` (
   `Online` int(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE `serversCPU` (
+  `ID` int(11) NOT NULL,
+  `serversTokenID` int(11) NOT NULL,
+  `core` int(11) NOT NULL,
+  `user` double NOT NULL,
+  `nice` double NOT NULL,
+  `system` double NOT NULL,
+  `idle` double NOT NULL,
+  `iowait` double NOT NULL,
+  `irq` double NOT NULL,
+  `softirq` double NOT NULL,
+  `steal` double NOT NULL,
+  `guest` double NOT NULL,
+  `guest_nice` double NOT NULL,
+  `timestamp` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `serversDisk` (
+  `ID` int(11) NOT NULL,
+  `serversTokenID` int(11) NOT NULL,
+  `mount` int(11) NOT NULL,
+  `total` int(11) NOT NULL,
+  `used` int(11) NOT NULL,
+  `free` int(11) NOT NULL,
+  `percent` double NOT NULL,
+  `timestamp` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `serversMemory` (
+  `ID` int(11) NOT NULL,
+  `serversTokenID` int(11) NOT NULL,
+  `total` bigint(11) NOT NULL,
+  `available` bigint(11) NOT NULL,
+  `percent` double NOT NULL,
+  `used` bigint(11) NOT NULL,
+  `free` bigint(11) NOT NULL,
+  `active` bigint(11) NOT NULL,
+  `inactive` bigint(11) NOT NULL,
+  `buffers` bigint(11) NOT NULL,
+  `cached` bigint(11) NOT NULL,
+  `shared` bigint(11) NOT NULL,
+  `timestamp` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `serversNetwork` (
+  `ID` int(11) NOT NULL,
+  `serversTokenID` int(11) NOT NULL,
+  `nic` int(11) NOT NULL,
+  `bytesTX` bigint(11) NOT NULL,
+  `bytesRX` bigint(11) NOT NULL,
+  `packetsTX` bigint(11) NOT NULL,
+  `packetsRX` bigint(11) NOT NULL,
+  `errorTX` int(11) NOT NULL,
+  `errorRX` int(11) NOT NULL,
+  `droppedTX` int(11) NOT NULL,
+  `droppedRX` int(11) NOT NULL,
+  `timestamp` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `serversSwap` (
+  `ID` int(11) NOT NULL,
+  `serversTokenID` int(11) NOT NULL,
+  `total` bigint(11) NOT NULL,
+  `used` bigint(11) NOT NULL,
+  `free` bigint(11) NOT NULL,
+  `percent` double NOT NULL,
+  `sinTX` int(11) NOT NULL,
+  `sinRX` int(11) NOT NULL,
+  `timestamp` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `serversToken` (
+  `ID` int(11) NOT NULL,
+  `UserID` int(11) NOT NULL,
+  `Name` varchar(50) NOT NULL DEFAULT 'Bermuda',
+  `Token` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE `status_pages` (
   `ID` int(11) NOT NULL,
   `UserID` int(11) NOT NULL,
@@ -142,6 +220,24 @@ ALTER TABLE `register_blacklist`
 ALTER TABLE `remote`
   ADD PRIMARY KEY (`ID`);
 
+ALTER TABLE `serversCPU`
+  ADD PRIMARY KEY (`ID`);
+
+ALTER TABLE `serversDisk`
+  ADD PRIMARY KEY (`ID`);
+
+ALTER TABLE `serversMemory`
+  ADD PRIMARY KEY (`ID`);
+
+ALTER TABLE `serversNetwork`
+  ADD PRIMARY KEY (`ID`);
+
+ALTER TABLE `serversSwap`
+  ADD PRIMARY KEY (`ID`);
+
+ALTER TABLE `serversToken`
+  ADD PRIMARY KEY (`ID`);
+
 ALTER TABLE `status_pages`
   ADD PRIMARY KEY (`ID`),
   ADD UNIQUE KEY `Token` (`Token`);
@@ -175,6 +271,18 @@ ALTER TABLE `login_blacklist`
 ALTER TABLE `register_blacklist`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `remote`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `serversCPU`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `serversDisk`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `serversMemory`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `serversNetwork`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `serversSwap`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `serversToken`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `status_pages`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
