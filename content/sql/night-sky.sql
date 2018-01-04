@@ -143,6 +143,7 @@ CREATE TABLE `serversSwap` (
 
 CREATE TABLE `serversToken` (
   `ID` int(11) NOT NULL,
+  `GroupID` int(11) NOT NULL,
   `UserID` int(11) NOT NULL,
   `Name` varchar(50) NOT NULL DEFAULT 'Bermuda',
   `Token` varchar(50) NOT NULL
@@ -173,7 +174,8 @@ CREATE TABLE `users` (
   `Same_IP_Limit` int(11) NOT NULL DEFAULT 2,
   `Group_Limit` int(11) NOT NULL DEFAULT 15,
   `StatusPage_Limit` int(11) DEFAULT 4,
-  `WebHookLimit` int(11) NOT NULL DEFAULT 15
+  `WebHookLimit` int(11) NOT NULL DEFAULT 15,
+  `ServerLimit` int(11) NOT NULL DEFAULT 10
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `webhooks` (
