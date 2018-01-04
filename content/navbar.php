@@ -37,6 +37,12 @@
             echo '<li><a href="index.php?p=webhook">WebHooks</a></li>';
           }
 
+          if (Page::startsWith($p,"server")) {
+             echo '<li class="active"><a href="index.php?p=server">Servers</a></li>';
+          } else {
+            echo '<li><a href="index.php?p=server">Servers</a></li>';
+          }
+
           if (Page::startsWith($p,"status-page")) {
              echo '<li class="active"><a href="index.php?p=status-page">StatusPages</a></li>';
           } else {

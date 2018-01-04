@@ -62,6 +62,9 @@ if ($p == "login") {
 } elseif (Page::startsWith($p,"status-page")) {
   require_auth($DB,$Login);
   include 'content/status-page.php';
+} elseif (Page::startsWith($p,"server")) {
+  require_auth($DB,$Login);
+  include 'content/server.php';
 } elseif (Page::startsWith($p,"webhook")) {
   require_auth($DB,$Login);
   include 'content/webhooks.php';
