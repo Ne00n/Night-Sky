@@ -21,7 +21,7 @@
               $S->setID($serverID);
               $S->removeServer();
               if ($S->getLastError() == "") {
-                echo '<div class="alert alert-success" role="alert"><center>Success.</center></div>';
+                echo '<div class="alert alert-success" role="alert"><center>Success.<br>To install the agent please run this command:<br><pre>wget https://raw.githubusercontent.com/Ne00n/Night-Sky-PRM/master/install.sh && bash install.sh '. $S->getToken().'</pre></center></div>';
               } else {
                 echo '<div class="alert alert-danger" role="alert"><center>'.$S->getLastError().'</center></div>';
               }
@@ -58,7 +58,7 @@
               $S->addServer($_POST['name'],$_POST['groups']);
 
                if ($S->getlastError() == "") {
-                 echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
+                 echo '<div class="alert alert-success" role="alert"><center>Success.<br>To install the agent please run this command:<br><pre>wget https://raw.githubusercontent.com/Ne00n/Night-Sky-PRM/master/install.sh && bash install.sh '. $S->getToken().' '._Domain.'</pre></center></div>';
                  $_POST = array();
                } else {
                  echo '<div class="alert alert-danger" role="alert"><center>'.$S->getLastError().'</center></div>';
@@ -128,6 +128,7 @@
         <?php
 
         $USER_ID = $Login->getUserID();
+        $S = new Server($DB,$Login);
 
         $query = "SELECT ID,UserID,Name FROM serversToken WHERE UserID = ? ";
         $stmt = $DB->GetConnection()->prepare($query);
@@ -135,9 +136,42 @@
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
-
+          $S->setID($row['ID']);
+          $cpuRaw = $S->getUage('CPU','0','0',true); $cpuLoad = 0;
+          foreach ($cpuRaw as $element) {
+            $cpuLoad += $element['idle'];
+          }
+          $cpuLoad = abs(($cpuLoad / count($cpuRaw)) - 100);
+          $memoryRaw = $S->getUage('Memory','0','0',true); $memoryUsage = 0;
+          foreach ($memoryRaw as $element) {
+            $memoryUsage += $element['percent'];
+          }
+          $memoryUsage = $memoryUsage / count($memoryRaw);
+          $diskRaw = $S->getUage('Disk','0','0',true); $diskUsage = 0;
+          foreach ($diskRaw as $element) {
+            $diskUsage += $element['percent'];
+          }
+          $diskUsage = $diskUsage / count($diskRaw);
+          $networkRaw = $S->getUage('Network','0','0',true); $networkUsage = array();
+          foreach ($networkRaw as $element) {
+            if (isset($networkUsage[$element['nic']]['lastRX'])) {
+              $networkUsage['RX'] += $element['bytesRX'] - $networkUsage[$element['nic']]['lastRX'];
+              $networkUsage['TX'] += $element['bytesTX'] - $networkUsage[$element['nic']]['lastTX'];
+            }
+            $networkUsage[$element['nic']]['lastRX'] = $element['bytesRX'];
+            $networkUsage[$element['nic']]['lastTX'] = $element['bytesTX'];
+          }
+          $networkUsage['RX'] = $networkUsage['RX'] / count($networkRaw);
+          $networkUsage['TX'] = $networkUsage['TX'] / count($networkRaw);
+          $networkUsage['RX'] = $networkUsage['RX'] / 125000;
+          $networkUsage['TX'] = $networkUsage['TX'] / 125000;
+          $networkUsageTotal = round($networkUsage['RX'] + $networkUsage['TX'],2);
           echo '<tr>';
           echo '<td class="text-left">'.Page::escape($row['Name']).'</td>';
+          echo '<td class="text-left">'.Page::escape($cpuLoad).'%</td>';
+          echo '<td class="text-left">'.Page::escape($memoryUsage).'%</td>';
+          echo '<td class="text-left">'.Page::escape($diskUsage).'%</td>';
+          echo '<td class="text-left">'.Page::escape($networkUsageTotal).'Mbit</td>';
           echo '<td class="text-left col-md-3">';
           echo '<a href="index.php?p=server?remove='.Page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
           echo '</tr>';

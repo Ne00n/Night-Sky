@@ -8,6 +8,7 @@ class Server {
   private $id;
   private $name;
   private $group;
+  private $token;
 
   public function __construct($DB,$Verify) {
     $this->DB = $DB;
@@ -25,7 +26,7 @@ class Server {
     if ($this->error == "") {
 
       $userID = $this->Verify->getUserID();
-      $token = bin2hex(random_bytes(20));
+      $this->token = $token = bin2hex(random_bytes(20));
 
       $stmt = $this->DB->GetConnection()->prepare("INSERT INTO serversToken(GroupID,UserID,Name,Token) VALUES (?,?,?,?)");
       $stmt->bind_param('iiss',$group, $userID,$name,$token);
@@ -105,6 +106,27 @@ class Server {
     $stmt->close();
   }
 
+  public function getUage($type = 'cpu',$start = 0,$end = 0,$latest = false) {
+    if ($latest == true) {
+      $time = strtotime('-5 minutes', time());
+      $response = array();
+
+      $query = "SELECT * FROM servers".$type." WHERE timestamp >= ? AND serversTokenID = ?";
+      $stmt = $this->DB->GetConnection()->prepare($query);
+      $stmt->bind_param('ii', $time,$this->id);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      while ($row = $result->fetch_assoc()) {
+        $response[] = $row;
+      }
+      return $response;
+    } elseif ($start != 0 and $end != 0) {
+
+    } else {
+      return false;
+    }
+  }
+
   public function resetError() {
     $this->error = NULL;
   }
@@ -115,6 +137,10 @@ class Server {
 
   public function getGroupID() {
     return $this->group;
+  }
+
+  public function getToken() {
+    return $this->token;
   }
 
   public function getLastError() {
