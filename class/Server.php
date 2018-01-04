@@ -121,7 +121,15 @@ class Server {
       }
       return $response;
     } elseif ($start != 0 and $end != 0) {
-
+      $query = "SELECT * FROM servers".$type." WHERE serversTokenID = ? AND timestamp >= ? AND timestamp <= ?";
+      $stmt = $this->DB->GetConnection()->prepare($query);
+      $stmt->bind_param('iii', $this->id,$start,$end);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      while ($row = $result->fetch_assoc()) {
+        $response[] = $row;
+      }
+      return $response;
     } else {
       return false;
     }
