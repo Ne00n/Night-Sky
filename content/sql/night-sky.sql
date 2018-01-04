@@ -90,10 +90,10 @@ CREATE TABLE `serversCPU` (
 CREATE TABLE `serversDisk` (
   `ID` int(11) NOT NULL,
   `serversTokenID` int(11) NOT NULL,
-  `mount` int(11) NOT NULL,
-  `total` int(11) NOT NULL,
-  `used` int(11) NOT NULL,
-  `free` int(11) NOT NULL,
+  `mount` varchar(11) NOT NULL,
+  `total` bigint(15) NOT NULL,
+  `used` bigint(15) NOT NULL,
+  `free` bigint(15) NOT NULL,
   `percent` double NOT NULL,
   `timestamp` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -101,27 +101,27 @@ CREATE TABLE `serversDisk` (
 CREATE TABLE `serversMemory` (
   `ID` int(11) NOT NULL,
   `serversTokenID` int(11) NOT NULL,
-  `total` bigint(11) NOT NULL,
-  `available` bigint(11) NOT NULL,
+  `total` bigint(15) NOT NULL,
+  `available` bigint(15) NOT NULL,
   `percent` double NOT NULL,
-  `used` bigint(11) NOT NULL,
-  `free` bigint(11) NOT NULL,
-  `active` bigint(11) NOT NULL,
-  `inactive` bigint(11) NOT NULL,
-  `buffers` bigint(11) NOT NULL,
-  `cached` bigint(11) NOT NULL,
-  `shared` bigint(11) NOT NULL,
+  `used` bigint(15) NOT NULL,
+  `free` bigint(15) NOT NULL,
+  `active` bigint(15) NOT NULL,
+  `inactive` bigint(15) NOT NULL,
+  `buffers` bigint(15) NOT NULL,
+  `cached` bigint(15) NOT NULL,
+  `shared` bigint(15) NOT NULL,
   `timestamp` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `serversNetwork` (
   `ID` int(11) NOT NULL,
   `serversTokenID` int(11) NOT NULL,
-  `nic` int(11) NOT NULL,
-  `bytesTX` bigint(11) NOT NULL,
-  `bytesRX` bigint(11) NOT NULL,
-  `packetsTX` bigint(11) NOT NULL,
-  `packetsRX` bigint(11) NOT NULL,
+  `nic` varchar(11) NOT NULL,
+  `bytesTX` bigint(15) NOT NULL,
+  `bytesRX` bigint(15) NOT NULL,
+  `packetsTX` bigint(15) NOT NULL,
+  `packetsRX` bigint(15) NOT NULL,
   `errorTX` int(11) NOT NULL,
   `errorRX` int(11) NOT NULL,
   `droppedTX` int(11) NOT NULL,
@@ -132,9 +132,9 @@ CREATE TABLE `serversNetwork` (
 CREATE TABLE `serversSwap` (
   `ID` int(11) NOT NULL,
   `serversTokenID` int(11) NOT NULL,
-  `total` bigint(11) NOT NULL,
-  `used` bigint(11) NOT NULL,
-  `free` bigint(11) NOT NULL,
+  `total` bigint(15) NOT NULL,
+  `used` bigint(15) NOT NULL,
+  `free` bigint(15) NOT NULL,
   `percent` double NOT NULL,
   `sinTX` int(11) NOT NULL,
   `sinRX` int(11) NOT NULL,
@@ -221,19 +221,24 @@ ALTER TABLE `remote`
   ADD PRIMARY KEY (`ID`);
 
 ALTER TABLE `serversCPU`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `serversTokenID` (`serversTokenID`);
 
 ALTER TABLE `serversDisk`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `serversTokenID` (`serversTokenID`);
 
 ALTER TABLE `serversMemory`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `serversTokenID` (`serversTokenID`);
 
 ALTER TABLE `serversNetwork`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `serversTokenID` (`serversTokenID`);
 
 ALTER TABLE `serversSwap`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `serversTokenID` (`serversTokenID`);
 
 ALTER TABLE `serversToken`
   ADD PRIMARY KEY (`ID`);

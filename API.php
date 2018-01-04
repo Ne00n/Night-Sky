@@ -23,10 +23,9 @@ if ($method == 'POST' && isset($data['token']) && isset($data['cpu']) && isset($
   //Validating the Payload
   $API->validateArray($data,$threshold);
   //Validating the Token with our DB
-  $id = $API->tokenExist($token);
+  $API->tokenExist($token);
   //Feed our DB
-  #var_dump($data);
-
+  $API->insertData($data);
   $API->memeCode('200');
 } else {
   $API->memeCode('400',true);
