@@ -116,19 +116,87 @@ class Server {
       $stmt->bind_param('ii', $time,$this->id);
       $stmt->execute();
       $result = $stmt->get_result();
+
       while ($row = $result->fetch_assoc()) {
-        $response[] = $row;
+        $response['timestamp'][] = $row['timestamp'];
+        $response['data'][] = $row;
       }
+
+      if ($type == 'CPU') {
+        $cpuLoad = 0;
+        foreach ($response['data'] as $element) {
+          $cpuLoad += $element['idle'];
+        }
+        $cpuLoad = abs(($cpuLoad / count($response['data'])) - 100);
+        return $cpuLoad;
+      }
+
+      if ($type == 'Memory') {
+        $memoryUsage = 0;
+        foreach ($response['data'] as $element) {
+          $memoryUsage += $element['percent'];
+        }
+        $memoryUsage = $memoryUsage / count($response['data']);
+        return $memoryUsage;
+      }
+
+      if ($type == 'Disk') {
+        $diskUsage = 0;
+        foreach ($response['data'] as $element) {
+          $diskUsage += $element['percent'];
+        }
+        $diskUsage = $diskUsage / count($response['data']);
+        return $diskUsage;
+      }
+
+      if ($type == 'Network') {
+        $networkUsageTotal = 0; $networkUsage = array();
+        foreach ($response['data'] as $element) {
+          if (isset($networkUsage[$element['nic']]['lastRX'])) {
+            $networkUsage['RX'] += $element['bytesRX'] - $networkUsage[$element['nic']]['lastRX'];
+            $networkUsage['TX'] += $element['bytesTX'] - $networkUsage[$element['nic']]['lastTX'];
+          }
+          $networkUsage[$element['nic']]['lastRX'] = $element['bytesRX'];
+          $networkUsage[$element['nic']]['lastTX'] = $element['bytesTX'];
+        }
+        $networkUsage['RX'] = $networkUsage['RX'] / count($response['data']);
+        $networkUsage['TX'] = $networkUsage['TX'] / count($response['data']);
+        $networkUsage['RX'] = $networkUsage['RX'] / 125000;
+        $networkUsage['TX'] = $networkUsage['TX'] / 125000;
+        $networkUsageTotal = round($networkUsage['RX'] + $networkUsage['TX'],2);
+        return $networkUsageTotal;
+      }
+
       return $response;
     } elseif ($start != 0 and $end != 0) {
+
       $query = "SELECT * FROM servers".$type." WHERE serversTokenID = ? AND timestamp >= ? AND timestamp <= ?";
       $stmt = $this->DB->GetConnection()->prepare($query);
       $stmt->bind_param('iii', $this->id,$start,$end);
       $stmt->execute();
       $result = $stmt->get_result();
+
       while ($row = $result->fetch_assoc()) {
-        $response[] = $row;
+        $response['timestamp'][] = $row['timestamp'];
+        $response['data'][] = $row;
       }
+
+      if ($type == 'CPU') {
+        $cpuLoad = array();
+        foreach ($response['data'] as $element) {
+          $cpuLoad[$element['timestamp']]['idle'] += $element['idle'];
+          $cpuLoad[$element['timestamp']][$element['core']]['idle'] = $element['idle'];
+          $cpuLoad[$element['timestamp']]['cores']++;
+        }
+
+        foreach ($cpuLoad as $key => $load) {
+          $cpuLoad['idle'][] = abs(($cpuLoad[$key]['idle'] / $cpuLoad[$key]['cores']) - 100);
+          $cpuLoad['timestamp'][] = date("'H:i'",$key);
+        }
+
+        return $cpuLoad;
+      }
+
       return $response;
     } else {
       return false;

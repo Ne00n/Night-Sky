@@ -9,16 +9,7 @@ $S->setID($serverID);
 $start = strtotime('-200 minutes', time());
 $end = time();
 
-$cpuRaw = $S->getUage('CPU',$start,$end); $cpuLoad = array();
-foreach ($cpuRaw as $element) {
-  $cpuLoad[$element['timestamp']]['idle'] += $element['idle'];
-  $cpuLoad[$element['timestamp']]['cores']++;
-}
-
-foreach ($cpuLoad as $key => $load) {
-  $cpuLoad['idle'][] = abs(($cpuLoad[$key]['idle'] / $cpuLoad[$key]['cores']) - 100);
-  $cpuLoad['timestamp'][] = date("'H:i'",$key);
-}
+$cpuLoad = $S->getUage('CPU',$start,$end);
 
 ?>
 
@@ -58,9 +49,12 @@ new Chart(document.getElementById("line-chart"), {
 				scales: {
 					xAxes: [{
 						scaleLabel: {
-							display: true,
-							labelString: 'Time'
-						}
+							display: true
+						}, ticks: {
+              autoSkip: true,
+              maxTicksLimit: 6,
+              maxRotation: 0
+            }
 					}],
 					yAxes: [{
 						stacked: true,
@@ -92,7 +86,7 @@ new Chart(document.getElementById("line-chart2"), {
   options: {
     title: {
       display: true,
-      text: 'CPU Usage in %'
+      text: 'CPU Usage'
     },
 				tooltips: {
 					mode: 'index',
