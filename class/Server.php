@@ -176,9 +176,19 @@ class Server {
       $stmt->execute();
       $result = $stmt->get_result();
 
+      $memoryArray = array('active','inactive','buffers','cached','shared','free','used','total','available');
+
       while ($row = $result->fetch_assoc()) {
-        $response['timestamp'][] = $row['timestamp'];
         $response['data'][] = $row;
+        foreach ($row as $key => $element) {
+          if (in_array($key, $memoryArray)) {
+            $response[$key][] = round($element / 1000000,2);
+          } elseif ($key == 'timestamp') {
+            $response[$key][] = date("'H:i'",$element);
+          } else {
+            $response[$key][] = $element;
+          }
+        }
       }
 
       if ($type == 'CPU') {
