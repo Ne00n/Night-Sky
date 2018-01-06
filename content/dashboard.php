@@ -1,3 +1,26 @@
+<div class="col-md-12">
+  <ul class="nav nav-tabs">
+     <li role="presentation" class="active">
+       <a href="#">Dashboard</a>
+     </li>
+     <li role="presentation">
+       <a href="#">CPU</a>
+     </li>
+     <li role="presentation">
+        <a href="#">Memory</a>
+     </li>
+     <li role="presentation">
+        <a href="#">Disk</a>
+     </li>
+     <li role="presentation">
+        <a href="#">Network</a>
+     </li>
+     <li role="presentation">
+        <a href="#">Alerts</a>
+     </li>
+  </ul>
+</div>
+
 <?php
 
 $S = new Server($DB,$Login);
@@ -17,15 +40,19 @@ $networkUsage = $S->getUage('Network',$start,$end);
 ?>
 
 <div class="col-md-6">
+  <h3 class="text-left">CPU</h3>
   <div id="chart-cpu"></div>
 </div>
 <div class="col-md-6">
+  <h3 class="text-left">Memory</h3>
   <div id="chart-memory"></div>
 </div>
 <div class="col-md-6">
+  <h3 class="text-left">Disk</h3>
   <div id="chart-hdd"></div>
 </div>
 <div class="col-md-6">
+  <h3 class="text-left">Network</h3>
   <div id="chart-net"></div>
 </div>
 
@@ -40,6 +67,9 @@ var chart = c3.generate({
   },
   point: {
      show: false
+  },
+  size: {
+    height: 300
   },
   axis: {
   x: {
@@ -79,6 +109,9 @@ var chart = c3.generate({
 },
 point: {
      show: false
+ },
+ size: {
+   height: 300
  },
 axis: {
   x: {
