@@ -163,7 +163,7 @@ class Server {
         $networkUsage['TX'] = $networkUsage['TX'] / count($response['data']);
         $networkUsage['RX'] = $networkUsage['RX'] / 125000;
         $networkUsage['TX'] = $networkUsage['TX'] / 125000;
-        $networkUsageTotal = round($networkUsage['RX'] + $networkUsage['TX'],2);
+        $networkUsageTotal = round(($networkUsage['RX'] + $networkUsage['TX']) / 60,2);
         return $networkUsageTotal;
       }
 
@@ -205,6 +205,29 @@ class Server {
         }
 
         return $cpuLoad;
+      }
+
+      if ($type == 'Network') {
+        $networkUsage = array();
+        foreach ($response['data'] as $element) {
+          if (isset($networkUsage[$element['nic']]['lastRX'])) {
+            $timestamp = $element['timestamp'];
+            $networkUsage[$timestamp]['RX'] += ($element['bytesRX'] - $networkUsage[$element['nic']]['lastRX']) / 125000;
+            $networkUsage[$timestamp]['TX'] += ($element['bytesTX'] - $networkUsage[$element['nic']]['lastTX']) / 125000;
+            $networkUsage['timestamp'][] = date("'H:i'",$element['timestamp']);
+          }
+          $networkUsage[$element['nic']]['lastRX'] = $element['bytesRX'];
+          $networkUsage[$element['nic']]['lastTX'] = $element['bytesTX'];
+          $networkUsage['nics'][$element['nic']] = 1;
+        }
+
+        foreach ($networkUsage as $element) {
+          if (isset($element['RX'])) {
+            $networkUsage['RX'][] = round($element['RX'] / 60,2);
+            $networkUsage['TX'][] = round($element['TX'] / 60,2);
+          }
+        }
+        return $networkUsage;
       }
 
       return $response;

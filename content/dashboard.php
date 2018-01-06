@@ -6,11 +6,13 @@ $serverID = str_replace("server=", "", $_GET["server"]);
 $S = new Server($DB,$Login);
 $S->setID($serverID);
 
-$start = strtotime('-200 minutes', time());
+$start = strtotime('-120 minutes', time());
 $end = time();
 
 $cpuLoad = $S->getUage('CPU',$start,$end);
 $memoryUsage = $S->getUage('Memory',$start,$end);
+$diskUsage = $S->getUage('Disk',$start,$end);
+$networkUsage = $S->getUage('Network',$start,$end);
 
 ?>
 
@@ -19,6 +21,12 @@ $memoryUsage = $S->getUage('Memory',$start,$end);
 </div>
 <div class="col-md-6">
   <div id="chart-memory"></div>
+</div>
+<div class="col-md-6">
+  <div id="chart-hdd"></div>
+</div>
+<div class="col-md-6">
+  <div id="chart-net"></div>
 </div>
 
 
@@ -85,6 +93,77 @@ axis: {
       },
   y: {
       label: 'MB'
+  },
+}
+});
+
+var chart = c3.generate({
+  bindto: '#chart-hdd',
+  data: {
+    columns: [
+        ['Used', <?php echo implode(",", $diskUsage['used']); ?>],
+        ['Free', <?php echo implode(",", $diskUsage['total']); ?>]
+    ],
+    types: {
+        Used: 'area',
+        Free: 'area'
+    },
+},
+point: {
+     show: false
+ },
+size: {
+  height: 300
+},
+axis: {
+ x: {
+       type: 'category',
+       categories: [<?php echo implode(",", $cpuLoad['timestamp']); ?>],
+       tick: {
+       width: 80,
+           culling: {
+               max: 7
+           }
+         }
+     },
+     y: {
+      label: 'GB'
+  },
+ }
+});
+
+var chart = c3.generate({
+  bindto: '#chart-net',
+  data: {
+    columns: [
+        ['TX', <?php echo implode(",", $networkUsage['TX']); ?>],
+        ['RX', <?php echo implode(",", $networkUsage['RX']); ?>]
+    ],
+    types: {
+        TX: 'area',
+        RX: 'area'
+    },
+    groups: [['RX' , 'TX']]
+},
+point: {
+     show: false
+ },
+size: {
+  height: 300
+},
+axis: {
+  x: {
+        type: 'category',
+        categories: [<?php echo implode(",", $networkUsage['timestamp']); ?>],
+        tick: {
+        width: 80,
+            culling: {
+                max: 7
+            }
+          }
+      },
+  y: {
+      label: 'MBit/s'
   },
 }
 });
