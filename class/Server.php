@@ -182,7 +182,11 @@ class Server {
         $response['data'][] = $row;
         foreach ($row as $key => $element) {
           if (in_array($key, $memoryArray)) {
-            $response[$key][] = round($element / 1000000,2);
+            $tmp = round($element / 1000000,1);
+            if ($type == 'Disk') {
+              $tmp = round($tmp / 1000,1);
+            }
+            $response[$key][] = $tmp;
           } elseif ($key == 'timestamp') {
             $response[$key][] = date("'H:i'",$element);
           } else {

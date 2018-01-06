@@ -102,7 +102,7 @@ var chart = c3.generate({
   data: {
     columns: [
         ['Used', <?php echo implode(",", $diskUsage['used']); ?>],
-        ['Free', <?php echo implode(",", $diskUsage['total']); ?>]
+        ['Total', <?php echo implode(",", $diskUsage['total']); ?>]
     ],
     types: {
         Used: 'area',
