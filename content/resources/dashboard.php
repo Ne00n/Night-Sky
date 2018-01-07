@@ -15,20 +15,20 @@ $networkUsage = $S->getUage('Network',$start,$end);
 
 ?>
 
-<div class="col-md-6">
-  <h3 class="text-left">CPU</h3>
+<div class="col-md-12">
+  <h3 class="text-center">CPU</h3>
   <div id="chart-cpu"></div>
 </div>
-<div class="col-md-6">
-  <h3 class="text-left">Memory</h3>
+<div class="col-md-12">
+  <h3 class="text-center">Memory</h3>
   <div id="chart-memory"></div>
 </div>
-<div class="col-md-6">
-  <h3 class="text-left">Disk</h3>
+<div class="col-md-12">
+  <h3 class="text-center">Disk</h3>
   <div id="chart-hdd"></div>
 </div>
-<div class="col-md-6">
-  <h3 class="text-left">Network</h3>
+<div class="col-md-12">
+  <h3 class="text-center">Network</h3>
   <div id="chart-net"></div>
 </div>
 
@@ -48,7 +48,7 @@ var chart = c3.generate({
      show: false
   },
   size: {
-    height: 200
+    height: 150
   },
   axis: {
   x: {
@@ -90,7 +90,7 @@ point: {
      show: false
  },
  size: {
-   height: 200
+   height: 150
  },
 axis: {
   x: {
@@ -125,7 +125,7 @@ point: {
      show: false
  },
 size: {
-  height: 200
+  height: 150
 },
 axis: {
  x: {
@@ -161,7 +161,7 @@ point: {
      show: false
  },
 size: {
-  height: 200
+  height: 150
 },
 axis: {
   x: {
