@@ -12,13 +12,13 @@ $cpuLoad = $S->getUage('CPU',$start,$end);
 ?>
 
 <div class="col-md-12">
-  <h3 class="text-left">Overall CPU usage</h3>
+  <h3 class="text-left">Total CPU usage</h3>
   <div id="chart-cpu"></div>
 </div>
 
 <?php
   for ($i = 0; $i <= count($cpuLoad['load']) -1; $i++) {
-    echo '<div class="col-md-6"><h3 class="text-left">CPU '.$i.'</h3><div id="chart-cpu'.$i.'"></div></div>';
+    echo '<div class="col-md-6"><h3 class="text-left">CPU '.Page::escape($i).'</h3><div id="chart-cpu'.Page::escape($i).'"></div></div>';
   }
 ?>
 
@@ -34,7 +34,7 @@ var chart = c3.generate({
      show: false
   },
   size: {
-    height: 300
+    height: 200
   },
   axis: {
   x: {
@@ -59,7 +59,7 @@ var chart = c3.generate({
 for ($i = 0; $i <= count($cpuLoad['load']) -1; $i++) {
   echo "<script>
   var chart = c3.generate({
-    bindto: '#chart-cpu".$i."',
+    bindto: '#chart-cpu".Page::escape($i)."',
     data: {
       columns: [
           ['CPU Load',".implode(',',$cpuLoad['load'][$i])."],
@@ -69,7 +69,7 @@ for ($i = 0; $i <= count($cpuLoad['load']) -1; $i++) {
        show: false
     },
     size: {
-      height: 300
+      height: 200
     },
     axis: {
     x: {

@@ -34,7 +34,7 @@ point: {
      show: false
  },
 size: {
-  height: 300
+  height: 200
 },
 axis: {
  x: {

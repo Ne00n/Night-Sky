@@ -228,6 +228,8 @@ class Server {
             } else {
               $networkUsage[$timestamp]['TX'] += ($element['bytesTX'] - $networkUsage[$element['nic']]['lastTX']) / 125000;
             }
+            $networkUsage['nic'][$element['nic']]['TX'][] = round((($element['bytesTX'] - $networkUsage[$element['nic']]['lastTX']) / 125000) / 60,2);
+            $networkUsage['nic'][$element['nic']]['RX'][] = round((($element['bytesRX'] - $networkUsage[$element['nic']]['lastRX']) / 125000) / 60,2);
             $networkUsage['timestamp'][] = date("'H:i'",$element['timestamp']);
           }
           $networkUsage[$element['nic']]['lastRX'] = $element['bytesRX'];
