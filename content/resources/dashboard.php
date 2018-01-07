@@ -38,7 +38,7 @@ var chart = c3.generate({
   bindto: '#chart-cpu',
   data: {
     columns: [
-        ['Load', <?php echo implode(",", $cpuLoad['idle']); ?>],
+        ['Load', <?php echo implode(",", $cpuLoad['loadA']); ?>],
     ],
     types: {
         Load: 'area'
