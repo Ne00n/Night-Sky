@@ -2,6 +2,10 @@ div#fs-small {
   font-size: 17px;
 }
 
+#timestamp > div {
+  margin-bottom: 0px;
+}
+
 body {
   padding-top: 50px;
 }
