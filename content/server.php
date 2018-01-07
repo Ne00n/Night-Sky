@@ -15,6 +15,14 @@
           include 'resources/dashboard.php';
         } elseif (isset($_GET["resource"]) && $_GET["resource"] == 'cpu') {
           include 'resources/cpu.php';
+        } elseif (isset($_GET["resource"]) && $_GET["resource"] == 'memory') {
+          include 'resources/memory.php';
+        } elseif (isset($_GET["resource"]) && $_GET["resource"] == 'disk') {
+          include 'resources/disk.php';
+        } elseif (isset($_GET["resource"]) && $_GET["resource"] == 'network') {
+          include 'resources/network.php';
+        } elseif (isset($_GET["resource"]) && $_GET["resource"] == 'alerts') {
+          include 'resources/alert.php';
         } else {
           include 'overview.php';
         }

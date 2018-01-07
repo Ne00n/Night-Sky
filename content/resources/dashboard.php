@@ -38,7 +38,7 @@ var chart = c3.generate({
   bindto: '#chart-cpu',
   data: {
     columns: [
-        ['CPU Load', <?php echo implode(",", $cpuLoad['idle']); ?>],
+        ['Load', <?php echo implode(",", $cpuLoad['idle']); ?>],
     ]
   },
   point: {
@@ -92,7 +92,7 @@ point: {
 axis: {
   x: {
         type: 'category',
-        categories: [<?php echo implode(",", $cpuLoad['timestamp']); ?>],
+        categories: [<?php echo implode(",", $memoryUsage['timestamp']); ?>],
         tick: {
         width: 80,
             culling: {
@@ -127,7 +127,7 @@ size: {
 axis: {
  x: {
        type: 'category',
-       categories: [<?php echo implode(",", $cpuLoad['timestamp']); ?>],
+       categories: [<?php echo implode(",", $diskUsage['timestamp']); ?>],
        tick: {
        width: 80,
            culling: {
