@@ -2,10 +2,9 @@
 
 <?php include 'content/navbar.php'; ?>
 
-  <div class="container page-style">
+  <div class="col-lg-10 col-lg-offset-1 page-style">
 
     <div class="row">
-      <div class="col-md-12 col-md-offset-0">
 
         <?php
 
@@ -29,7 +28,6 @@
 
         ?>
 
-      </div>
     </div>
     <center><a href="index.php?p=tos">Terms of Service</a> - <a href="index.php?p=privacy">Privacy</a></center>
   </div>
