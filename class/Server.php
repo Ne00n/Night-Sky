@@ -198,9 +198,9 @@ class Server {
       if ($type == 'CPU') {
         $cpuLoad = array();
         foreach ($response['data'] as $element) {
-          $cpuLoad[$element['timestamp']]['idle'] += $element['idle'];
+          if (!isset($cpuLoad[$element['timestamp']]['idle'])) { $cpuLoad[$element['timestamp']]['idle'] = $element['idle'];  } else { $cpuLoad[$element['timestamp']]['idle'] += $element['idle']; }
           $cpuLoad['load'][$element['core']][] = abs($element['idle'] - 100);
-          $cpuLoad[$element['timestamp']]['cores']++;
+          if (!isset($cpuLoad[$element['timestamp']]['cores'])) { $cpuLoad[$element['timestamp']]['cores'] = 1;  } else { $cpuLoad[$element['timestamp']]['cores']++; }
         }
 
         foreach ($cpuLoad as $key => $load) {
@@ -218,8 +218,16 @@ class Server {
         foreach ($response['data'] as $element) {
           if (isset($networkUsage[$element['nic']]['lastRX'])) {
             $timestamp = $element['timestamp'];
-            $networkUsage[$timestamp]['RX'] += ($element['bytesRX'] - $networkUsage[$element['nic']]['lastRX']) / 125000;
-            $networkUsage[$timestamp]['TX'] += ($element['bytesTX'] - $networkUsage[$element['nic']]['lastTX']) / 125000;
+            if (!isset($networkUsage[$timestamp]['RX'])) {
+              $networkUsage[$timestamp]['RX'] = ($element['bytesRX'] - $networkUsage[$element['nic']]['lastRX']) / 125000;
+            } else {
+              $networkUsage[$timestamp]['RX'] += ($element['bytesRX'] - $networkUsage[$element['nic']]['lastRX']) / 125000;
+            }
+            if (!isset($networkUsage[$timestamp]['TX'])) {
+              $networkUsage[$timestamp]['TX'] = ($element['bytesTX'] - $networkUsage[$element['nic']]['lastTX']) / 125000;
+            } else {
+              $networkUsage[$timestamp]['TX'] += ($element['bytesTX'] - $networkUsage[$element['nic']]['lastTX']) / 125000;
+            }
             $networkUsage['timestamp'][] = date("'H:i'",$element['timestamp']);
           }
           $networkUsage[$element['nic']]['lastRX'] = $element['bytesRX'];

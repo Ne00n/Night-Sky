@@ -17,7 +17,7 @@ $cpuLoad = $S->getUage('CPU',$start,$end);
 </div>
 
 <?php
-  for ($i = 0; $i <= count($cpuLoad['cores'] -1); $i++) {
+  for ($i = 0; $i <= count($cpuLoad['load']) -1; $i++) {
     echo '<div class="col-md-6"><h3 class="text-left">CPU '.$i.'</h3><div id="chart-cpu'.$i.'"></div></div>';
   }
 ?>
@@ -56,7 +56,7 @@ var chart = c3.generate({
 
 <?php
 
-for ($i = 0; $i <= count($cpuLoad['cores'] -1); $i++) {
+for ($i = 0; $i <= count($cpuLoad['load']) -1; $i++) {
   echo "<script>
   var chart = c3.generate({
     bindto: '#chart-cpu".$i."',

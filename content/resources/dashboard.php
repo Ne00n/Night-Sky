@@ -5,7 +5,7 @@ include 'navbar.php';
 $S = new Server($DB,$Login);
 $S->setID($serverID);
 
-$start = strtotime('-5 minutes', time());
+$start = strtotime('-120 minutes', time());
 $end = time();
 
 $cpuLoad = $S->getUage('CPU',$start,$end);
@@ -70,7 +70,7 @@ var chart = c3.generate({
     columns: [
         ['Free', <?php echo implode(",", $memoryUsage['free']); ?>],
         ['Cached', <?php echo implode(",", $memoryUsage['cached']); ?>],
-        ['Buffer', <?php echo implode(",", $memoryUsage['buffer']); ?>],
+        ['Buffer', <?php echo implode(",", $memoryUsage['buffers']); ?>],
         ['Used', <?php echo implode(",", $memoryUsage['used']); ?>],
         ['Active', <?php echo implode(",", $memoryUsage['active']); ?>],
         ['Inactive', <?php echo implode(",", $memoryUsage['inactive']); ?>]
