@@ -18,6 +18,10 @@ $swapUsage = $S->getUage('Swap',$start,$end);
   <div id="chart-memory"></div>
 </div>
 <div class="col-md-12">
+  <h3 class="text-left">Memory usage</h3>
+  <div id="chart-freeMemory"></div>
+</div>
+<div class="col-md-12">
   <h3 class="text-left">Swap</h3>
   <div id="chart-swap"></div>
 </div>
@@ -61,6 +65,36 @@ axis: {
       },
   y: {
       label: 'MB'
+  },
+}
+});
+
+var chart = c3.generate({
+  bindto: '#chart-freeMemory',
+  data: {
+    columns: [
+        ['Usage', <?php echo implode(",", $memoryUsage['percent']); ?>]
+    ]
+},
+point: {
+     show: false
+ },
+ size: {
+   height: 200
+ },
+axis: {
+  x: {
+        type: 'category',
+        categories: [<?php echo implode(",", $swapUsage['timestamp']); ?>],
+        tick: {
+        width: 80,
+            culling: {
+                max: 7
+            }
+          }
+      },
+  y: {
+      label: '%'
   },
 }
 });
