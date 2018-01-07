@@ -9,8 +9,12 @@
 
         <?php
 
+        $serverID = str_replace("server=", "", $_GET["server"]);
+
         if (isset($_GET["resource"]) && $_GET["resource"] == 'dashboard') {
-          include 'dashboard.php';
+          include 'resources/dashboard.php';
+        } elseif (isset($_GET["resource"]) && $_GET["resource"] == 'cpu') {
+          include 'resources/cpu.php';
         } else {
           include 'overview.php';
         }

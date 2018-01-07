@@ -199,13 +199,15 @@ class Server {
         $cpuLoad = array();
         foreach ($response['data'] as $element) {
           $cpuLoad[$element['timestamp']]['idle'] += $element['idle'];
-          $cpuLoad[$element['timestamp']][$element['core']]['idle'] = $element['idle'];
+          $cpuLoad['load'][$element['core']][] = abs($element['idle'] - 100);
           $cpuLoad[$element['timestamp']]['cores']++;
         }
 
         foreach ($cpuLoad as $key => $load) {
-          $cpuLoad['idle'][] = abs(($cpuLoad[$key]['idle'] / $cpuLoad[$key]['cores']) - 100);
-          $cpuLoad['timestamp'][] = date("'H:i'",$key);
+          if (is_numeric($key)) {
+            $cpuLoad['idle'][] = abs(($cpuLoad[$key]['idle'] / $cpuLoad[$key]['cores']) - 100);
+            $cpuLoad['timestamp'][] = date("'H:i'",$key);
+          }
         }
 
         return $cpuLoad;

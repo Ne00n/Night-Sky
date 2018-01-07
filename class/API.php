@@ -29,7 +29,7 @@
     public function insertData($data) {
       $timestamp = time();
       //Insert CPU Data
-      $core = 1; $user;$nice;$system;$idle;$iowait;$irq;$softirq;$steal;$guest;$guestNice;
+      $core = 0; $user;$nice;$system;$idle;$iowait;$irq;$softirq;$steal;$guest;$guestNice;
       $stmt = $this->DB->GetConnection()->prepare("INSERT INTO serversCPU(serversTokenID,core,user,nice,system,idle,iowait,irq,softirq,steal,guest,guest_nice,timestamp) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
       $stmt->bind_param('iiddddddddddd',$this->id,$core,$user,$nice,$system,$idle,$iowait,$irq,$softirq,$steal,$guest,$guestNice,$timestamp);
       $this->DB->GetConnection()->query("START TRANSACTION");

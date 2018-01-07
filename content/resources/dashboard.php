@@ -1,35 +1,11 @@
-<div class="col-md-12">
-  <ul class="nav nav-tabs">
-     <li role="presentation" class="active">
-       <a href="#">Dashboard</a>
-     </li>
-     <li role="presentation">
-       <a href="#">CPU</a>
-     </li>
-     <li role="presentation">
-        <a href="#">Memory</a>
-     </li>
-     <li role="presentation">
-        <a href="#">Disk</a>
-     </li>
-     <li role="presentation">
-        <a href="#">Network</a>
-     </li>
-     <li role="presentation">
-        <a href="#">Alerts</a>
-     </li>
-  </ul>
-</div>
-
 <?php
 
-$S = new Server($DB,$Login);
-$serverID = str_replace("server=", "", $_GET["server"]);
+include 'navbar.php';
 
 $S = new Server($DB,$Login);
 $S->setID($serverID);
 
-$start = strtotime('-120 minutes', time());
+$start = strtotime('-5 minutes', time());
 $end = time();
 
 $cpuLoad = $S->getUage('CPU',$start,$end);
