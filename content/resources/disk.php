@@ -27,7 +27,7 @@ var chart = c3.generate({
     ],
     types: {
         Used: 'area',
-        Free: 'area'
+        Total: 'line'
     },
 },
 point: {
