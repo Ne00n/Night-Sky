@@ -198,14 +198,31 @@ class Server {
       if ($type == 'CPU') {
         $cpuLoad = array();
         foreach ($response['data'] as $element) {
-          if (!isset($cpuLoad[$element['timestamp']]['idle'])) { $cpuLoad[$element['timestamp']]['idle'] = $element['idle'];  } else { $cpuLoad[$element['timestamp']]['idle'] += $element['idle']; }
+          //For each Core
           $cpuLoad['load'][$element['core']][] = abs($element['idle'] - 100);
-          if (!isset($cpuLoad[$element['timestamp']]['cores'])) { $cpuLoad[$element['timestamp']]['cores'] = 1;  } else { $cpuLoad[$element['timestamp']]['cores']++; }
+          $cpuLoad['system'][$element['core']][] = $element['system'];
+          $cpuLoad['user'][$element['core']][] = $element['user'];
+          $cpuLoad['nice'][$element['core']][] = $element['nice'];
+          $cpuLoad['steal'][$element['core']][] = $element['steal'];
+          $cpuLoad['iowait'][$element['core']][] = $element['iowait'];
+          //For all Cores
+          if (!isset($cpuLoad[$element['timestamp']]['idle']))    { $cpuLoad[$element['timestamp']]['idle'] = $element['idle'];      } else { $cpuLoad[$element['timestamp']]['idle'] += $element['idle']; }
+          if (!isset($cpuLoad[$element['timestamp']]['systemA'])) { $cpuLoad[$element['timestamp']]['systemA'] = $element['system']; } else { $cpuLoad[$element['timestamp']]['systemA'] += $element['system']; }
+          if (!isset($cpuLoad[$element['timestamp']]['userA']))   { $cpuLoad[$element['timestamp']]['userA'] = $element['user'];     } else { $cpuLoad[$element['timestamp']]['userA'] += $element['user']; }
+          if (!isset($cpuLoad[$element['timestamp']]['niceA']))   { $cpuLoad[$element['timestamp']]['niceA'] = $element['nice'];     } else { $cpuLoad[$element['timestamp']]['niceA'] += $element['nice']; }
+          if (!isset($cpuLoad[$element['timestamp']]['stealA']))  { $cpuLoad[$element['timestamp']]['stealA'] = $element['steal'];   } else { $cpuLoad[$element['timestamp']]['stealA'] += $element['steal']; }
+          if (!isset($cpuLoad[$element['timestamp']]['iowaitA'])) { $cpuLoad[$element['timestamp']]['iowaitA'] = $element['iowait']; } else { $cpuLoad[$element['timestamp']]['iowaitA'] += $element['iowait']; }
+          if (!isset($cpuLoad[$element['timestamp']]['cores']))   { $cpuLoad[$element['timestamp']]['cores'] = 1;                    } else { $cpuLoad[$element['timestamp']]['cores']++; }
         }
 
         foreach ($cpuLoad as $key => $load) {
           if (is_numeric($key)) {
-            $cpuLoad['idle'][] = abs(($cpuLoad[$key]['idle'] / $cpuLoad[$key]['cores']) - 100);
+            $cpuLoad['loadA'][] = abs(($cpuLoad[$key]['idle'] / $cpuLoad[$key]['cores']) - 100);
+            $cpuLoad['systemA'][] = $cpuLoad[$key]['systemA'];
+            $cpuLoad['userA'][] = $cpuLoad[$key]['userA'];
+            $cpuLoad['niceA'][] = $cpuLoad[$key]['niceA'];
+            $cpuLoad['stealA'][] = $cpuLoad[$key]['stealA'];
+            $cpuLoad['iowaitA'][] = $cpuLoad[$key]['iowaitA'];
             $cpuLoad['timestamp'][] = date("'H:i'",$key);
           }
         }

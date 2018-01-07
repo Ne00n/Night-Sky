@@ -27,11 +27,20 @@ var chart = c3.generate({
   bindto: '#chart-cpu',
   data: {
     columns: [
-        ['Load', <?php echo implode(",", $cpuLoad['idle']); ?>],
+        ['User', <?php echo implode(",", $cpuLoad['userA']); ?>],
+        ['System', <?php echo implode(",", $cpuLoad['systemA']); ?>],
+        ['Nice', <?php echo implode(",", $cpuLoad['niceA']); ?>],
+        ['Steal', <?php echo implode(",", $cpuLoad['stealA']); ?>],
+        ['IOWait', <?php echo implode(",", $cpuLoad['iowaitA']); ?>]
     ],
     types: {
-        Load: 'area'
-    }
+        System: 'area',
+        User: 'area',
+        Nice: 'area',
+        Steal: 'area',
+        IOWait: 'area',
+    },
+    groups: [['System', 'User','Nice','Steal','IOWait']]
   },
   point: {
      show: false
@@ -65,11 +74,20 @@ for ($i = 0; $i <= count($cpuLoad['load']) -1; $i++) {
     bindto: '#chart-cpu".Page::escape($i)."',
     data: {
       columns: [
-          ['Load',".implode(',',$cpuLoad['load'][$i])."],
+          ['System',".implode(',',$cpuLoad['system'][$i])."],
+          ['User',".implode(',',$cpuLoad['user'][$i])."],
+          ['Nice',".implode(',',$cpuLoad['nice'][$i])."],
+          ['Steal',".implode(',',$cpuLoad['steal'][$i])."],
+          ['IOWait',".implode(',',$cpuLoad['iowait'][$i])."]
       ],
       types: {
-          Load: 'area'
-      }
+          System: 'area',
+          User: 'area',
+          Nice: 'area',
+          Steal: 'area',
+          IOWait: 'area',
+      },
+      groups: [['System', 'User','Nice','Steal','IOWait']]
     },
     point: {
        show: false
