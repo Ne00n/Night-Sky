@@ -39,7 +39,10 @@ var chart = c3.generate({
   data: {
     columns: [
         ['Load', <?php echo implode(",", $cpuLoad['idle']); ?>],
-    ]
+    ],
+    types: {
+        Load: 'area'
+    }
   },
   point: {
      show: false

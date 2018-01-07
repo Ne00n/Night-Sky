@@ -27,8 +27,11 @@ var chart = c3.generate({
   bindto: '#chart-cpu',
   data: {
     columns: [
-        ['CPU Load', <?php echo implode(",", $cpuLoad['idle']); ?>],
-    ]
+        ['Load', <?php echo implode(",", $cpuLoad['idle']); ?>],
+    ],
+    types: {
+        Load: 'area'
+    }
   },
   point: {
      show: false
@@ -62,8 +65,11 @@ for ($i = 0; $i <= count($cpuLoad['load']) -1; $i++) {
     bindto: '#chart-cpu".Page::escape($i)."',
     data: {
       columns: [
-          ['CPU Load',".implode(',',$cpuLoad['load'][$i])."],
-      ]
+          ['Load',".implode(',',$cpuLoad['load'][$i])."],
+      ],
+      types: {
+          Load: 'area'
+      }
     },
     point: {
        show: false
