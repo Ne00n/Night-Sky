@@ -1,4 +1,4 @@
-<div class="col-md-12">
+<div class="col-md-6">
   <ul class="nav nav-tabs">
      <li role="presentation" class="<?php echo ($_GET["resource"] == 'dashboard' ? 'active' : ''); ?>">
        <a href="index.php?p=server&resource=dashboard&server=<?php echo Page::escape($serverID); ?>">Dashboard</a>
@@ -18,5 +18,25 @@
      <li role="presentation" class="<?php echo ($_GET["resource"] == 'alerts' ? 'active' : ''); ?>">
        <a href="index.php?p=server&resource=alerts&server=<?php echo Page::escape($serverID); ?>">Alerts</a>
      </li>
+     <li class="col-sm-6 pull-right">
+       <input type="text" id="daterange" class="form-control">
+        <script type="text/javascript">
+        $(function() {
+            $('input[id="daterange"]').daterangepicker({
+                timePicker: false,
+                timePickerSeconds: true
+            });
+        });
+        </script>
+     </li>
   </ul>
+  <ul class="nav nav-tabs navbar-right">
+    <input type="text" name="daterange" value="01/01/2015 - 01/31/2015" />
+
+<script type="text/javascript">
+$(function() {
+   $('input[name="daterange"]').daterangepicker();
+});
+</script>
+</ul>
 </div>
