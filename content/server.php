@@ -8,6 +8,14 @@
 
         <?php
 
+        if (isset($_POST['timestampStart']) && isset($_POST['timestampEnd']) ) {
+          $start = $_POST['timestampStart'];
+          $end = $_POST['timestampEnd'];
+        } else {
+          $start = strtotime('-120 minutes', time());
+          $end = time();
+        }
+
         $serverID = str_replace("server=", "", $_GET["server"]);
 
         if (isset($_GET["resource"]) && $_GET["resource"] == 'dashboard') {

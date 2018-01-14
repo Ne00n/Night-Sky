@@ -5,9 +5,6 @@ include 'navbar.php';
 $S = new Server($DB,$Login);
 $S->setID($serverID);
 
-$start = strtotime('-120 minutes', time());
-$end = time();
-
 $memoryUsage = $S->getUage('Memory',$start,$end);
 $swapUsage = $S->getUage('Swap',$start,$end);
 

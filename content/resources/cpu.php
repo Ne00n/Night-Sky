@@ -5,9 +5,6 @@ include 'navbar.php';
 $S = new Server($DB,$Login);
 $S->setID($serverID);
 
-$start = strtotime('-120 minutes', time());
-$end = time();
-
 $cpuLoad = $S->getUage('CPU',$start,$end);
 ?>
 
