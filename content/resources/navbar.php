@@ -19,15 +19,17 @@
        <a href="index.php?p=server&resource=alerts&server=<?php echo Page::escape($serverID); ?>">Alerts</a>
      </li>
      <li class="col-sm-6 pull-right">
-       <input type="text" id="daterange" class="form-control">
-        <script type="text/javascript">
-        $(function() {
-            $('input[id="daterange"]').daterangepicker({
-                timePicker: false,
-                timePickerSeconds: true
-            });
-        });
-        </script>
+       <div class="row">
+         <input type="text" id="daterange" class="form-control">
+          <script type="text/javascript">
+          $(function() {
+              $('input[id="daterange"]').daterangepicker({
+                  timePicker: false,
+                  timePickerSeconds: true
+              });
+          });
+          </script>
+       </div>
      </li>
   </ul>
 </div>
