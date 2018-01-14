@@ -170,6 +170,15 @@ class Server {
       return $response;
     } elseif ($start != 0 and $end != 0) {
 
+      $total = $end - $start;
+      if ($total >= 8000) {
+        $total = round($total / 86400);
+        $gaps = $total * 4;
+      } else {
+        $gaps = 1;
+      }
+      $count = 0;
+
       $query = "SELECT * FROM servers".$type." WHERE serversTokenID = ? AND timestamp >= ? AND timestamp <= ?";
       $stmt = $this->DB->GetConnection()->prepare($query);
       $stmt->bind_param('iii', $this->id,$start,$end);
@@ -179,20 +188,24 @@ class Server {
       $memoryArray = array('active','inactive','buffers','cached','shared','free','used','total','available');
 
       while ($row = $result->fetch_assoc()) {
-        $response['data'][] = $row;
-        foreach ($row as $key => $element) {
-          if (in_array($key, $memoryArray)) {
-            $tmp = round($element / 1000000,2);
-            if ($type == 'Disk') {
-              $tmp = round($tmp / 1000,2);
+        if ($count == $gaps) {
+          $response['data'][] = $row;
+          foreach ($row as $key => $element) {
+            if (in_array($key, $memoryArray)) {
+              $tmp = round($element / 1000000,2);
+              if ($type == 'Disk') {
+                $tmp = round($tmp / 1000,2);
+              }
+              $response[$key][] = $tmp;
+            } elseif ($key == 'timestamp') {
+              $response[$key][] = date("'H:i'",$element);
+            } else {
+              $response[$key][] = $element;
             }
-            $response[$key][] = $tmp;
-          } elseif ($key == 'timestamp') {
-            $response[$key][] = date("'H:i'",$element);
-          } else {
-            $response[$key][] = $element;
           }
+          $count = 0;
         }
+        $count++;
       }
 
       if ($type == 'CPU') {
