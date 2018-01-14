@@ -46,7 +46,7 @@ axis: {
         type: 'category',
         categories: [<?php echo implode(",", $networkUsage['timestamp']); ?>],
         tick: {
-        width: 80,
+        width: 120,
             culling: {
                 max: 7
             }
@@ -87,7 +87,7 @@ foreach ($networkUsage['nics'] as $key => $value) {
           type: 'category',
           categories: [".implode(',', $networkUsage['timestamp'])."],
           tick: {
-          width: 80,
+          width: 120,
               culling: {
                   max: 7
               }

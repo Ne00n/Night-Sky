@@ -198,7 +198,7 @@ class Server {
               }
               $response[$key][] = $tmp;
             } elseif ($key == 'timestamp') {
-              $response[$key][] = date("'H:i'",$element);
+              $response[$key][] = date("'Y-m-d H:i'",$element);
             } else {
               $response[$key][] = $element;
             }
@@ -236,7 +236,7 @@ class Server {
             $cpuLoad['niceA'][] = $cpuLoad[$key]['niceA'];
             $cpuLoad['stealA'][] = $cpuLoad[$key]['stealA'];
             $cpuLoad['iowaitA'][] = $cpuLoad[$key]['iowaitA'];
-            $cpuLoad['timestamp'][] = date("'H:i'",$key);
+            $cpuLoad['timestamp'][] = date("'Y-m-d H:i'",$key);
           }
         }
 
@@ -260,7 +260,7 @@ class Server {
             }
             $networkUsage['nic'][$element['nic']]['TX'][] = round((($element['bytesTX'] - $networkUsage[$element['nic']]['lastTX']) / 125000) / 60,2);
             $networkUsage['nic'][$element['nic']]['RX'][] = round((($element['bytesRX'] - $networkUsage[$element['nic']]['lastRX']) / 125000) / 60,2);
-            $networkUsage['timestamp'][] = date("'H:i'",$element['timestamp']);
+            $networkUsage['timestamp'][] = date("'Y-m-d H:i'",$element['timestamp']);
           }
           $networkUsage[$element['nic']]['lastRX'] = $element['bytesRX'];
           $networkUsage[$element['nic']]['lastTX'] = $element['bytesTX'];

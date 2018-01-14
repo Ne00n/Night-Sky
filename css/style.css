@@ -22,3 +22,5 @@ body {
 body {
   font-family: 'Raleway';
 }
+
+.c3-axis .tick line {display: none;}

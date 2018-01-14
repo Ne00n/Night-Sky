@@ -52,7 +52,7 @@ var chart = c3.generate({
         type: 'category',
         categories: [<?php echo implode(",", $cpuLoad['timestamp']); ?>],
         tick: {
-        width: 80,
+        width: 120,
             culling: {
                 max: 7
             }
@@ -94,7 +94,7 @@ axis: {
         type: 'category',
         categories: [<?php echo implode(",", $memoryUsage['timestamp']); ?>],
         tick: {
-        width: 80,
+        width: 120,
             culling: {
                 max: 7
             }
@@ -129,7 +129,7 @@ axis: {
        type: 'category',
        categories: [<?php echo implode(",", $diskUsage['timestamp']); ?>],
        tick: {
-       width: 80,
+       width: 120,
            culling: {
                max: 7
            }
@@ -165,7 +165,7 @@ axis: {
         type: 'category',
         categories: [<?php echo implode(",", $networkUsage['timestamp']); ?>],
         tick: {
-        width: 80,
+        width: 120,
             culling: {
                 max: 7
             }

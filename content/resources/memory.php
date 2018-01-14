@@ -54,7 +54,7 @@ axis: {
         type: 'category',
         categories: [<?php echo implode(",", $memoryUsage['timestamp']); ?>],
         tick: {
-        width: 80,
+        width: 120,
             culling: {
                 max: 7
             }
@@ -84,7 +84,7 @@ axis: {
         type: 'category',
         categories: [<?php echo implode(",", $swapUsage['timestamp']); ?>],
         tick: {
-        width: 80,
+        width: 120,
             culling: {
                 max: 7
             }
@@ -119,7 +119,7 @@ axis: {
         type: 'category',
         categories: [<?php echo implode(",", $swapUsage['timestamp']); ?>],
         tick: {
-        width: 80,
+        width: 120,
             culling: {
                 max: 7
             }

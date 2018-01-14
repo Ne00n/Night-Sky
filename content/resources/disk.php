@@ -38,7 +38,7 @@ axis: {
        type: 'category',
        categories: [<?php echo implode(",", $diskUsage['timestamp']); ?>],
        tick: {
-       width: 80,
+       width: 120,
            culling: {
                max: 7
            }

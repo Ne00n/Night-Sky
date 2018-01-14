@@ -50,7 +50,7 @@ var chart = c3.generate({
         type: 'category',
         categories: [<?php echo implode(",", $cpuLoad['timestamp']); ?>],
         tick: {
-        width: 80,
+        width: 120,
             culling: {
                 max: 7
             }
@@ -97,7 +97,7 @@ for ($i = 0; $i <= count($cpuLoad['load']) -1; $i++) {
           type: 'category',
           categories: [".implode(',',$cpuLoad['timestamp'])."],
           tick: {
-          width: 70,
+          width: 120,
               culling: {
                   max: 7
               }
