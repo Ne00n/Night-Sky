@@ -10,7 +10,12 @@
 
         if (isset($_POST['timestampStart']) && isset($_POST['timestampEnd']) ) {
           $start = $_POST['timestampStart'];
+          $_SESSION["timestampStart"] = $_POST['timestampStart'];
           $end = $_POST['timestampEnd'];
+          $_SESSION["timestampEnd"] = $_POST['timestampEnd'];
+        } elseif (isset($_SESSION['timestampStart']) && isset($_SESSION['timestampEnd']) ) {
+          $start = $_SESSION["timestampStart"];
+          $end = $_SESSION["timestampEnd"];
         } else {
           $start = strtotime('-120 minutes', time());
           $end = time();
