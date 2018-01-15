@@ -124,46 +124,54 @@ class Server {
 
       if ($type == 'CPU') {
         $cpuLoad = 0;
-        foreach ($response['data'] as $element) {
-          $cpuLoad += $element['idle'];
+        if (!empty($response['data'])) {
+          foreach ($response['data'] as $element) {
+            $cpuLoad += $element['idle'];
+          }
+          $cpuLoad = abs(($cpuLoad / count($response['data'])) - 100);
         }
-        $cpuLoad = abs(($cpuLoad / count($response['data'])) - 100);
         return $cpuLoad;
       }
 
       if ($type == 'Memory') {
         $memoryUsage = 0;
-        foreach ($response['data'] as $element) {
-          $memoryUsage += $element['percent'];
+        if (!empty($response['data'])) {
+          foreach ($response['data'] as $element) {
+            $memoryUsage += $element['percent'];
+          }
+          $memoryUsage = $memoryUsage / count($response['data']);
         }
-        $memoryUsage = $memoryUsage / count($response['data']);
         return $memoryUsage;
       }
 
       if ($type == 'Disk') {
         $diskUsage = 0;
-        foreach ($response['data'] as $element) {
-          $diskUsage += $element['percent'];
+        if (!empty($response['data'])) {
+          foreach ($response['data'] as $element) {
+            $diskUsage += $element['percent'];
+          }
+          $diskUsage = $diskUsage / count($response['data']);
         }
-        $diskUsage = $diskUsage / count($response['data']);
         return $diskUsage;
       }
 
       if ($type == 'Network') {
         $networkUsageTotal = 0; $networkUsage = array();
-        foreach ($response['data'] as $element) {
-          if (isset($networkUsage[$element['nic']]['lastRX'])) {
-            $networkUsage['RX'] += $element['bytesRX'] - $networkUsage[$element['nic']]['lastRX'];
-            $networkUsage['TX'] += $element['bytesTX'] - $networkUsage[$element['nic']]['lastTX'];
+        if (!empty($response['data'])) {
+          foreach ($response['data'] as $element) {
+            if (isset($networkUsage[$element['nic']]['lastRX'])) {
+              $networkUsage['RX'] += $element['bytesRX'] - $networkUsage[$element['nic']]['lastRX'];
+              $networkUsage['TX'] += $element['bytesTX'] - $networkUsage[$element['nic']]['lastTX'];
+            }
+            $networkUsage[$element['nic']]['lastRX'] = $element['bytesRX'];
+            $networkUsage[$element['nic']]['lastTX'] = $element['bytesTX'];
           }
-          $networkUsage[$element['nic']]['lastRX'] = $element['bytesRX'];
-          $networkUsage[$element['nic']]['lastTX'] = $element['bytesTX'];
+          $networkUsage['RX'] = $networkUsage['RX'] / count($response['data']);
+          $networkUsage['TX'] = $networkUsage['TX'] / count($response['data']);
+          $networkUsage['RX'] = $networkUsage['RX'] / 125000;
+          $networkUsage['TX'] = $networkUsage['TX'] / 125000;
+          $networkUsageTotal = round(($networkUsage['RX'] + $networkUsage['TX']) / 60,2);
         }
-        $networkUsage['RX'] = $networkUsage['RX'] / count($response['data']);
-        $networkUsage['TX'] = $networkUsage['TX'] / count($response['data']);
-        $networkUsage['RX'] = $networkUsage['RX'] / 125000;
-        $networkUsage['TX'] = $networkUsage['TX'] / 125000;
-        $networkUsageTotal = round(($networkUsage['RX'] + $networkUsage['TX']) / 60,2);
         return $networkUsageTotal;
       }
 
