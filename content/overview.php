@@ -12,7 +12,7 @@ if (Page::startsWith($p,"server?remove=")) {
       $S->setID($serverID);
       $S->removeServer();
       if ($S->getLastError() == "") {
-        echo '<div class="alert alert-success" role="alert"><center>Success.<br>To install the agent please run this command:<br><pre>wget https://raw.githubusercontent.com/Ne00n/Night-Sky-PRM/master/install.sh && bash install.sh '. $S->getToken().'</pre></center></div>';
+        echo '<div class="alert alert-success" role="alert"><center>Success.</center></div>';
       } else {
         echo '<div class="alert alert-danger" role="alert"><center>'.$S->getLastError().'</center></div>';
       }
