@@ -28,8 +28,9 @@
           <script type="text/javascript">
             $(function() {
                 $('input[id="daterange"]').daterangepicker({
-                    timePicker: false,
-                    timePickerSeconds: true
+                    timePicker: true,
+                    timePicker24Hour: true,
+                    timePickerSeconds: true,
                 });
 
                 $('#daterange').on('apply.daterangepicker', function(ev, picker) {
