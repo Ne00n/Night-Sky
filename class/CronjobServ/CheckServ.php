@@ -42,7 +42,9 @@ class CheckServ {
     if ($TYPE == 'tcp') {
       $fp = fsockopen($IP,$PORT, $errno, $errstr, 1.5);
     } elseif ($TYPE == 'http') {
-
+      $Request = new Request();
+      $response = $Request->createRequest($IP.":".$PORT);
+      if ($response['http'] == 200) { $fp = true; } else { $fp = false; $errstr = $response['http']; }
     }
 
     #YAY, its alive
@@ -56,10 +58,10 @@ class CheckServ {
       $external_one = $this->getUniqueRemote(0,count($this->remote_boxes)-1);
       $external_second = $this->getUniqueRemote(0,count($this->remote_boxes)-1);
 
-      $res_one = $this->fetchRemote($this->remote_boxes[$external_one]['IP'],$this->remote_boxes[$external_one]['Port'],$IP,$PORT);
+      $res_one = $this->fetchRemote($this->remote_boxes[$external_one]['IP'],$this->remote_boxes[$external_one]['Port'],$IP,$PORT,$TYPE);
       $this->status_detail[] = array('Location' => $this->remote_boxes[$external_one]['Location'],'Status' => ($res_one[0] ? 'Online' : 'Offline'),'Reason' => $res_one[1],'Totaltime' => $res_one[2]);
 
-      $res_two = $this->fetchRemote($this->remote_boxes[$external_second]['IP'],$this->remote_boxes[$external_second]['Port'],$IP,$PORT);
+      $res_two = $this->fetchRemote($this->remote_boxes[$external_second]['IP'],$this->remote_boxes[$external_second]['Port'],$IP,$PORT,$TYPE);
       $this->status_detail[] = array('Location' => $this->remote_boxes[$external_second]['Location'],'Status' => ($res_two[0] ? 'Online' : 'Offline'),'Reason' => $res_two[1],'Totaltime' => $res_two[2]);
 
       if ($res_one[0] == 1) {

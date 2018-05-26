@@ -328,7 +328,7 @@
         <thead>
           <tr>
             <th>Name</th>
-            <th>IP</th>
+            <th>Target</th>
             <th>Port</th>
             <th>Status</th>
             <th>Online</th>
