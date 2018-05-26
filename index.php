@@ -65,6 +65,9 @@ if ($p == "login") {
 } elseif (Page::startsWith($p,"webhook")) {
   require_auth($DB,$Login);
   include 'content/webhooks.php';
+} elseif (Page::startsWith($p,"status")) {
+  require_auth($DB,$Login);
+  include 'content/status.php';
 } elseif ($p=="logout") {
   require_auth($DB,$Login);
   session_unset();
