@@ -84,28 +84,14 @@ class CheckServ {
     $response = $Request->createRequest($url,'POST',$payload);
     $datablock = json_decode($response['content'],true);
 
-    var_dump($response);
-
-    if ($type == 'tcp') {
-      if ($response['http'] == 200) {
-        $result[0] = $datablock['result'];
-        $result[1] = $datablock['info'];
-        $result[2] = $response['totaltime'];
-      } else {
-        $result[0] = 0;
-        $result[1] = "Did not return http code 200.";
-        $result[2] = $response['totaltime'];
-      }
-    } elseif ($type == 'http') {
-      if ($response['http'] == 200) {
-        $result[0] = $datablock['result'];
-        $result[1] = $datablock['info'];
-        $result[2] = $response['totaltime'];
-      } else {
-        $result[0] = 0;
-        $result[1] = "Did not return http code 200.";
-        $result[2] = $response['totaltime'];
-      }
+    if ($response['http'] == 200) {
+      $result[0] = $datablock['result'];
+      $result[1] = $datablock['info'];
+      $result[2] = $response['totaltime'];
+    } else {
+      $result[0] = 0;
+      $result[1] = "Did not return http code 200.";
+      $result[2] = $response['totaltime'];
     }
     return $result;
   }
