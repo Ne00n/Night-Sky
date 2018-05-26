@@ -9,8 +9,16 @@ function dat_loader($class) {
 
 spl_autoload_register('dat_loader');
 
+#Database
 $DB = new Database;
 $DB->InitDB();
+#Lake (MySQLi wrapper)
+$Lake = new Lake(_db_host,_db_user,_db_password,_db_database);
+
+if ($Lake->getSuccess() === false) {
+  die('MySQL Connection failed');
+}
+#New Login object
 $Login = new Verify($DB);
 
 function require_auth($DB,$Login) {
