@@ -68,7 +68,7 @@ class CheckServ {
         $this->online = true;
       } elseif ($res_two[0] == 1) {
         $this->online = true;
-      } elseif (!$fp && $res_one[0] == "Did not return http code 200." && $res_one[1] == "Did not return http code 200.") {
+      } elseif ($fp === false && $res_one[0] === "Did not return http code 200." && $res_one[1] === "Did not return http code 200.") {
         //If we cannot connect directly and we cannot connect to our Remote servers, its most likely that our Network has issues so return true
         $this->online = true;
       }
