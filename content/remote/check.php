@@ -34,7 +34,7 @@ if ($method == 'POST' && json_last_error() === 0 && in_array($requestIP, $Whitel
 		} elseif ($payload['type'] == 'http') {
 			$response = createRequest($payload['ip'].":".$payload['port']);
 			if ($response['http'] == 200) {
-				echo json_encode(array('result' => 1,'info' => ''));
+				echo json_encode(array('result' => 1,'info' => $response['http']));
 			} else {
 				echo json_encode(array('result' => 0,'info' => $response['http']));
 			}
