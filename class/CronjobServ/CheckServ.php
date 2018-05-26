@@ -86,7 +86,7 @@ class CheckServ {
 
     if ($response['http'] == 200) {
       $result[0] = $datablock['result'];
-      $result[1] = $datablock['info'];
+      if ($type == 'http') { $result[1] = "HTTP Code: ".$datablock['info']; } else { $result[1] = $datablock['info']; }
       $result[2] = $response['totaltime'];
     } else {
       $result[0] = 0;
