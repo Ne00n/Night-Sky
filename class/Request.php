@@ -25,11 +25,13 @@
         curl_setopt($request, CURLOPT_VERBOSE,true);
         $result['content'] = curl_exec($request);
         $result['http'] = curl_getinfo($request, CURLINFO_HTTP_CODE);
+        $result['totaltime'] = curl_getinfo($request, CURLINFO_TOTAL_TIME);
         $result['info'] = curl_getinfo($request);
         curl_close($request);
         return $result;
       } else {
         $result['content'] = curl_exec($request);
+        $result['totaltime'] = curl_getinfo($request, CURLINFO_TOTAL_TIME);
         $result['http'] = curl_getinfo($request, CURLINFO_HTTP_CODE);
         curl_close($request);
         return $result;

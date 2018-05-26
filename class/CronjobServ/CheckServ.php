@@ -33,18 +33,22 @@ class CheckServ {
     return $r;
   }
 
-  public function checkAvailability($IP,$PORT) {
+  public function checkAvailability($IP,$PORT,$TYPE = 'tcp') {
     //Reset, since use this objective for up to 5 servers
     $this->status_detail = [];
     $this->external_before = NULL;
 
-    #Check if we can reach the Server from here, 1.5sec Timeout
-    $fp = fsockopen($IP,$PORT, $errno, $errstr, 1.5);
+    #Check if we can reach the Server from here.
+    if ($TYPE == 'tcp') {
+      $fp = fsockopen($IP,$PORT, $errno, $errstr, 1.5);
+    } elseif ($TYPE == 'http') {
+
+    }
 
     #YAY, its alive
     if ($fp) {
       $this->online = true;
-      $this->status_detail[] = array('Location' => 'Localhost','Status' => 'Offline','Reason' => 'Success');
+      $this->status_detail[] = array('Location' => 'Localhost','Status' => 'Online','Reason' => 'Success');
     } else {
       $this->online = false;
       $this->status_detail[] = array('Location' => 'Localhost','Status' => 'Offline','Reason' => $errstr);
@@ -62,42 +66,30 @@ class CheckServ {
         $this->online = true;
       } elseif ($res_two[0] == 1) {
         $this->online = true;
-      } elseif (!$fp && $res_one[0] == "Did not return Response Code 200" && $res_one[1] == "Did not return Response Code 200") {
+      } elseif (!$fp && $res_one[0] == "Did not return http code 200." && $res_one[1] == "Did not return http code 200.") {
         //If we cannot connect directly and we cannot connect to our Remote servers, its most likely that our Network has issues so return true
         $this->online = true;
       }
     }
   }
 
-  public function fetchRemote($IP,$Port,$IP_Check,$Port_Check) {
-    $URL = "https://".$IP.":".$Port."/check.php?host=". $IP_Check .":" . $Port_Check;
-
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL,$URL);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,5); //Time for connection in seconds
-    curl_setopt($ch, CURLOPT_TIMEOUT, 5); //Time for execution in seconds
-    $content = curl_exec($ch);
-    $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $totaltime = curl_getinfo($ch, CURLINFO_TOTAL_TIME);
-    curl_close($ch);
-
+  public function fetchRemote($ip,$port,$checkIP,$checkPort,$type = 'tcp') {
+    $url = "https://".$ip.":".$port."/check.php";
+    $payload = json_encode(array('ip' => $checkIP,'port' => $checkPort,'type' => $type));
     $result = array();
 
-    if ($httpcode == 200) {
+    $Request = new Request();
+    $response = $Request->createRequest($url,'POST',$payload);
 
-      list($status,$details) =  explode(":", $content);
-      $result[0] = $status;
-      $result[1] = $details;
-      $result[2] = $totaltime;
-
+    if ($response['http'] == 200) {
+      $datablock = json_decode($response['content'],true);
+      $result[0] = $datablock['result'];
+      $result[1] = $datablock['info'];
+      $result[2] = $response['totaltime'];
     } else {
-
       $result[0] = 0;
-      $result[1] = "Did not return Response Code 200";
-      $result[2] = $totaltime;
-
+      $result[1] = "Did not return http code 200.";
+      $result[2] = $response['totaltime'];
     }
     return $result;
   }
