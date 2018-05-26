@@ -51,7 +51,7 @@
 
             if ($_POST['Token'] == $_SESSION['Token']) {
 
-              $M->updateCheck($_POST['ip'],$_POST['port'],$_POST['email'],$_POST['name'],$_POST['interval']);
+              $M->updateCheck($_POST['ip'],$_POST['port'],$_POST['email'],$_POST['name'],$_POST['interval'],$_POST['type']);
 
                if ($M->getlastError() == "") {
                  echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
@@ -70,12 +70,20 @@
 
         ?><form class="form-horizontal" action="index.php?p=main?edit=<?php echo Page::escape($check_id); ?>" method="post">
             <div class="form-group">
-              <div class="col-sm-8 col-sm-offset-2">
+              <div class="col-sm-6 col-sm-offset-2">
                 <div class="input-group">
                  <div class="input-group-addon">
                 <span class="fa fa-server"></span>
                  </div>
                  <input value="<?php echo Page::escape($M->getIP()); ?>" type="text" class="form-control input-sm" name="ip" placeholder="127.0.0.1"/>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="input-group">
+                 <div class="input-group-addon">
+                <span class="fa fa-circle-o"></span>
+                 </div>
+                  <input value="<?php echo Page::escape($M->getPort()); ?>" type="text" class="form-control input-sm" name="port" placeholder="80"/>
                 </div>
               </div>
             </div>
@@ -91,9 +99,19 @@
               <div class="col-sm-2">
                 <div class="input-group">
                  <div class="input-group-addon">
-                <span class="fa fa-circle-o"></span>
+                <span class="fa fa-cube"></span>
                  </div>
-                  <input value="<?php echo Page::escape($M->getPort()); ?>" type="text" class="form-control input-sm" name="port" placeholder="80"/>
+                  <select class="selectpicker form-control input-sm" data-size="4" data-style="btn-default btn-sm" name="type">
+                    <?php
+                    if ($M->getType() == 'tcp') {
+                      echo '<option selected>TCP</option>';
+                      echo '<option>HTTP</option>';
+                    } elseif ($M->getType() == 'http') {
+                      echo '<option>TCP</option>';
+                      echo '<option selected>HTTP</option>';
+                    }
+                    ?>
+                  </select>
                 </div>
               </div>
             </div>
@@ -203,7 +221,7 @@
             if ($_POST['Token'] == $_SESSION['Token']) {
 
               $M = new Main($DB,$Login);
-              $M->addCheck($_POST['ip'],$_POST['port'],$_POST['email'],$_POST['name'],$_POST['interval']);
+              $M->addCheck($_POST['ip'],$_POST['port'],$_POST['email'],$_POST['name'],$_POST['interval'],$_POST['type']);
 
                if ($M->getlastError() == "") {
                  echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
@@ -220,12 +238,20 @@
 
           <form class="form-horizontal" action="index.php?p=main?add" method="post">
             <div class="form-group">
-              <div class="col-sm-8 col-sm-offset-2">
+              <div class="col-sm-6 col-sm-offset-2">
                 <div class="input-group">
                  <div class="input-group-addon">
                 <span class="fa fa-server"></span>
                  </div>
                  <input value="<?php if (isset($_POST['ip'])) {echo Page::escape($_POST['ip']);} ?>" type="text" class="form-control input-sm" name="ip" placeholder="127.0.0.1"/>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="input-group">
+                 <div class="input-group-addon">
+                <span class="fa fa-circle-o"></span>
+                 </div>
+                  <input value="<?php if (isset($_POST['port'])) {echo Page::escape($_POST['port']);} ?>" type="text" class="form-control input-sm" name="port" placeholder="80"/>
                 </div>
               </div>
             </div>
@@ -241,9 +267,12 @@
               <div class="col-sm-2">
                 <div class="input-group">
                  <div class="input-group-addon">
-                <span class="fa fa-circle-o"></span>
+                <span class="fa fa-cube"></span>
                  </div>
-                  <input value="<?php if (isset($_POST['port'])) {echo Page::escape($_POST['port']);} ?>" type="text" class="form-control input-sm" name="port" placeholder="80"/>
+                  <select class="selectpicker form-control input-sm" data-size="4" data-style="btn-default btn-sm" name="type">
+                    <option>TCP</option>
+                    <option>HTTP</option>
+                  </select>
                 </div>
               </div>
             </div>
