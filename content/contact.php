@@ -78,7 +78,12 @@
 
           if ($_POST['Token'] == $_SESSION['Token']) {
 
-            $CT->updateContact($_POST['email'],$_POST['groups']);
+            if (isset($_POST['groups'])) {
+              $CT->updateContact($_POST['email'],$_POST['groups']);
+            } else {
+              $CT->updateContact($_POST['email']);
+            }
+
              if ($CT->getlastError() == "") {
                echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
                $_POST = array();
@@ -115,26 +120,16 @@
                     <select class="selectpicker form-control input-sm" data-size="3" data-style="btn-default btn-sm" name="groups[]" multiple>
                       <?php
                       $group_ids = array();
-
-                      $query = "SELECT GroupID FROM groups_emails WHERE EmailID=?";
-                      $stmt = $DB->GetConnection()->prepare($query);
-                      $stmt->bind_param('i', $contact_id);
-                      $stmt->execute();
-                      $stmt->bind_result($db_group_id);
-                      while ($stmt->fetch()) {
-                           $group_ids[] = $db_group_id;
+                      $results = $Lake->SELECT(array('GroupID'))->FROM('groups_emails')->WHERE(array('EmailID' => $contact_id))->VAR('i')->DONE();
+                      foreach ($results as $row) {
+                           $group_ids[] = $row['GroupID'];
                       }
 
-                      $query = "SELECT ID,Name FROM groups WHERE USER_ID=? ORDER BY ID";
                       $USER_ID = $Login->getUserID();
-                      $stmt = $DB->GetConnection()->prepare($query);
-                      $stmt->bind_param('i', $USER_ID);
-                      $stmt->execute();
-                      $stmt->bind_result($db_group_id, $db_group_name);
-                      while ($stmt->fetch()) {
-                           echo '<option '.(in_array($db_group_id,$group_ids) ? "selected" : "").' value="'. Page::escape($db_group_id) .'">'. Page::escape($db_group_name) .'</option>';
-                      }
-                      $stmt->close(); ?>
+                      $results = $Lake->SELECT(array('ID,Name'))->FROM('groups')->WHERE(array('USER_ID' => $USER_ID))->ORDERBY('ID')->VAR('i')->DONE();
+                      foreach ($results as $row) {
+                           echo '<option '.(in_array($row['ID'],$group_ids) ? "selected" : "").' value="'. Page::escape($row['ID']) .'">'. Page::escape($row['Name']) .'</option>';
+                      } ?>
                     </select>
                    </div>
               </div>
@@ -153,7 +148,12 @@
 
           if ($_POST['Token'] == $_SESSION['Token']) {
 
-            $CT->addContact($_POST['email'],$_POST['groups']);
+            if (isset($_POST['groups'])) {
+              $CT->addContact($_POST['email'],$_POST['groups']);
+            } else {
+              $CT->addContact($_POST['email']);
+            }
+
              if ($CT->getlastError() == "") {
                echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
                $_POST = array();
@@ -185,16 +185,11 @@
                     </div>
                     <select class="selectpicker form-control input-sm" data-size="3" data-style="btn-default btn-sm" name="groups[]" multiple>
                       <?php
-                      $query = "SELECT ID,Name FROM groups WHERE USER_ID=? GROUP BY ID";
                       $USER_ID = $Login->getUserID();
-                      $stmt = $DB->GetConnection()->prepare($query);
-                      $stmt->bind_param('i', $USER_ID);
-                      $stmt->execute();
-                      $stmt->bind_result($db_group_id, $db_group_name);
-                      while ($stmt->fetch()) {
-                           echo '<option value="'. Page::escape($db_group_id) .'">'. Page::escape($db_group_name) .'</option>';
-                      }
-                      $stmt->close(); ?>
+                      $results = $Lake->SELECT(array('ID,Name'))->FROM('groups')->WHERE(array('USER_ID' => $USER_ID))->GROUPBY('ID')->VAR('i')->DONE();
+                      foreach ($results as $row) {
+                           echo '<option value="'. Page::escape($row['ID']) .'">'. Page::escape($row['Name']) .'</option>';
+                      } ?>
                     </select>
                    </div>
               </div>
@@ -217,27 +212,18 @@
           </tr>
         </thead>
         <tbody>
-
         <?php
 
         $USER_ID = $Login->getUserID();
-
-        $query = "SELECT ID,EMail,Status FROM emails WHERE USER_ID = ? ";
-        $stmt = $DB->GetConnection()->prepare($query);
-        $stmt->bind_param('i', $USER_ID);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        while ($row = $result->fetch_assoc()) {
-
+        $results = $Lake->SELECT(array('ID,EMail,Status'))->FROM('emails')->WHERE(array('USER_ID' => $USER_ID))->VAR('i')->DONE();
+        foreach ($results as $row) {
           echo '<tr>';
           echo '<td class="text-left">'.Page::escape($row['EMail']).'</td>';
           echo '<td class="text-left">'.($row['Status'] ? 'Enabled' : 'Disabled').'</td>';
           echo '<td class="text-left col-md-3"><a href="index.php?p=contact?edit='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-gear"></i></button></a>';
           echo '<a href="index.php?p=contact?remove='.Page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
           echo '</tr>';
-
         } ?>
-
         </tbody>
       </table>
     </div>
