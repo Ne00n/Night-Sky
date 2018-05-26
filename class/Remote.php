@@ -16,9 +16,10 @@ class Remote {
     $result = $stmt->get_result();
     while ($row = $result->fetch_assoc()) {
 
-      $fp = fsockopen($row['IP'],$row['Port'], $errno, $errstr, 1.5);
+      $Request = new Request();
+      $response = $Request->createRequest("https://".$row['IP'].":".$row['Port']."/check.php");
 
-      if ($fp) {
+      if ($response['http'] == 200) {
 
         $status = 1;
 
@@ -34,7 +35,7 @@ class Remote {
 
         $status = 0;
 
-        echo("Offline ".$db_Location."\n");
+        echo($row['Location']." is offline.\n");
 
         $stmt = $this->DB->GetConnection()->prepare("UPDATE remote SET Online = ? WHERE ID = ?");
         $stmt->bind_param('ii', $status,$row['ID']);

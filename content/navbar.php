@@ -49,6 +49,12 @@
         <ul class="nav navbar-nav navbar-right">
           <?php
 
+          if (Page::startsWith($p,"status")) {
+             echo '<li class="active"><a href="index.php?p=status">Status</a></li>';
+          } else {
+            echo '<li><a href="index.php?p=status">Status</a></li>';
+          }
+
           if (Page::startsWith($p,"account")) {
              echo '<li class="active"><a href="index.php?p=account">Account</a></li>';
           } else {
