@@ -19,7 +19,7 @@ class Main {
   }
 
   public function addCheck($IP,$PORT,$groups,$NAME,$interval,$type) {
-    if ((filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) == false && filter_var($IP, FILTER_VALIDATE_DOMAIN) == false)) { $this->error = "Invalid IP or Domain."; }
+    if ((filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) == false && filter_var($IP, FILTER_VALIDATE_DOMAIN) == false)) { $this->error = "Invalid IP or Domain."; }
     if(!preg_match(_regex_NAME,$NAME)){ $this->error = "The Name contains invalid letters.";}
     if(!preg_match(_regex_PORT,$PORT)){ $this->error = "Invalid Port.";}
     if (strlen($NAME) > _max_Name OR strlen($NAME) < _min_Name) {$this->error = "The length of the Name should be between "._min_Name." and "._max_Name.".";}
@@ -62,7 +62,7 @@ class Main {
   }
 
   public function updateCheck($IP,$PORT,$groups,$NAME,$interval,$type) {
-    if ((filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) == false && filter_var($IP, FILTER_VALIDATE_DOMAIN) == false)) { $this->error = "Invalid IP or Domain."; }
+    if ((filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) == false && filter_var($IP, FILTER_VALIDATE_DOMAIN) == false)) { $this->error = "Invalid IP or Domain."; }
     if(!preg_match(_regex_NAME,$NAME)){ $this->error = "The Name contains invalid letters.";}
     if(!preg_match(_regex_PORT,$PORT)){ $this->error = "Invalid Port.";}
     if (strlen($NAME) > _max_Name OR strlen($NAME) < _min_Name) {$this->error = "The length of the Name should be between "._min_Name." and "._max_Name.".";}

@@ -40,7 +40,11 @@ class CheckServ {
 
     #Check if we can reach the Server from here.
     if ($TYPE == 'tcp') {
-      $fp = fsockopen($IP,$PORT, $errno, $errstr, 1.5);
+      if (filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+        $fp = fsockopen("[".$IP."]",$PORT, $errno, $errstr, 1.5);
+      } else {
+        $fp = fsockopen($IP,$PORT, $errno, $errstr, 1.5);
+      }
     } elseif ($TYPE == 'http') {
       $Request = new Request();
       $response = $Request->createRequest($IP.":".$PORT);
