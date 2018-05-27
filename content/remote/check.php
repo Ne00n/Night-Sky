@@ -23,7 +23,7 @@ $payload = json_decode(file_get_contents('php://input'),true);
 $requestIP = $_SERVER['REMOTE_ADDR'];
 
 if ($method == 'POST' && json_last_error() === 0 && in_array($requestIP, $Whitelist)) {
-	if ((filter_var($payload['ip'], FILTER_VALIDATE_IP) || filter_var($payload['ip'], FILTER_VALIDATE_URL)) && is_numeric($payload['port']) && ($payload['type'] == 'tcp' || $payload['type'] == 'http')) {
+	if ((filter_var($payload['ip'], FILTER_VALIDATE_IP) || filter_var($payload['ip'], FILTER_VALIDATE_DOMAIN)) && is_numeric($payload['port']) && ($payload['type'] == 'tcp' || $payload['type'] == 'http')) {
 		if ($payload['type'] == 'tcp') {
 			$socket = @fsockopen($payload['ip'], $payload['port'], $errorNo, $errorStr, 1.0);
 			if ($errorNo == 0) {
