@@ -30,7 +30,6 @@ class Main {
 
     $allowed_interval = array('10','20','30','60');
     if (!in_array($interval, $allowed_interval)) { $this->error = "Invalid Interval"; }
-    var_dump($type);
     if ($type != 'TCP' && $type != 'HTTP') { $this->error = "Invalid Type."; }
 
     if ($this->error == "") {
