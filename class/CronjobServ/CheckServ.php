@@ -72,7 +72,7 @@ class CheckServ {
         $this->online = true;
       } elseif ($res_two[0] == 1) {
         $this->online = true;
-      } elseif ($fp === false && $res_one[0] === "Did not return http code 200." && $res_one[1] === "Did not return http code 200.") {
+      } elseif ($fp === false && $res_one[0] === "Remote did not respond to request." && $res_one[1] === "Remote did not respond to request.") {
         //If we cannot connect directly and we cannot connect to our Remote servers, its most likely that our Network has issues so return true
         $this->online = true;
       }
@@ -90,11 +90,19 @@ class CheckServ {
 
     if ($response['http'] == 200) {
       $result[0] = $datablock['result'];
-      if ($type == 'http') { $result[1] = "HTTP Code: ".$datablock['info']; } else { $result[1] = $datablock['info']; }
+      if ($type == 'http') {
+        if ($datablock['info'] == 0) {
+          $result[1] = "Connection timed out.";
+        } else {
+          $result[1] = "HTTP Code: ".$datablock['info'];
+        }
+      } else {
+        $result[1] = $datablock['info'];
+      }
       $result[2] = $response['totaltime'];
     } else {
       $result[0] = 0;
-      $result[1] = "Did not return http code 200.";
+      $result[1] = "Remote did not respond to request.";
       $result[2] = $response['totaltime'];
     }
     return $result;
