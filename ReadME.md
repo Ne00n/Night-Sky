@@ -1,6 +1,6 @@
 # Night-Sky
 
-10,20,30,60s Interval Port Monitoring
+10,20,30,60s Interval Port & HTTP(S) Monitoring
 
 [![Build Status](https://travis-ci.org/Ne00n/Night-Sky.svg?branch=Release)](https://travis-ci.org/Ne00n/Night-Sky)
 
@@ -31,4 +31,5 @@ QuickSetup:
 4. Put cron/night.php and cron/remote.php into Crontab to run every 60 seconds, use a non privileged user for that. => cron.example
 5. Deploy the file check.php on some remote servers and add them to the table remote.<br />
 - You can find the file for that in content/remote/<br />
-- The Field IP can be also contain a URL like "check.domain.com", make sure the Domain is reachable over TLS, plain wont work.
+- The Field IP can be also contain a URL like "check.domain.com", make sure the Domain is reachable over TLS, plain wont work.<br>
+- The Domain should not contain "https://" or "/check.php"
