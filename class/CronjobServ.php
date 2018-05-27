@@ -76,7 +76,11 @@ class CronjobServ {
                 $time = time();
 
                 //Mail
-                $email = 'Server '.Page::escape($element['NAME']).' went offline. Detected: '.date("d.m.Y H:i:s",Page::escape($time));
+                if ($element['TYPE'] == 'http') {
+                  $email = 'Website '.Page::escape($element['NAME']).' went offline. Detected: '.date("d.m.Y H:i:s",Page::escape($time));
+                } else {
+                  $email = 'Server '.Page::escape($element['NAME']).' went offline. Detected: '.date("d.m.Y H:i:s",Page::escape($time));
+                }
                 $email .= "\n\n";
                 foreach ($CS->getStatusDetail() as $serv => $elementary) {
                   $email .= $elementary['Location'].": ".$elementary['Reason']."\n";
@@ -124,7 +128,12 @@ class CronjobServ {
                 if (!empty($element['EMAIL'])) {
                   foreach($element['EMAIL'] as $mail)
                   {
-                    $Mail = new Mail($mail,'Night-Sky - Uptime Alert '.Page::escape($element['NAME']),'Server '.Page::escape($element['NAME']).' is back Online. Detected: '.date("d.m.Y H:i:s",Page::escape($time)));
+                    if ($element['TYPE'] == 'http') {
+                      $email = 'Website '.Page::escape($element['NAME']).' is back Online. Detected: '.date("d.m.Y H:i:s",Page::escape($time));
+                    } else {
+                      $email = 'Server '.Page::escape($element['NAME']).' is back Online. Detected: '.date("d.m.Y H:i:s",Page::escape($time));
+                    }
+                    $Mail = new Mail($mail,'Night-Sky - Uptime Alert '.Page::escape($element['NAME']),$email);
                     $Mail->run();
                   }
                 }
