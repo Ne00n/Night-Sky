@@ -18,7 +18,7 @@
 
       $iMax = $i +5;
 
-      $query = "SELECT SLOT,ID,IP,PORT,USER_ID,NAME,Check_Interval FROM checks WHERE ENABLED = 1 AND SLOT = ? ORDER by ID LIMIT ?,?";
+      $query = "SELECT SLOT,ID,IP,PORT,USER_ID,NAME,TYPE,Check_Interval FROM checks WHERE ENABLED = 1 AND SLOT = ? ORDER by ID LIMIT ?,?";
       $stmt = $DB->GetConnection()->prepare($query);
       $stmt->bind_param('iii', $threadID,$i,$iMax);
       $stmt->execute();
@@ -53,7 +53,7 @@
         }
 
         //Here we need all details
-        $checks_out[$row['ID']] = array("IP" => $row['IP'],"PORT" => $row['PORT'],"EMAIL" => $emails,"WEBHOOK" => $webhooks,"NAME" => $row['NAME'],"USER_ID" => $row['USER_ID'],"INTERVAL" => $row['Check_Interval']);
+        $checks_out[$row['ID']] = array("IP" => $row['IP'],"PORT" => $row['PORT'],"EMAIL" => $emails,"WEBHOOK" => $webhooks,"NAME" => $row['NAME'],"TYPE" => $row['TYPE'],"USER_ID" => $row['USER_ID'],"INTERVAL" => $row['Check_Interval']);
       }
 
       return $checks_out;

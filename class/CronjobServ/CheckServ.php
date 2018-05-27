@@ -33,18 +33,28 @@ class CheckServ {
     return $r;
   }
 
-  public function checkAvailability($IP,$PORT) {
+  public function checkAvailability($IP,$PORT,$TYPE = 'tcp') {
     //Reset, since use this objective for up to 5 servers
     $this->status_detail = [];
     $this->external_before = NULL;
 
-    #Check if we can reach the Server from here, 1.5sec Timeout
-    $fp = fsockopen($IP,$PORT, $errno, $errstr, 1.5);
+    #Check if we can reach the Server from here.
+    if ($TYPE == 'tcp') {
+      if (filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+        $fp = fsockopen("[".$IP."]",$PORT, $errno, $errstr, 1.5);
+      } else {
+        $fp = fsockopen($IP,$PORT, $errno, $errstr, 1.5);
+      }
+    } elseif ($TYPE == 'http') {
+      $Request = new Request();
+      $response = $Request->createRequest($IP.":".$PORT);
+      if ($response['http'] == 200) { $fp = true; } else { $fp = false; $errstr = "HTTP Code: ".$response['http']; }
+    }
 
     #YAY, its alive
     if ($fp) {
       $this->online = true;
-      $this->status_detail[] = array('Location' => 'Localhost','Status' => 'Offline','Reason' => 'Success');
+      $this->status_detail[] = array('Location' => 'Localhost','Status' => 'Online','Reason' => 'Success');
     } else {
       $this->online = false;
       $this->status_detail[] = array('Location' => 'Localhost','Status' => 'Offline','Reason' => $errstr);
@@ -52,52 +62,40 @@ class CheckServ {
       $external_one = $this->getUniqueRemote(0,count($this->remote_boxes)-1);
       $external_second = $this->getUniqueRemote(0,count($this->remote_boxes)-1);
 
-      $res_one = $this->fetchRemote($this->remote_boxes[$external_one]['IP'],$this->remote_boxes[$external_one]['Port'],$IP,$PORT);
+      $res_one = $this->fetchRemote($this->remote_boxes[$external_one]['IP'],$this->remote_boxes[$external_one]['Port'],$IP,$PORT,$TYPE);
       $this->status_detail[] = array('Location' => $this->remote_boxes[$external_one]['Location'],'Status' => ($res_one[0] ? 'Online' : 'Offline'),'Reason' => $res_one[1],'Totaltime' => $res_one[2]);
 
-      $res_two = $this->fetchRemote($this->remote_boxes[$external_second]['IP'],$this->remote_boxes[$external_second]['Port'],$IP,$PORT);
+      $res_two = $this->fetchRemote($this->remote_boxes[$external_second]['IP'],$this->remote_boxes[$external_second]['Port'],$IP,$PORT,$TYPE);
       $this->status_detail[] = array('Location' => $this->remote_boxes[$external_second]['Location'],'Status' => ($res_two[0] ? 'Online' : 'Offline'),'Reason' => $res_two[1],'Totaltime' => $res_two[2]);
 
       if ($res_one[0] == 1) {
         $this->online = true;
       } elseif ($res_two[0] == 1) {
         $this->online = true;
-      } elseif (!$fp && $res_one[0] == "Did not return Response Code 200" && $res_one[1] == "Did not return Response Code 200") {
+      } elseif ($fp === false && $res_one[0] === "Did not return http code 200." && $res_one[1] === "Did not return http code 200.") {
         //If we cannot connect directly and we cannot connect to our Remote servers, its most likely that our Network has issues so return true
         $this->online = true;
       }
     }
   }
 
-  public function fetchRemote($IP,$Port,$IP_Check,$Port_Check) {
-    $URL = "https://".$IP.":".$Port."/check.php?host=". $IP_Check .":" . $Port_Check;
-
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL,$URL);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,5); //Time for connection in seconds
-    curl_setopt($ch, CURLOPT_TIMEOUT, 5); //Time for execution in seconds
-    $content = curl_exec($ch);
-    $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $totaltime = curl_getinfo($ch, CURLINFO_TOTAL_TIME);
-    curl_close($ch);
-
+  public function fetchRemote($ip,$port,$checkIP,$checkPort,$type = 'tcp') {
+    $url = "https://".$ip.":".$port."/check.php";
+    $payload = json_encode(array('ip' => $checkIP,'port' => $checkPort,'type' => $type));
     $result = array();
 
-    if ($httpcode == 200) {
+    $Request = new Request();
+    $response = $Request->createRequest($url,'POST',$payload);
+    $datablock = json_decode($response['content'],true);
 
-      list($status,$details) =  explode(":", $content);
-      $result[0] = $status;
-      $result[1] = $details;
-      $result[2] = $totaltime;
-
+    if ($response['http'] == 200) {
+      $result[0] = $datablock['result'];
+      if ($type == 'http') { $result[1] = "HTTP Code: ".$datablock['info']; } else { $result[1] = $datablock['info']; }
+      $result[2] = $response['totaltime'];
     } else {
-
       $result[0] = 0;
-      $result[1] = "Did not return Response Code 200";
-      $result[2] = $totaltime;
-
+      $result[1] = "Did not return http code 200.";
+      $result[2] = $response['totaltime'];
     }
     return $result;
   }
