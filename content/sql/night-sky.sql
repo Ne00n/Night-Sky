@@ -8,6 +8,7 @@ CREATE TABLE `checks` (
   `SLOT` int(1) NOT NULL,
   `ONLINE` int(1) NOT NULL DEFAULT 0,
   `NAME` varchar(50) NOT NULL,
+  `TYPE` varchar(5) NOT NULL DEFAULT 'tcp',
   `IP` varchar(50) NOT NULL,
   `PORT` int(11) NOT NULL,
   `Check_Interval` int(2) NOT NULL DEFAULT 10,
