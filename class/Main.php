@@ -18,7 +18,7 @@ class Main {
     $this->Verify = $Verify;
   }
 
-  public function addCheck($IP,$PORT,$groups,$NAME,$interval,$type) {
+  public function addCheck($IP,$PORT,$groups,$NAME,$interval,$type = 'tcp') {
     if ((filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) == false && filter_var($IP, FILTER_VALIDATE_DOMAIN) == false)) { $this->error = "Invalid IP or Domain."; }
     if(!preg_match(_regex_NAME,$NAME)){ $this->error = "The Name contains invalid letters.";}
     if(!preg_match(_regex_PORT,$PORT)){ $this->error = "Invalid Port.";}
@@ -61,7 +61,7 @@ class Main {
     }
   }
 
-  public function updateCheck($IP,$PORT,$groups,$NAME,$interval,$type) {
+  public function updateCheck($IP,$PORT,$groups,$NAME,$interval,$type = 'tcp') {
     if ((filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) == false && filter_var($IP, FILTER_VALIDATE_DOMAIN) == false)) { $this->error = "Invalid IP or Domain."; }
     if(!preg_match(_regex_NAME,$NAME)){ $this->error = "The Name contains invalid letters.";}
     if(!preg_match(_regex_PORT,$PORT)){ $this->error = "Invalid Port.";}
