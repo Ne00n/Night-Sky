@@ -1,6 +1,6 @@
 # Night-Sky
 
-10,20,30,60s Interval Port & HTTP(S) Monitoring
+10,20,30,60s Interval Port & HTTP(S) Monitoring, with WebHooks and/or email notifications.
 
 [![Build Status](https://travis-ci.org/Ne00n/Night-Sky.svg?branch=Release)](https://travis-ci.org/Ne00n/Night-Sky)
 
@@ -8,7 +8,7 @@ Night-Sky is licensed under a Creative Commons Attribution-NonCommercial-ShareAl
 You should have received a copy of the license along with this
 work. If not, see https://creativecommons.org/licenses/by-nc-sa/4.0/
 
-- PHP 7.1+, recommend is 7.2, using BackgroundProcess
+- PHP 7.1+, recommended is 7.2, using BackgroundProcess
 - Run a Slot every Second, each Slot can run multiple Processes, 5 Servers are assigned to each Process
 - Loadbalance the Monitoring requests over these Slots, 10 Slots per 10 Seconds, 1 Slot reserved for Offline Servers
 - If a Port is not reachable, move it to the Dedicated Offline Slot, move it back afterwards (planned)
