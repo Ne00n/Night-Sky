@@ -15,7 +15,7 @@ work. If not, see https://creativecommons.org/licenses/by-nc-sa/4.0/
 - Email notifications via local Mail function
 - Block the current Thread if the previous one is still Running
 - Backend: PHP, MariaDB
-- Frontend: HTML (Bootstrap 3 / Font Awesome)
+- Frontend: Bootstrap 3, Font Awesome
 
 QuickSetup:
 
