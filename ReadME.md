@@ -14,7 +14,7 @@ work. If not, see https://creativecommons.org/licenses/by-nc-sa/4.0/
 - If a Port is not reachable, move it to the Dedicated Offline Slot, move it back afterwards (planned)
 - Email notifications via local Mail function
 - Block the current Thread if the previous one is still Running
-- Database Backend: PHP, MariaDB
+- Backend: PHP, MariaDB
 - Frontend: HTML (Bootstrap 3 / Font Awesome)
 
 QuickSetup:
