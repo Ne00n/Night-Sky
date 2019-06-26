@@ -33,7 +33,7 @@ class TestsMain extends TestCase {
   private $Contact;
 	private $StatusPage;
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->DB = new Database;
 		$this->DB->InitDB();
 		$this->CleanUP();
