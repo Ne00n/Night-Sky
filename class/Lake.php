@@ -1,7 +1,5 @@
 <?php
 
-//67df2f14c22cb4041af83cbcc1b8833c8d5f0a91 Jan11 18
-
 class Lake {
 
   private $dbHost;
@@ -25,6 +23,7 @@ class Lake {
   private $where;
   private $orderby;
   private $groupby;
+  private $limit;
   private $whereRaw;
   private $var;
   private $sqlRaw;
@@ -111,13 +110,18 @@ class Lake {
     return $this;
   }
 
-  public function WHERE($input,$param = '') {
+  public function LIKE($input,$param = '',$operator = 'AND') {
+    $this->WHERE($input,$param,'LIKE',$operator);
+    return $this;
+  }
+
+  public function WHERE($input,$param = '',$seperator = "=",$operator = "AND") {
     $i = 1;
     foreach ($input as $key => $value) {
       if ($i == count($input)) {
-        $this->where .= $key.' '.(!empty($param) ? $param : '').'= ?';
+        $this->where .= $key.' '.(!empty($param) ? $param : '').$seperator.' ?';
       } else {
-        $this->where .= $key.' '.(!empty($param) ? $param : '').'= ? AND ';
+        $this->where .= $key.' '.(!empty($param) ? $param : '').$seperator.' ? '.$operator.' ';
       }
       $i++;
       $this->whereRaw[] = $value;
@@ -125,7 +129,7 @@ class Lake {
     return $this;
   }
 
-  public function ORDERBY($input,$sort = '') {
+  public function ORDERBY($input,$sort='ASC') {
     $this->orderby .= 'ORDER BY '.$input.' '.$sort;
     return $this;
   }
@@ -135,8 +139,23 @@ class Lake {
     return $this;
   }
 
+  public function LIMIT($start,$end,$multiplier) {
+    $this->limit .= 'LIMIT '.$start.','.$end*$multiplier;
+    return $this;
+  }
+
   public function OR() {
     $this->where .= ' OR ';
+    return $this;
+  }
+
+  public function EE() {
+    $this->where .= ' ( ';
+    return $this;
+  }
+
+  public function EEND() {
+    $this->where .= ' ) ';
     return $this;
   }
 
@@ -157,8 +176,9 @@ class Lake {
       //SELECT REQUEST
       $sql = "SELECT ".$this->select." FROM ".$this->from;
       if (!empty($this->where)) { $sql .= " WHERE ".$this->where; }
-      if (!empty($this->orderby)) { $sql .= " ".$this->orderby; }
       if (!empty($this->groupby)) { $sql .= " ".$this->groupby; }
+      if (!empty($this->orderby)) { $sql .= " ".$this->orderby; }
+      if (!empty($this->limit)) { $sql .= " ".$this->limit; }
       $this->sqlRaw = $sql;
       $stmt = $this->Database->prepare($sql);
       if (false==$stmt) { $this->success = false; $this->errors[] = 'prepare() failed: ' . $this->Database->error; break; }
@@ -263,6 +283,7 @@ class Lake {
     $this->var = NULL;
     $this->orderby = NULL;
     $this->groupby = NULL;
+    $this->limit = NULL;
   }
 
   public function buildPlaceHolders($data) {
@@ -289,8 +310,16 @@ class Lake {
     return $this->sqlRaw;
   }
 
+  public function getWhereCount() {
+    return count($this->whereRaw);
+  }
+
   public function get() {
     return $this->Database;
+  }
+
+  public function unsetOrderby() {
+    unset($this->orderby);
   }
 
 }

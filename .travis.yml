@@ -14,8 +14,8 @@ before_script:
   - mysql -u root night < content/sql/night-sky.sql
 
 php:
-  - '7.0'
   - '7.1'
   - '7.2'
+  - '7.3'
 
 script: phpunit content/tests/Main.php
