@@ -17,7 +17,25 @@ class Group_Tests extends TestCase {
   }
 
   public function launch() {
-    
+    //Switching to Account 1
+    $this->switchtoID(1);
+
+    //Set ID fo edit of Group
+    $this->Group->setID(1);
+    $this->assertEquals($this->Group->getLastError(),NULL);
+
+    //Edit Group name
+    $this->Group->editGroup('myCluster');
+    $this->assertEquals($this->Group->getLastError(),NULL);
+
+    //Set ID of Group that this account does not own
+    $this->Group->setID(2);
+    $this->assertEquals($this->Group->getLastError(),'Invalid ID');
+
+    //Set ID of Group that does not exist
+    $this->Group->setID(55);
+    $this->assertEquals($this->Group->getLastError(),'Invalid ID');
+
   }
 }
 
