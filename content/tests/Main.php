@@ -3,18 +3,6 @@
 #Load config
 include 'content/configs/config.example.php';
 include 'content/configs/regex.example.php';
-#Load needed Class files
-include 'class/Database.php';
-include 'class/Verify.php';
-include 'class/Main.php';
-include 'class/Page.php';
-include 'class/Contact.php';
-include 'class/User.php';
-include 'class/Group.php';
-include 'class/History.php';
-include 'class/LoadBalancer.php';
-include 'class/StatusPage.php';
-include 'class/WebHook.php';
 //Load Test files
 include 'content/tests/Contact.php';
 include 'content/tests/Status.php';
@@ -22,6 +10,7 @@ include 'content/tests/User.php';
 include 'content/tests/History.php';
 include 'content/tests/Group.php';
 include 'content/tests/Webhook.php';
+include 'content/tests/Cron.php';
 
 use PHPUnit\Framework\TestCase;
 
@@ -34,6 +23,13 @@ class TestsMain extends TestCase {
 	private $StatusPage;
 
 	public function setUp(): void {
+		//Load classes
+		function dat_loader($class) {
+				include 'class/' . $class . '.php';
+		}
+
+		spl_autoload_register('dat_loader');
+		//Init DB
 		$this->DB = new Database;
 		$this->DB->InitDB();
 		$this->CleanUP();
@@ -63,6 +59,9 @@ class TestsMain extends TestCase {
 		//Run WebHook Tests
 		$WH = new Webhook_Tests();
 		$WH->launch();
+		//Run Cronjobs Tests
+		$CJ = new Cronjob_Tests();
+		$CJ->launch();
   }
 
 	private function CleanUP() {
