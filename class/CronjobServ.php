@@ -22,7 +22,7 @@ class CronjobServ {
       $this->time = $in_Time;
   }
 
-  public function run() {
+  public function run($test = false) {
       #Create a new Database Object
       $DB = new Database;
       $DB->InitDB();
@@ -90,7 +90,7 @@ class CronjobServ {
                   foreach($element['EMAIL'] as $mail)
                   {
                     $Mail = new Mail($mail,'Night-Sky - Downtime Alert '.Page::escape($element['NAME']),$email);
-                    $Mail->run();
+                    if ($test == false) { $Mail->run(); }
                   }
                 }
 
@@ -134,7 +134,7 @@ class CronjobServ {
                       $email = 'Server '.Page::escape($element['NAME']).' is back Online. Detected: '.date("d.m.Y H:i:s",Page::escape($time));
                     }
                     $Mail = new Mail($mail,'Night-Sky - Uptime Alert '.Page::escape($element['NAME']),$email);
-                    $Mail->run();
+                    if ($test == false) { $Mail->run(); }
                   }
                 }
 

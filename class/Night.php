@@ -11,21 +11,7 @@ class Night {
     $DB = new Database;
     $DB->InitDB();
 
-    function fetchAll($DB) {
-
-      $Checks = array();
-
-      $query = "SELECT SLOT,ID,IP,PORT,USER_ID,NAME FROM checks WHERE ENABLED = 1 ORDER by ID";
-      $stmt = $DB->GetConnection()->prepare($query);
-      $stmt->execute();
-      $result = $stmt->get_result();
-      while ($row = $result->fetch_assoc()) {
-        $Checks[$row['SLOT']][$row['ID']] = array("NAME" => $row['NAME'],"USER_ID" => $row['USER_ID']); //Just for counting how much are in there, the Data gets pulled again later so we dont need all data, rest removed.
-      }
-      return $Checks;
-    }
-
-    $Checks = fetchAll($DB);
+    $Checks = $this->fetchAll($DB);
 
     for ($i_out = 1; $i_out <= 6; $i_out++) {
 
@@ -46,7 +32,7 @@ class Night {
             if (isset($Checks[$i])) {
               echo("Night Base\n");
               $CB = new CronjobBase($i,$Checks,$i_out);
-              $CB->run();
+              $CB->run($test);
             } else {
               printf("Night Base No Job\n",$i);
             }
@@ -59,6 +45,20 @@ class Night {
 
     }
     return true;
+  }
+
+  private function fetchAll($DB) {
+
+    $Checks = array();
+
+    $query = "SELECT SLOT,ID,IP,PORT,USER_ID,NAME FROM checks WHERE ENABLED = 1 ORDER by ID";
+    $stmt = $DB->GetConnection()->prepare($query);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+      $Checks[$row['SLOT']][$row['ID']] = array("NAME" => $row['NAME'],"USER_ID" => $row['USER_ID']); //Just for counting how much are in there, the Data gets pulled again later so we dont need all data, rest removed.
+    }
+    return $Checks;
   }
 
 }

@@ -12,13 +12,19 @@ class CronjobBase {
       $this->time = $in_Time;
   }
 
-  public function run() {
+  public function run($test = false) {
       printf("Cronjob Base\n",$this->threadId);
       $start = microtime(true);
 
       #Go throught the Servers which are in our Current Slot, and put 5 into each Thread
       for ($i = 0; $i <= count($this->Checks[$this->threadId]); $i = $i +5) {
-        BackgroundProcess::startProcess("/usr/bin/php Runner.php -T ".$this->threadId." -I ".$i." -W ".$this->time);
+        if ($test == false) {
+          BackgroundProcess::startProcess("/usr/bin/php Runner.php -T ".$this->threadId." -I ".$i." -W ".$this->time);
+        } else {
+          $options = array("T" => $this->threadId,"I" => $i,"W" => $this->time);
+          $Runner = new Runner();
+          $Runner->run($options,$test);
+        }
       }
 
       echo "CronjobBase end\n";
