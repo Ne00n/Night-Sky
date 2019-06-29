@@ -85,16 +85,17 @@ class Contact_Tests extends TestCase {
     //Add a Check to Account 1 with incorrect GroupsID
     $this->Main->addCheck("8.8.8.8","53",$groups=array(1),"Testcheck",10);
     $this->assertEquals($this->Main->getLastError(),'Invalid Groups');
+    $this->Main->resetError();
 
     //Add a Check to Account 1 with incorrect GroupsIDs
-    $this->Main->addCheck("8.7.7.7","53",$groups=array(2,1,11),"Testcheck",10);
+    $this->Main->addCheck("1.1.1.1","53",$groups=array(2,1,11),"Testcheck",10);
     $this->assertEquals($this->Main->getLastError(),'Invalid Groups');
     $this->Main->resetError();
 
     $this->Main->setID(1);
     $this->assertEquals($this->Main->getLastError(),NULL);
 
-    $this->Main->setID(3);
+    $this->Main->setID(4);
     $this->assertEquals($this->Main->getLastError(),"Invalid ID");
   }
 }
