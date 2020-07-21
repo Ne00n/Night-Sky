@@ -11,6 +11,7 @@ class Main {
   private $ip;
   private $email;
   private $interval;
+  private $lastrun;
   private $type;
 
   public function __construct($DB,$Verify) {
@@ -140,11 +141,11 @@ class Main {
   public function getData() {
     if ($this->error == "") {
 
-      $stmt = $this->DB->GetConnection()->prepare("SELECT NAME,IP,PORT,TYPE,Check_Interval FROM checks WHERE ID = ? LIMIT 1");
+      $stmt = $this->DB->GetConnection()->prepare("SELECT NAME,IP,PORT,TYPE,Check_Interval,Lastrun FROM checks WHERE ID = ? LIMIT 1");
       $stmt->bind_param('i', $this->id);
       $rc = $stmt->execute();
       if ( false===$rc ) { $this->error = "MySQL Error"; }
-      $stmt->bind_result($db_name,$db_ip,$db_port,$dbType,$db_interval);
+      $stmt->bind_result($db_name,$db_ip,$db_port,$dbType,$db_interval,$dbLastrun);
       $stmt->fetch();
       $stmt->close();
 
@@ -153,6 +154,7 @@ class Main {
       $this->ip = $db_ip;
       $this->interval = $db_interval;
       $this->type = $dbType;
+      $this->lastrun = $dbLastrun;
 
     }
   }
@@ -178,6 +180,7 @@ class Main {
       $stmt = $this->DB->GetConnection()->prepare("DELETE FROM groups_checks WHERE CheckID = ?");
       $stmt->bind_param('i', $this->id);
       $rc = $stmt->execute();
+      if ( false===$rc ) { $this->error = "MySQL Error"; }
       $stmt->close();
 
     }
@@ -278,6 +281,10 @@ class Main {
 
   public function getInterval() {
     return $this->interval;
+  }
+
+  public function getLastrun() {
+    return $this->lastrun;
   }
 
   public function getType() {

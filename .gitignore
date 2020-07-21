@@ -1,1 +1,4 @@
 adminer.php
+vendor
+composer.phar
+.phpunit.result.cache

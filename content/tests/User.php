@@ -20,7 +20,7 @@ class User_Tests extends TestCase {
     $this->switchtoID(1);
     //Add Account 1 and Generate some Random Password
     $password1 = Page::randomPassword();
-    echo "Password for Account 1 used: ".$password1."\n";
+    echo "\nPassword for Account 1 used: ".$password1."\n";
     $activation_hash = $this->User->registerUser("Tester","test@test.com",$password1,$password1,"LET",true); //Which as obviously the ID 1
     $this->assertEquals($this->User->getLastError(),NULL);
     #Validate our Hash that the Object gave us
@@ -35,7 +35,7 @@ class User_Tests extends TestCase {
 
     //Add Account 2
     $password2 = Page::randomPassword();
-    echo "Password for Account 2 used: ".$password2."\n";
+    echo "Password for Account 2 used: ".$password2."\n\n";
     $activation_hash = $this->User->registerUser("Tester2","test3@test.com",$password2,$password2,"LET",true); //Which has obviously the ID 2
     $this->assertEquals($this->User->getLastError(),NULL);
     #Validate our Hash that the Object gave us
