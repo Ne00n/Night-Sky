@@ -23,7 +23,11 @@ class TestsMain extends TestCase {
 		//Init DB
 		$this->DB = new Database;
 		$this->DB->InitDB();
+		$this->Lake = new Lake(_db_host,_db_user,_db_password,_db_database);
 		$this->CleanUP();
+		//Insert Remotes
+		$this->Lake->INSERT('remote')->INTO(array('Location' => 'Travis01','IP' => 'travis.x8e.net','Port' => '443','Online' => 1))->VAR('ssii')->DONE();
+		$this->Lake->INSERT('remote')->INTO(array('Location' => 'Travis02','IP' => 'travis.x8e.net','Port' => '443','Online' => 1))->VAR('ssii')->DONE();
 	}
 
   public function testComponents() {

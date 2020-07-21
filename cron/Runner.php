@@ -10,8 +10,8 @@ if (php_sapi_name() == 'cli') {
 
   spl_autoload_register('dat_loader');
 
-  $Runner = new Runner($options);
-  $Runner->run();
+  $Runner = new Runner();
+  $Runner->run($options);
 
 }
 

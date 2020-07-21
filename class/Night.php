@@ -7,10 +7,10 @@ class Night {
   private $test = false;
 
   public function __construct($test = false) {
+    $this->test = $test;
     if ($test == false) {
       include '../content/configs/config.php';
       include '../content/configs/regex.php';
-      $this->test = $test;
     }
 
     $this->DB = new Database;

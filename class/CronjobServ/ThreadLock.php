@@ -47,7 +47,7 @@ class ThreadLock {
 
     $time = time();
     $stmt = $this->DB->GetConnection()->prepare("UPDATE threads SET THREAD_LOCK = ?, THREAD_LOCK_TIME = ?  WHERE THREAD_ID = ?");
-    $stmt->bind_param('is', $THREAD_LOCK,$time,$this->THREAD_ID);
+    $stmt->bind_param('iis', $THREAD_LOCK,$time,$this->THREAD_ID);
     $rc = $stmt->execute();
     if ( false===$rc ) { $this->error = "MySQL Error"; }
     $stmt->close();
