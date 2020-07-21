@@ -10,7 +10,6 @@ before_script:
   - mysql -u root night < content/sql/travis.sql
 
 php:
-  - '7.1'
   - '7.2'
   - '7.3'
   - '7.4'
