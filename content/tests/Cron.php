@@ -18,8 +18,8 @@ class Cronjob_Tests extends TestCase {
 
   public function launch() {
     //Check if the Cronjob night runs through and not crashes
-    $Night = new Night();
-    $this->assertEquals($Night->run(true),true);
+    $Night = new Night(true);
+    $this->assertEquals($Night->run(),true);
     //Switching to Account 2
     $this->switchtoID(2);
     $this->Main->setID(1);

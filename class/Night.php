@@ -2,16 +2,24 @@
 
 class Night {
 
-  public function run($test = false) {
+  private $Lake;
+  private $DB;
+  private $test = false;
+
+  public function __construct($test = false) {
     if ($test == false) {
       include '../content/configs/config.php';
       include '../content/configs/regex.php';
+      $this->test = $test;
     }
 
-    $DB = new Database;
-    $DB->InitDB();
+    $this->DB = new Database;
+    $this->DB->InitDB();
+    $this->Lake = new Lake(_db_host,_db_user,_db_password,_db_database);
+  }
 
-    $Checks = $this->fetchAll($DB);
+  public function run() {
+    $Checks = $this->fetchAll($this->DB);
 
     for ($i_out = 1; $i_out <= 6; $i_out++) {
 
@@ -32,7 +40,7 @@ class Night {
             if (isset($Checks[$i])) {
               echo("Night Base\n");
               $CB = new CronjobBase($i,$Checks,$i_out);
-              $CB->run($test);
+              $CB->run($this->test);
             } else {
               printf("Night Base No Job\n",$i);
             }
@@ -47,18 +55,23 @@ class Night {
     return true;
   }
 
-  private function fetchAll($DB) {
+  private function fetchAll() {
 
     $Checks = array();
 
     $query = "SELECT SLOT,ID,IP,PORT,USER_ID,NAME FROM checks WHERE ENABLED = 1 ORDER by ID";
-    $stmt = $DB->GetConnection()->prepare($query);
+    $stmt = $this->DB->GetConnection()->prepare($query);
     $stmt->execute();
     $result = $stmt->get_result();
     while ($row = $result->fetch_assoc()) {
       $Checks[$row['SLOT']][$row['ID']] = array("NAME" => $row['NAME'],"USER_ID" => $row['USER_ID']); //Just for counting how much are in there, the Data gets pulled again later so we dont need all data, rest removed.
     }
     return $Checks;
+  }
+
+  public function checkStuckThreads() {
+    $currentTime = time() - 300;
+    $this->Lake->DELETE()->FROM('threads')->WHERE(array('THREAD_LOCK_TIME' => $currentTime),'<')->AND()->WHERE(array('THREAD_LOCK' => 1))->VAR('ii')->DONE();
   }
 
 }

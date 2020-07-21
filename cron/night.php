@@ -10,6 +10,7 @@ if (php_sapi_name() == 'cli') {
 
   $Night = new Night();
   $Night->run();
+  $Night->checkStuckThreads();
 
 }
 
