@@ -22,4 +22,4 @@ matrix:
   allow_failures:
     - php: nightly
 
-script: phpunit content/tests/Main.php
+script: phpunit content/tests/TestsMain.php
