@@ -78,7 +78,7 @@ class CheckServ {
         $this->online = true;
       } elseif ($res_two[0] == 1) {
         $this->online = true;
-      } elseif ($fp === false && $res_one[0] === "Remote did not respond to request." && $res_one[1] === "Remote did not respond to request.") {
+      } elseif ($fp === false && $res_one[1] === "Remote did not respond to request." && $res_two[1] === "Remote did not respond to request.") {
         //If we cannot connect directly and we cannot connect to our Remote servers, its most likely that our Network has issues so return true
         $this->online = true;
       }
