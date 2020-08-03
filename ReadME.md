@@ -20,11 +20,12 @@ work. If not, see https://creativecommons.org/licenses/by-nc-sa/4.0/
 - Email notifications via local mailserver
 - Block the current Thread if the previous one is still Running
 - Backend: PHP, MariaDB
-- Frontend: Bootstrap 3, Font Awesome
+- Frontend: Bootstrap 3, Font Awesome 4.7
 
 QuickSetup:
 
 Beforehand make sure you have a working mailserver running otherwise you need to enable the accounts by hand.<br />
+Also you need curl + mtr installed on all machines.
 
 1. Create a User+DB, Import the content/sql/night-sky.sql.
 2. Rename content/configs/config.example.php to config.php and regex.example.php to regex.php.
