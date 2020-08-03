@@ -9,11 +9,11 @@
 
         <?php
 
+        $M = new Main($DB,$Login);
         if (Page::startsWith($p,"main?enable=")) {
 
           $check_id = str_replace("main?enable=", "", $p);
 
-          $M = new Main($DB,$Login);
           $M->setID($check_id);
           $M->enable();
           if ($M->getLastError() == "") {
@@ -28,7 +28,6 @@
 
           $check_id = str_replace("main?disable=", "", $p);
 
-          $M = new Main($DB,$Login);
           $M->setID($check_id);
           $M->disable();
           if ($M->getLastError() == "") {
@@ -43,7 +42,6 @@
 
           $check_id = str_replace("main?edit=", "", $p);
 
-          $M = new Main($DB,$Login);
           $M->setID($check_id);
           $M->getData();
 
@@ -183,7 +181,6 @@
 
             if ($_POST['Token'] == $_SESSION['Token']) {
 
-              $M = new Main($DB,$Login);
               $M->setID($check_id);
               $M->removeCheck();
               if ($M->getLastError() == "") {
@@ -220,7 +217,6 @@
 
             if ($_POST['Token'] == $_SESSION['Token']) {
 
-              $M = new Main($DB,$Login);
               $M->addCheck($_POST['ip'],$_POST['port'],$_POST['email'],$_POST['name'],$_POST['interval'],$_POST['type']);
 
                if ($M->getlastError() == "") {
@@ -321,7 +317,9 @@
             </div>
           </form>
 
-          <?php } ?>
+          <?php }
+          $checks = $M->getChecks();
+          ?>
 
         <div class="table-responsive table-hover">
         <table class="table">
@@ -340,14 +338,7 @@
 
         <?php
 
-        $USER_ID = $Login->getUserID();
-
-        $query = "SELECT ID,IP,PORT,ENABLED,ONLINE,NAME,Lastrun FROM checks WHERE USER_ID = ? ";
-        $stmt = $DB->GetConnection()->prepare($query);
-        $stmt->bind_param('i', $USER_ID);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        while ($row = $result->fetch_assoc()) {
+        foreach ($checks as $row) {
 
           echo '<tr class="'.($row['ONLINE'] ? 'success' : 'danger').'">';
           echo '<td class="text-left">'.Page::escape($row['NAME']).'</td>';

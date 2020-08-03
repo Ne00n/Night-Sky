@@ -63,6 +63,21 @@ class Main {
     }
   }
 
+  public function getChecks() {
+    $response = array(); $userID = $this->Verify->getUserID();
+
+    $query = "SELECT ID,IP,PORT,ENABLED,ONLINE,NAME,Lastrun FROM checks WHERE USER_ID = ? ORDER BY ONLINE,NAME";
+    $stmt = $this->DB->GetConnection()->prepare($query);
+    $stmt->bind_param('i', $userID);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+      $response[] = $row;
+    }
+
+    return $response;
+  }
+
   public function updateCheck($IP,$PORT,$groups,$NAME,$interval,$type = 'TCP') {
     if ($type == 'TCP' && filter_var($IP, FILTER_VALIDATE_IP) == false && preg_match(_regex_DOMAIN,$IP) == false) { $this->error = "Invalid Domain/IP."; }
     if ($type == 'HTTP' && preg_match(_regex_URL,$IP) == false) { $this->error = "Invalid URL."; }
