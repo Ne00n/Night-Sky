@@ -17,12 +17,14 @@ work. If not, see https://creativecommons.org/licenses/by-nc-sa/4.0/
 - Run a Slot every Second, each Slot can run multiple Processes, 5 Servers are assigned to each Process
 - Loadbalance the Monitoring requests over these Slots, 10 Slots per 10 Seconds, 1 Slot reserved for Offline Servers
 - If a Port is not reachable, move it to the Dedicated Offline Slot, move it back afterwards (planned)
-- Email notifications via local Mail function
+- Email notifications via local mailserver
 - Block the current Thread if the previous one is still Running
 - Backend: PHP, MariaDB
 - Frontend: Bootstrap 3, Font Awesome
 
 QuickSetup:
+
+Beforehand make sure you have a working mailserver running otherwise you need to enable the accounts by hand.<br />
 
 1. Create a User+DB, Import the content/sql/night-sky.sql.
 2. Rename content/configs/config.example.php to config.php and regex.example.php to regex.php.
