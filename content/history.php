@@ -34,7 +34,7 @@
             } else {
               if ($data[$i]['Status'] == 1) {
                 $downtime = $data[$i]['Timestamp'] - $data[$i +1]['Timestamp'];
-                if ($downtime > 60) { $downtime = round($downtime / 60,1).' minutes'; } else { $downtime = $downtime.' seconds'; }
+                if ($downtime > 60) { $downtime = round($downtime / 60,1).' minute(s)'; } else { $downtime = $downtime.' seconds'; }
                 $entries[] = array('start' => 'Outage '.date("d.m.Y H:i:s",$data[$i +1]['Timestamp']),'end' => date("d.m.Y H:i:s",$data[$i]['Timestamp']),'downtime' => $downtime);
               }
             }
