@@ -38,4 +38,4 @@ Beforehand make sure you have a working mailserver running otherwise you need to
 5. Deploy the file check.php on some remote servers and add them to the table remote.<br />
 - You can find the file for that in content/remote/<br />
 - The Field IP can be also contain a URL like "check.domain.com", make sure the Domain is reachable over TLS, plain wont work.<br>
-- The Domain should not contain "https://" or "/check.php"
+- The Field IP should not contain "https://" or "/check.php"
