@@ -1,7 +1,7 @@
 # Night-Sky
 
 Now available in the Arctic Code vault!<br />
-10,20,30,60s Interval Port & HTTP(S) Monitoring, with WebHooks and/or email notifications.
+10,20,30,60s Interval Port & HTTP(S) IPv4 & IPv6 Monitoring, with Webhooks (Discord...) and/or email notifications.
 
 ![Overview](https://i.imgur.com/3N4NWqD.png)
 
