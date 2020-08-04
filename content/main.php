@@ -7,7 +7,7 @@
 
       </div>
       <div class="col-md-6 text-right">
-        <a href="index.php?p=main?add"><button class="btn btn-primary" type="button">Add a Check</button></a>
+        <a href="index.php?p=main?add"><button class="btn btn-primary" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></a>
       </div>
     </div>
         <?php
@@ -52,7 +52,7 @@
 
             if ($_POST['Token'] == $_SESSION['Token']) {
 
-              $M->updateCheck($_POST['ip'],$_POST['port'],$_POST['email'],$_POST['name'],$_POST['interval'],$_POST['type']);
+              $M->updateCheck($_POST['ip'],$_POST['port'],$_POST['email'],$_POST['name'],$_POST['interval'],$_POST['type'],$_POST['timeout'],$_POST['connectionTimeout'],$_POST['httpCodes'],$_POST['mtr']);
 
                if ($M->getlastError() == "") {
                  echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
@@ -70,105 +70,8 @@
           $M->getData();
 
         ?><form class="form-horizontal" action="index.php?p=main?edit=<?php echo Page::escape($check_id); ?>" method="post">
-            <div class="form-group">
-              <div class="col-sm-6 col-sm-offset-2">
-                <div class="input-group">
-                 <div class="input-group-addon">
-                <span class="fa fa-server"></span>
-                 </div>
-                 <input value="<?php echo Page::escape($M->getIP()); ?>" type="text" class="form-control input-sm" name="ip" placeholder="127.0.0.1"/>
-                </div>
-              </div>
-              <div class="col-sm-2">
-                <div class="input-group">
-                 <div class="input-group-addon">
-                <span class="fa fa-circle-o"></span>
-                 </div>
-                  <input value="<?php echo Page::escape($M->getPort()); ?>" type="text" class="form-control input-sm" name="port" placeholder="80"/>
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-sm-6 col-sm-offset-2">
-                <div class="input-group">
-                 <div class="input-group-addon">
-                <span class="fa fa-pencil"></span>
-                 </div>
-                  <input value="<?php echo Page::escape($M->getName()); ?>" type="text" class="form-control input-sm" name="name" placeholder="Bastion"/>
-                </div>
-              </div>
-              <div class="col-sm-2">
-                <div class="input-group">
-                 <div class="input-group-addon">
-                <span class="fa fa-cube"></span>
-                 </div>
-                  <select class="selectpicker form-control input-sm" data-size="4" data-style="btn-default btn-sm" name="type">
-                    <?php
-                    if ($M->getType() == 'tcp') {
-                      echo '<option selected>TCP</option>';
-                      echo '<option>HTTP</option>';
-                    } elseif ($M->getType() == 'http') {
-                      echo '<option>TCP</option>';
-                      echo '<option selected>HTTP</option>';
-                    }
-                    ?>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
+          <?php include 'pages/check.php'; ?>
 
-            <div class="form-group">
-                  <div class="col-sm-6 col-sm-offset-2">
-                    <div class="input-group">
-                      <div class="input-group-addon">
-                     <span class="fa fa-group"></span>
-                      </div>
-                      <select class="selectpicker form-control input-sm" data-size="3" data-style="btn-default btn-sm" name="email[]" multiple>
-                        <?php
-                        $group_ids = array();
-
-                        $query = "SELECT GroupID FROM groups_checks WHERE CheckID=?";
-                        $stmt = $DB->GetConnection()->prepare($query);
-                        $stmt->bind_param('i', $check_id);
-                        $stmt->execute();
-                        $stmt->bind_result($db_group_id);
-                        while ($stmt->fetch()) {
-                             $group_ids[] = $db_group_id;
-                        }
-
-                        $query = "SELECT ID,Name FROM groups WHERE USER_ID=? ORDER BY ID";
-                        $USER_ID = $Login->getUserID();
-                        $stmt = $DB->GetConnection()->prepare($query);
-                        $stmt->bind_param('i', $USER_ID);
-                        $stmt->execute();
-                        $stmt->bind_result($db_group_id, $db_group_name);
-                        while ($stmt->fetch()) {
-                             echo '<option '.(in_array($db_group_id,$group_ids) ? "selected" : "").' value="'. Page::escape($db_group_id) .'">'. Page::escape($db_group_name) .'</option>';
-                        }
-                        $stmt->close(); ?>
-                      </select>
-                     </div>
-                </div>
-                <div class="col-sm-2">
-                  <div class="input-group">
-                   <div class="input-group-addon">
-                  <span class="fa fa-hourglass-end"></span>
-                   </div>
-                    <select class="selectpicker form-control input-sm" data-size="4" data-style="btn-default btn-sm" name="interval">
-                      <?php
-                      for ($i =10; $i <= 60; $i = $i + 10) {
-                        if ($M->getInterval() == $i) {
-                            echo '<option selected>'.$i.'</option>';
-                        } elseif ($i != 40 && $i != 50) {
-                            echo '<option>'.$i.'</option>';
-                        }
-                      }
-                      ?>
-                    </select>
-                  </div>
-                </div>
-            </div>
             <div class="form-group">
                 <button type="submit" name="confirm" class="btn btn-primary">Save</button>
             </div>
@@ -220,7 +123,7 @@
 
             if ($_POST['Token'] == $_SESSION['Token']) {
 
-              $M->addCheck($_POST['ip'],$_POST['port'],$_POST['email'],$_POST['name'],$_POST['interval'],$_POST['type']);
+              $M->addCheck($_POST['ip'],$_POST['port'],$_POST['email'],$_POST['name'],$_POST['interval'],$_POST['type'],$_POST['timeout'],$_POST['connectionTimeout'],$_POST['httpCodes'],$_POST['mtr']);
 
                if ($M->getlastError() == "") {
                  echo '<div class="alert alert-success" role="alert"><center>Success</center></div>';
@@ -236,87 +139,9 @@
           } ?>
 
           <form class="form-horizontal" action="index.php?p=main?add" method="post">
+            <?php include 'pages/check.php'; ?>
             <div class="form-group">
-              <div class="col-sm-6 col-sm-offset-2">
-                <div class="input-group">
-                 <div class="input-group-addon">
-                <span class="fa fa-server"></span>
-                 </div>
-                 <input value="<?php if (isset($_POST['ip'])) {echo Page::escape($_POST['ip']);} ?>" type="text" class="form-control input-sm" name="ip" placeholder="127.0.0.1"/>
-                </div>
-              </div>
-              <div class="col-sm-2">
-                <div class="input-group">
-                 <div class="input-group-addon">
-                <span class="fa fa-circle-o"></span>
-                 </div>
-                  <input value="<?php if (isset($_POST['port'])) {echo Page::escape($_POST['port']);} ?>" type="text" class="form-control input-sm" name="port" placeholder="80"/>
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-sm-6 col-sm-offset-2">
-                <div class="input-group">
-                 <div class="input-group-addon">
-                <span class="fa fa-pencil"></span>
-                 </div>
-                  <input value="<?php if (isset($_POST['name'])) {echo Page::escape($_POST['name']);} ?>" type="text" class="form-control input-sm" name="name" placeholder="Bastion"/>
-                </div>
-              </div>
-              <div class="col-sm-2">
-                <div class="input-group">
-                 <div class="input-group-addon">
-                <span class="fa fa-cube"></span>
-                 </div>
-                  <select class="selectpicker form-control input-sm" data-size="4" data-style="btn-default btn-sm" name="type">
-                    <option>TCP</option>
-                    <option>HTTP</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
-
-            <div class="form-group">
-                  <div class="col-sm-6 col-sm-offset-2">
-                    <div class="input-group">
-                      <div class="input-group-addon">
-                     <span class="fa fa-group"></span>
-                      </div>
-                      <select class="selectpicker form-control input-sm" data-size="3" data-style="btn-default btn-sm" name="email[]" multiple>
-                        <?php
-                        $query = "SELECT ID,Name FROM groups WHERE USER_ID=? GROUP BY ID";
-                        $USER_ID = $Login->getUserID();
-                        $stmt = $DB->GetConnection()->prepare($query);
-                        $stmt->bind_param('i', $USER_ID);
-                        $stmt->execute();
-                        $stmt->bind_result($db_group_id, $db_group_name);
-                        while ($stmt->fetch()) {
-                             echo '<option value="'. Page::escape($db_group_id) .'">'. Page::escape($db_group_name) .'</option>';
-                        }
-                        $stmt->close(); ?>
-                      </select>
-                     </div>
-                </div>
-                <div class="col-sm-2">
-                  <div class="input-group">
-                   <div class="input-group-addon">
-                  <span class="fa fa-hourglass-end"></span>
-                   </div>
-                    <select class="selectpicker form-control input-sm" data-size="4" data-style="btn-default btn-sm" name="interval">
-                      <?php
-                      for ($i =10; $i <= 60; $i = $i + 10) {
-                            if ($i != 40 && $i != 50) {
-                              echo '<option>'.$i.'</option>';
-                            }
-                      }
-                      ?>
-                    </select>
-                  </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <button type="submit" name="confirm" class="btn btn-primary">Save</button>
+              <button type="submit" name="confirm" class="btn btn-primary">Done</button>
             </div>
           </form>
 
