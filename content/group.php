@@ -6,7 +6,14 @@
 
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
+        <div class="row">
+          <div class="col-md-6">
 
+          </div>
+          <div class="col-md-6 text-right">
+            <a href="index.php?p=group?add"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></a>
+          </div>
+        </div>
       <?php
 
       $GR = new Group($DB,$Login);
@@ -122,45 +129,41 @@
           </div>
           <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
           <div class="form-group">
-              <button type="submit" name="confirm" class="btn btn-primary">Save</button>
+              <button type="submit" name="confirm" class="btn btn-primary">Create</button>
           </div>
         </form>
 
   <?php } ?>
 
       <div class="table-responsive table-hover">
-        <table class="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
+          <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
 
-        <?php
+          <?php
 
-        $USER_ID = $Login->getUserID();
+          $USER_ID = $Login->getUserID();
 
-        $query = "SELECT ID,Name FROM groups WHERE USER_ID = ? ";
-        $stmt = $DB->GetConnection()->prepare($query);
-        $stmt->bind_param('i', $USER_ID);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        while ($row = $result->fetch_assoc()) {
-          echo '<tr>';
-          echo '<td class="text-left">'.Page::escape($row['Name']).'</td>';
-          echo '<td class="text-left col-md-3"><a href="index.php?p=group?edit='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-gear"></i></button></a>';
-          echo '<a href="index.php?p=group?remove='.Page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
-          echo '</tr>';
-        } ?>
+          $query = "SELECT ID,Name FROM groups WHERE USER_ID = ? ";
+          $stmt = $DB->GetConnection()->prepare($query);
+          $stmt->bind_param('i', $USER_ID);
+          $stmt->execute();
+          $result = $stmt->get_result();
+          while ($row = $result->fetch_assoc()) {
+            echo '<tr>';
+            echo '<td class="text-left">'.Page::escape($row['Name']).'</td>';
+            echo '<td class="text-left col-md-3"><a href="index.php?p=group?edit='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-gear"></i></button></a>';
+            echo '<a href="index.php?p=group?remove='.Page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
+            echo '</tr>';
+          } ?>
 
-        </tbody>
-      </table>
-    </div>
-
-      <div class="form-group">
-        <a href="index.php?p=group?add"><button class="btn btn-primary" type="button">Add a Group</button></a>
+          </tbody>
+        </table>
       </div>
 
       </div>

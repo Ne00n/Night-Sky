@@ -6,7 +6,14 @@
 
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
+        <div class="row">
+          <div class="col-md-6">
 
+          </div>
+          <div class="col-md-6 text-right">
+            <a href="index.php?p=contact?add"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></a>
+          </div>
+        </div>
       <?php
 
       $CT = new Contact($DB,$Login);
@@ -196,42 +203,37 @@
           </div>
           <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
           <div class="form-group">
-              <button type="submit" name="confirm" class="btn btn-primary">Save</button>
+              <button type="submit" name="confirm" class="btn btn-primary">Create</button>
           </div>
         </form>
 
   <?php } ?>
 
-      <div class="table-responsive table-hover">
-        <table class="table">
-        <thead>
-          <tr>
-            <th>EMail</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-        <?php
+          <div class="table-responsive table-hover">
+            <table class="table">
+            <thead>
+              <tr>
+                <th>EMail</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+            <?php
 
-        $USER_ID = $Login->getUserID();
-        $results = $Lake->SELECT(array('ID,EMail,Status'))->FROM('emails')->WHERE(array('USER_ID' => $USER_ID))->VAR('i')->DONE();
-        foreach ($results as $row) {
-          echo '<tr>';
-          echo '<td class="text-left">'.Page::escape($row['EMail']).'</td>';
-          echo '<td class="text-left">'.($row['Status'] ? 'Enabled' : 'Disabled').'</td>';
-          echo '<td class="text-left col-md-3"><a href="index.php?p=contact?edit='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-gear"></i></button></a>';
-          echo '<a href="index.php?p=contact?remove='.Page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
-          echo '</tr>';
-        } ?>
-        </tbody>
-      </table>
-    </div>
-
-      <div class="form-group">
-        <a href="index.php?p=contact?add"><button class="btn btn-primary" type="button">Add a Contact</button></a>
-      </div>
-
+            $USER_ID = $Login->getUserID();
+            $results = $Lake->SELECT(array('ID,EMail,Status'))->FROM('emails')->WHERE(array('USER_ID' => $USER_ID))->VAR('i')->DONE();
+            foreach ($results as $row) {
+              echo '<tr>';
+              echo '<td class="text-left">'.Page::escape($row['EMail']).'</td>';
+              echo '<td class="text-left">'.($row['Status'] ? 'Enabled' : 'Disabled').'</td>';
+              echo '<td class="text-left col-md-3"><a href="index.php?p=contact?edit='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-gear"></i></button></a>';
+              echo '<a href="index.php?p=contact?remove='.Page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
+              echo '</tr>';
+            } ?>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

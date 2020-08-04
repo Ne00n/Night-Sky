@@ -142,7 +142,7 @@
           <form class="form-horizontal" action="index.php?p=main?add" method="post">
             <?php include 'pages/check.php'; ?>
             <div class="form-group">
-              <button type="submit" name="confirm" class="btn btn-primary">Done</button>
+              <button type="submit" name="confirm" class="btn btn-primary">Create</button>
             </div>
           </form>
 
