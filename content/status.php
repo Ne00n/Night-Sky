@@ -31,9 +31,6 @@
 
           </tbody>
         </table>
+        </div>
       </div>
-      </div>
-      </div>
-    </div>
-    <center><a href="index.php?p=tos">Terms of Service</a> - <a href="index.php?p=privacy">Privacy</a></center>
   </div>

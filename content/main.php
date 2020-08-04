@@ -2,14 +2,15 @@
 
 <?php include 'content/navbar.php'; ?>
   <div class="container page-style">
-    <div class="row">
-      <div class="col-md-6">
+    <div class="col-md-10 col-md-offset-1">
+      <div class="row">
+        <div class="col-md-6">
 
+        </div>
+        <div class="col-md-6 text-right">
+          <a href="index.php?p=main?add"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></a>
+        </div>
       </div>
-      <div class="col-md-6 text-right">
-        <a href="index.php?p=main?add"><button class="btn btn-primary" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></a>
-      </div>
-    </div>
         <?php
 
         $M = new Main($DB,$Login);
@@ -190,6 +191,5 @@
           </tbody>
           </table>
         </div>
+      </div>
     </div>
-    <center><a href="index.php?p=tos">Terms of Service</a> - <a href="index.php?p=privacy">Privacy</a></center>
-  </div>

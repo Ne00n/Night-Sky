@@ -4,7 +4,14 @@ div#fs-small {
 
 body {
   padding-top: 50px;
+  margin-bottom: 60px;
 }
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
 .page-style {
   padding-top: 40px;
   padding-left: 15px;
@@ -25,6 +32,13 @@ body {
 
 .pt-20 {
   padding-top: 20px;
+}
+
+.footer {
+  position: absolute;
+  padding-bottom: 15px;
+  bottom: 0;
+  width: 100%;
 }
 
 .funkyradio div {
