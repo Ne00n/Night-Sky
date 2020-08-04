@@ -1,12 +1,15 @@
 <body>
 
 <?php include 'content/navbar.php'; ?>
-
   <div class="container page-style">
-
     <div class="row">
-      <div class="col-md-10 col-md-offset-1">
+      <div class="col-md-6">
 
+      </div>
+      <div class="col-md-6 text-right">
+        <a href="index.php?p=main?add"><button class="btn btn-primary" type="button">Add a Check</button></a>
+      </div>
+    </div>
         <?php
 
         $M = new Main($DB,$Login);
@@ -322,51 +325,46 @@
           ?>
 
         <div class="table-responsive table-hover">
-        <table class="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Target</th>
-            <th>Port</th>
-            <th>Status</th>
-            <th>Online</th>
-            <th>Lastrun</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
+          <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Target</th>
+              <th>Port</th>
+              <th>Status</th>
+              <th>Online</th>
+              <th>Lastrun</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
 
-        <?php
+          <?php
 
-        foreach ($checks as $row) {
+          foreach ($checks as $row) {
 
-          echo '<tr class="'.($row['ONLINE'] ? 'success' : 'danger').'">';
-          echo '<td class="text-left">'.Page::escape($row['NAME']).'</td>';
-          echo '<td class="text-left">'.Page::escape($row['IP']).'</td>';
-          echo '<td class="text-left">'.Page::escape($row['PORT']).'</td>';
-          echo '<td class="text-left">'.($row['ENABLED'] ? 'Enabled' : 'Disabled').'</td>';
-          echo '<td class="text-left">'.($row['ONLINE'] ? 'Yes' : 'No').'</td>';
-          echo '<td class="text-left">'.Page::escape(date("d.m.Y H:i:s",$row['Lastrun'])).'</td>';
-          echo '<td class="text-left col-md-3"><a href="index.php?p=main?edit='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-gear"></i></button></a>';
-          if ($row['ENABLED'] === 1) {
-            echo '<a href="index.php?p=main?disable='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-pause"></i></button></a>';
-          } elseif ($row['ENABLED'] === 0) {
-            echo '<a href="index.php?p=main?enable='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-play"></i></button></a>';
-          }
-          echo '<a href="index.php?p=history?id='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-history"></i></button></a>';
-          echo '<a href="index.php?p=main?remove='.Page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
-          echo '</tr>';
+            echo '<tr class="'.($row['ONLINE'] ? 'success' : 'danger').'">';
+            echo '<td class="text-left">'.Page::escape($row['NAME']).'</td>';
+            echo '<td class="text-left">'.Page::escape($row['IP']).'</td>';
+            echo '<td class="text-left">'.Page::escape($row['PORT']).'</td>';
+            echo '<td class="text-left">'.($row['ENABLED'] ? 'Enabled' : 'Disabled').'</td>';
+            echo '<td class="text-left">'.($row['ONLINE'] ? 'Yes' : 'No').'</td>';
+            echo '<td class="text-left">'.Page::escape(date("d.m.Y H:i:s",$row['Lastrun'])).'</td>';
+            echo '<td class="text-left col-md-3"><a href="index.php?p=main?edit='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-gear"></i></button></a>';
+            if ($row['ENABLED'] === 1) {
+              echo '<a href="index.php?p=main?disable='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-pause"></i></button></a>';
+            } elseif ($row['ENABLED'] === 0) {
+              echo '<a href="index.php?p=main?enable='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-play"></i></button></a>';
+            }
+            echo '<a href="index.php?p=history?id='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-history"></i></button></a>';
+            echo '<a href="index.php?p=main?remove='.Page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
+            echo '</tr>';
 
-        } ?>
+          } ?>
 
-        </tbody>
-      </table>
-    </div>
-
-      <div class="form-group">
-        <a href="index.php?p=main?add"><button class="btn btn-primary" type="button">Add a Check</button></a>
-    </div>
-      </div>
+          </tbody>
+          </table>
+        </div>
     </div>
     <center><a href="index.php?p=tos">Terms of Service</a> - <a href="index.php?p=privacy">Privacy</a></center>
   </div>
