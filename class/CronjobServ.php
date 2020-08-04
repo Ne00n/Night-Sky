@@ -87,6 +87,14 @@ class CronjobServ {
                   $email .= $elementary['Location'].": ".$elementary['Reason']."\n";
                 }
 
+                if ($element['MTR'] == 1) {
+                  $email .= "\nMTR Report:\n\n";
+                  exec("mtr --report ".$element['IP']." 2>&1", $output, $return_var);
+                  foreach ($output as $row) {
+                    $email .= $row."\n";
+                  }
+                }
+
                 if (!empty($element['EMAIL'])) {
                   foreach($element['EMAIL'] as $mail)
                   {
