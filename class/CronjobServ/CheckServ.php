@@ -48,12 +48,12 @@ class CheckServ {
     } elseif ($TYPE == 'http') {
       $Request = new Request();
       $response = $Request->createRequest($IP.":".$PORT);
-      if ($response['http'] == 200) {
+      if (in_array($response['http'], $statusCodes)) {
         $fp = true;
       } elseif ($response['http'] == 0) {
          $fp = false; $errstr = "Connection timed out.";
        } else {
-         $fp = false; $errstr = "HTTP Code: ".$response['http'];
+         $fp = false; $errstr = "HTTP Code ".$response['http'];
        }
     }
 
