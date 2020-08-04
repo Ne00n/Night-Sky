@@ -47,7 +47,7 @@ class CheckServ {
       }
     } elseif ($TYPE == 'http') {
       $Request = new Request();
-      $response = $Request->createRequest($IP.":".$PORT);
+      $response = $Request->createRequest($IP.":".$PORT,"GET",NULL,false,$timeout,$connect);
       if (in_array($response['http'], $statusCodes)) {
         $fp = true;
       } elseif ($response['http'] == 0) {
