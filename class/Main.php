@@ -23,7 +23,7 @@ class Main {
     $this->Verify = $Verify;
   }
 
-  public function addCheck($IP,$PORT,$groups,$NAME,$interval,$type = 'TCP',$timeout,$connection,$httpcodes,$mtr) {
+  public function addCheck($IP,$PORT,$groups,$NAME,$interval,$type = 'TCP',$timeout = 1.5,$connection = 1.5,$httpcodes = "200",$mtr = 0) {
     if ($type == 'TCP' && filter_var($IP, FILTER_VALIDATE_IP) == false && preg_match(_regex_DOMAIN,$IP) == false) { $this->error = "Invalid Domain/IP."; }
     if ($type == 'HTTP' && preg_match(_regex_URL,$IP) == false) { $this->error = "Invalid URL."; }
     if(!preg_match(_regex_NAME,$NAME)){ $this->error = "The Name contains invalid letters.";}
