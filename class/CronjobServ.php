@@ -61,7 +61,8 @@ class CronjobServ {
           //Check if we need to run in case its a different interval
           if (in_array($element['INTERVAL'], $interval[$this->time])) {
 
-            $CS->checkAvailability($element['IP'],$element['PORT'],$element['TYPE']);
+            $statusCodes = array('200'); $timeout = 1.5; $connect = 1;
+            $CS->checkAvailability($element['IP'],$element['PORT'],$element['TYPE'],$timeout,$connect,$statusCodes);
 
             $S->setID($key);
             $S->getOnlineStatus();
