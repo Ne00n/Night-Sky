@@ -116,7 +116,7 @@ h3 {
 .funkyradio input[type="radio"]:checked ~ label:before,
 .funkyradio input[type="checkbox"]:checked ~ label:before {
   content: '\2714';
-  text-indent: .4em;
+  text-indent: .3em;
   color: #333;
   background-color: #ccc;
 }
@@ -135,7 +135,7 @@ h3 {
 .funkyradio-primary input[type="radio"]:checked ~ label:before,
 .funkyradio-primary input[type="checkbox"]:checked ~ label:before {
   color: #fff;
-  background-color: #337ab7;
+  background-color: #008cba;
 }
 
 .funkyradio-success input[type="radio"]:checked ~ label:before,
