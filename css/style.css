@@ -41,6 +41,19 @@ body {
   width: 100%;
 }
 
+.aligned-row {
+    display: flex;
+    flex-flow: row wrap;
+
+    &::before {
+        display: block;
+    }
+}
+
+h3 {
+  margin-top: 0px;
+}
+
 .funkyradio div {
   clear: both;
   overflow: hidden;

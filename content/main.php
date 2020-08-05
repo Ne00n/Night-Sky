@@ -3,12 +3,12 @@
 <?php include 'content/navbar.php'; ?>
   <div class="container page-style">
     <div class="col-md-10 col-md-offset-1">
-      <div class="row">
-        <div class="col-md-6">
-
+      <div class="row aligned-row">
+        <div class="col-md-6 text-left">
+          <h3>Checks</h3>
         </div>
         <div class="col-md-6 text-right">
-          <a href="index.php?p=main?add"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></a>
+          <a href="index.php?p=main?add"><button class="btn btn-primary btn-xs"  type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></a>
         </div>
       </div>
         <?php
@@ -74,7 +74,7 @@
           <?php include 'pages/check.php'; ?>
 
             <div class="form-group">
-                <button type="submit" name="confirm" class="btn btn-primary">Save</button>
+                <button type="submit" name="confirm" class="btn btn-primary">Update</button>
             </div>
           </form> <?php
 
