@@ -55,7 +55,7 @@ class History {
     $stmt->execute();
     $result = $stmt->get_result();
     while ($row = $result->fetch_assoc()) {
-      $data[$row['ID']] = array("Status" => $row['Status'],"Timestamp" => $row['Timestamp']);
+      $data[] = array("Status" => $row['Status'],"Timestamp" => $row['Timestamp']);
     }
     return $data;
   }

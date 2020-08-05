@@ -19,6 +19,7 @@ class CronjobBase {
       #Go throught the Servers which are in our Current Slot, and put 5 into each Thread
       for ($i = 0; $i <= count($this->Checks[$this->threadId]); $i = $i +5) {
         if ($test == false) {
+          echo "Running /usr/bin/php Runner.php -T ".$this->threadId." -I ".$i." -W ".$this->time."\n";
           BackgroundProcess::startProcess("/usr/bin/php Runner.php -T ".$this->threadId." -I ".$i." -W ".$this->time);
         } else {
           $options = array("T" => $this->threadId,"I" => $i,"W" => $this->time);

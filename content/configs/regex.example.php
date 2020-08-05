@@ -6,6 +6,8 @@ define("_regex_URL","/^(https|http):\/\/[A-Za-z0-9.\[:\]]*+$/");
 define("_regex_TOKEN",_regex_USERNAME);
 define("_regex_NAME","/^[a-zA-Z0-9._\-, ]+$/");
 define("_regex_HEADERS",'/["][a-zA-Z0-9-: \/,.@"]+/x');
+define("_regex_StatusCodes",'/^[0-9,]+$/ms');
+define("_regex_Timeout","/^[0-9.]+$/ms");
 define("_regex_PORT","/^[0-9]+$/");
 define("_regex_ID",_regex_PORT);
 

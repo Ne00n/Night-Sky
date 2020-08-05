@@ -6,7 +6,14 @@
 
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
-
+        <div class="row aligned-row">
+          <div class="col-md-6 text-left">
+            <h3>StatusPages</h3>
+          </div>
+          <div class="col-md-6 text-right">
+            <a href="index.php?p=status-page?add"><button class="btn btn-primary btn-xs"  type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></a>
+          </div>
+        </div>
       <?php
 
       $SP = new StatusPage($DB,$Login);
@@ -107,7 +114,7 @@
           </div>
           <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
           <div class="form-group">
-              <button type="submit" name="confirm" class="btn btn-primary">Save</button>
+              <button type="submit" name="confirm" class="btn btn-primary">Update</button>
           </div>
         </form>
 
@@ -167,50 +174,44 @@
           </div>
           <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
           <div class="form-group">
-              <button type="submit" name="confirm" class="btn btn-primary">Save</button>
+              <button type="submit" name="confirm" class="btn btn-primary">Create</button>
           </div>
         </form>
 
   <?php } ?>
 
-      <div class="table-responsive table-hover">
-        <table class="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Url</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
+          <div class="table-responsive table-hover">
+            <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Url</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
 
-        <?php
+            <?php
 
-        $USER_ID = $Login->getUserID();
+            $USER_ID = $Login->getUserID();
 
-        $query = "SELECT ID,Name,Token FROM status_pages WHERE UserID = ? ";
-        $stmt = $DB->GetConnection()->prepare($query);
-        $stmt->bind_param('i', $USER_ID);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        while ($row = $result->fetch_assoc()) {
-          echo '<tr>';
-          echo '<td class="text-left">'.Page::escape($row['Name']).'</td>';
-          echo '<td class="text-left"><a href="https://'.Page::escape(_Domain).'/Status.php?token='.Page::escape($row['Token']).'" target="_blank" >Click</a></td>';
-          echo '<td class="text-left col-md-3"><a href="index.php?p=status-page?edit='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-gear"></i></button></a>';
-          echo '<a href="index.php?p=status-page?remove='.Page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
-          echo '</tr>';
-        } ?>
+            $query = "SELECT ID,Name,Token FROM status_pages WHERE UserID = ? ";
+            $stmt = $DB->GetConnection()->prepare($query);
+            $stmt->bind_param('i', $USER_ID);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while ($row = $result->fetch_assoc()) {
+              echo '<tr>';
+              echo '<td class="text-left">'.Page::escape($row['Name']).'</td>';
+              echo '<td class="text-left"><a href="https://'.Page::escape(_Domain).'/Status.php?token='.Page::escape($row['Token']).'" target="_blank" >Click</a></td>';
+              echo '<td class="text-left col-md-3"><a href="index.php?p=status-page?edit='.Page::escape($row['ID']).'"><button class="btn btn-primary btn-xs" type="button"><i class="fa fa-gear"></i></button></a>';
+              echo '<a href="index.php?p=status-page?remove='.Page::escape($row['ID']).'"><button class="btn btn-danger btn-xs" type="button"><i class="fa fa-times"></i></button></a></td>';
+              echo '</tr>';
+            } ?>
 
-        </tbody>
-      </table>
-    </div>
-
-      <div class="form-group">
-        <a href="index.php?p=status-page?add"><button class="btn btn-primary" type="button">Add a Status Page</button></a>
-      </div>
-
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-    <center><a href="index.php?p=tos">Terms of Service</a> - <a href="index.php?p=privacy">Privacy</a></center>
   </div>

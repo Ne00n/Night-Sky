@@ -61,7 +61,8 @@ class CronjobServ {
           //Check if we need to run in case its a different interval
           if (in_array($element['INTERVAL'], $interval[$this->time])) {
 
-            $CS->checkAvailability($element['IP'],$element['PORT'],$element['TYPE']);
+            if (strpos($element['STATUSCODES'], ',') !== false) {  $statusCodes = explode( ',', $element['STATUSCODES']); } else { $statusCodes = array($element['STATUSCODES']); }
+            $CS->checkAvailability($element['IP'],$element['PORT'],$element['TYPE'],$element['TIMEOUT'],$element['CONNECT'],$statusCodes);
 
             $S->setID($key);
             $S->getOnlineStatus();
@@ -84,6 +85,14 @@ class CronjobServ {
                 $email .= "\n\n";
                 foreach ($CS->getStatusDetail() as $serv => $elementary) {
                   $email .= $elementary['Location'].": ".$elementary['Reason']."\n";
+                }
+
+                if ($element['MTR'] == 1) {
+                  $email .= "\nMTR Report:\n\n";
+                  exec("mtr --report ".$element['IP']." 2>&1", $output, $return_var);
+                  foreach ($output as $row) {
+                    $email .= $row."\n";
+                  }
                 }
 
                 if (!empty($element['EMAIL'])) {

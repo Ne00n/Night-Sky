@@ -10,8 +10,9 @@
         <table class="table">
         <thead>
           <tr>
-            <th>Time (CET)</th>
-            <th>Status</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Downtime</th>
           </tr>
         </thead>
         <tbody>
@@ -25,14 +26,26 @@
         if ($H->checkHistoryID($history_id)) {
 
           $data = $H->getHistory($history_id);
+          if ($data[count($data) -1]['Status'] == 1) { unset($data[count($data) -1]); }
+          $entries = array();
+          for ($i = 0; $i <= count($data) -1; $i++) {
+            if ($i == 0 && $data[$i]['Status'] == 0) {
+              $entries[] = array('start' => 'Outage since '.date("d.m.Y H:i:s",$data[$i]['Timestamp']),'end' => 'TBA','downtime' => 'TBA');
+            } else {
+              if ($data[$i]['Status'] == 1) {
+                $downtime = $data[$i]['Timestamp'] - $data[$i +1]['Timestamp'];
+                if ($downtime > 60) { $downtime = round($downtime / 60,1).' minute(s)'; } else { $downtime = $downtime.' seconds'; }
+                $entries[] = array('start' => 'Outage '.date("d.m.Y H:i:s",$data[$i +1]['Timestamp']),'end' => date("d.m.Y H:i:s",$data[$i]['Timestamp']),'downtime' => $downtime);
+              }
+            }
+          }
 
-          foreach ($data as $key => $element) {
-
-            echo '<tr class="'.($element['Status'] ? 'success' : 'danger').'">';
-            echo '<td class="text-left">'.Page::escape(date("d.m.Y H:i:s",$element['Timestamp'])).'</td>';
-            echo '<td class="text-left">'.($element['Status'] ? 'Online' : 'Offline').'</td>';
+          foreach ($entries as $entry) {
+            echo '<tr class="'.($entry['downtime'] == 'TBA' ? 'danger' : 'success').'">';
+            echo '<td class="text-left">'.Page::escape($entry['start']).'</td>';
+            echo '<td class="text-left">'.Page::escape($entry['end']).'</td>';
+            echo '<td class="text-left">'.Page::escape($entry['downtime']).'</td>';
             echo '</tr>';
-
           }
 
         }
