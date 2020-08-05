@@ -8,7 +8,7 @@
       <div class="col-md-8 col-md-offset-2">
         <div class="row aligned-row">
           <div class="col-md-6 text-left">
-            <h3>Webhoooks</h3>
+            <h3>Webhooks</h3>
           </div>
           <div class="col-md-6 text-right">
             <a href="index.php?p=webhook?add"><button class="btn btn-primary btn-xs"  type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></a>
