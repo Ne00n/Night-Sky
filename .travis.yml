@@ -9,8 +9,6 @@ before_script:
   - mysql -u root -e "GRANT ALL ON night.* TO 'night'@'localhost';"
   - mysql -u root night < content/sql/night-sky.sql
   - php -v
-  - phpunit --version
-
 
 php:
   - '7.0'
