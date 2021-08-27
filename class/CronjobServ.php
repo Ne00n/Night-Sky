@@ -88,6 +88,9 @@ class CronjobServ {
                 }
 
                 if ($element['MTR'] == 1) {
+                  //kek mtr to https:// ain't working
+                  $element['IP'] = str_replace("http://","",$element['IP']);
+                  $element['IP'] = str_replace("https://","",$element['IP']);
                   $email .= "\nMTR Report:\n\n";
                   exec("mtr --report ".$element['IP']." 2>&1", $output, $return_var);
                   foreach ($output as $row) {
