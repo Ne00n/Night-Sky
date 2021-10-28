@@ -13,7 +13,7 @@ Night-Sky is licensed under a Creative Commons Attribution-NonCommercial-ShareAl
 You should have received a copy of the license along with this
 work. If not, see https://creativecommons.org/licenses/by-nc-sa/4.0/
 
-- PHP 7.2+, recommended is 7.3, using BackgroundProcess
+- PHP 7.3+, recommended is 7.4, using BackgroundProcess
 - Run a Slot every Second, each Slot can run multiple Processes, 5 Servers are assigned to each Process
 - Loadbalance the Monitoring requests over these Slots, 10 Slots per 10 Seconds, 1 Slot reserved for Offline Servers
 - If a Port is not reachable, move it to the Dedicated Offline Slot, move it back afterwards (planned)
