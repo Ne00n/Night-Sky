@@ -7,7 +7,7 @@ Now available in the Arctic Code vault!<br />
 
 All screenshots: https://imgur.com/a/Z8Dyo
 
-[![Build Status](https://travis-ci.org/Ne00n/Night-Sky.svg?branch=Release)](https://travis-ci.org/Ne00n/Night-Sky)
+[![Build Status](https://travis-ci.com/Ne00n/Night-Sky.svg?branch=Release)](https://travis-ci.org/Ne00n/Night-Sky)
 
 Night-Sky is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 You should have received a copy of the license along with this
