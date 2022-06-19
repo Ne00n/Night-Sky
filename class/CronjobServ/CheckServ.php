@@ -33,7 +33,7 @@ class CheckServ {
     return $r;
   }
 
-  public function checkAvailability($IP,$PORT,$TYPE = 'tcp',$timeout,$connect,$statusCodes) {
+  public function checkAvailability($IP,$PORT,$TYPE,$timeout,$connect,$statusCodes) {
     //Reset, since use this objective for up to 5 servers
     $this->status_detail = [];
     $this->external_before = NULL;
