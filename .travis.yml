@@ -11,14 +11,14 @@ before_script:
   - php -v
 
 php:
-  - '7.3'
   - '7.4'
   - '8.0'
+  - '8.1'
   - nightly
 
 matrix:
   allow_failures:
     - php: nightly
-    - php: 8.0
+    - php: 8.1
 
 script: phpunit content/tests/TestsMain.php
