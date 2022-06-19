@@ -8,17 +8,19 @@ use PHPUnit\Framework\TestCase;
 class TestsMain extends TestCase {
 
 	private $DB;
-  private $Verify;
-  private $Main;
-  private $Contact;
+  	private $Verify;
+  	private $Main;
+  	private $Contact;
 	private $StatusPage;
 
 	public function setUp(): void {
 		//Load classes
 		function dat_loader($class) {
-				include 'class/' . $class . '.php';
+			if (file_exists("class/$class.php")) {
+				include "class/$class.php";
+				return true;
+			}
 		}
-
 		spl_autoload_register('dat_loader');
 		//Init DB
 		$this->DB = new Database;
