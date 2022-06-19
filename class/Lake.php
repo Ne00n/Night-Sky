@@ -44,6 +44,11 @@ class Lake {
       }
   }
 
+  private function Reconnect() {
+    unset($this->Database);
+    $this->initDB();
+  }
+
   public function INSERT($input) {
     $this->type = 'insert';
     $this->insert = $input;
@@ -139,6 +144,11 @@ class Lake {
     return $this;
   }
 
+  public function LMIT($end) {
+    $this->limit .= 'LIMIT '.$end;
+    return $this;
+  }
+
   public function LIMIT($start,$end,$multiplier) {
     $this->limit .= 'LIMIT '.$start.','.$end*$multiplier;
     return $this;
@@ -170,6 +180,7 @@ class Lake {
   }
 
   public function DONE() {
+    if (!$this->Database->ping()) { $this->Reconnect(); }
     $response = array();
     switch ($this->type) {
     case 'select':
@@ -185,7 +196,7 @@ class Lake {
 
       if (!empty($this->whereRaw)) {
         $resultParams = $this->generateParams($this->whereRaw);
-        $result = call_user_func_array(array($stmt, 'bind_param'), $resultParams);
+        $result = $stmt->bind_param(...$this->var, ...$resultParams);
         if (false==$result) { $this->success = false; $this->errors[] = 'bind_param() failed: ' . $this->Database->error; break; }
       }
 
@@ -208,7 +219,7 @@ class Lake {
       if (false==$stmt) { $this->success = false; $this->errors[] = 'prepare() failed: ' . $this->Database->error; break; }
 
       $resultParams = $this->generateParams($this->intoRaw);
-      $result = call_user_func_array(array($stmt, 'bind_param'), $resultParams);
+      $result = $stmt->bind_param(...$this->var, ...$resultParams);
       if (false==$result) { $this->success = false; $this->errors[] = 'bind_param() failed: ' . $this->Database->error; break; }
 
       $result = $stmt->execute();
@@ -227,7 +238,7 @@ class Lake {
 
       if (!empty($this->whereRaw)) {
         $resultParams = $this->generateParams(array_merge($this->setRaw,$this->whereRaw));
-        $result = call_user_func_array(array($stmt, 'bind_param'), $resultParams);
+        $result = $stmt->bind_param(...$this->var, ...$resultParams);
         if (false==$result) { $this->success = false; $this->errors[] = 'bind_param() failed: ' . $this->Database->error; break; }
       }
 
@@ -240,13 +251,14 @@ class Lake {
       //DELETE REQUEST
       $sql = "DELETE FROM ".$this->from;
       if (!empty($this->where)) { $sql .= " WHERE ".$this->where; }
+      if (!empty($this->limit)) { $sql .= " ".$this->limit; }
       $this->sqlRaw = $sql;
       $stmt = $this->Database->prepare($sql);
       if (false==$stmt) { $this->success = false; $this->errors[] = 'prepare() failed: ' . $this->Database->error; break; }
 
       if (!empty($this->whereRaw)) {
         $resultParams = $this->generateParams($this->whereRaw);
-        $result = call_user_func_array(array($stmt, 'bind_param'), $resultParams);
+        $result = $stmt->bind_param(...$this->var, ...$resultParams);
         if (false==$result) { $this->success = false; $this->errors[] = 'bind_param() failed: ' . $this->Database->error; break; }
       }
 
@@ -259,12 +271,11 @@ class Lake {
   }
 
   private function generateParams($input) {
-    $values = array();
+    $values = array(); 
     foreach($input as $key => $value) {
-        $values[$key] = &$input[$key];
+        $values[] = $value;
     }
-    $resultParams = array_merge($this->var,$values);
-    return $resultParams;
+    return $values;
   }
 
   private function cleanUP($stmt) {
