@@ -86,7 +86,7 @@ class Main {
     return $response;
   }
 
-  public function updateCheck($IP,$PORT,$groups,$NAME,$interval,$type = 'TCP',$timeout,$connection,$httpcodes,$mtr) {
+  public function updateCheck($IP,$PORT,$groups,$NAME,$interval,$type,$timeout,$connection,$httpcodes,$mtr) {
     if ($type == 'TCP' && filter_var($IP, FILTER_VALIDATE_IP) == false && preg_match(_regex_DOMAIN,$IP) == false) { $this->error = "Invalid Domain/IP."; }
     if ($type == 'HTTP' && preg_match(_regex_URL,$IP) == false) { $this->error = "Invalid URL."; }
     if(!preg_match(_regex_NAME,$NAME)){ $this->error = "The Name contains invalid letters.";}
