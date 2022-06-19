@@ -19,6 +19,5 @@ php:
 matrix:
   allow_failures:
     - php: nightly
-    - php: 8.1
 
 script: phpunit content/tests/TestsMain.php
