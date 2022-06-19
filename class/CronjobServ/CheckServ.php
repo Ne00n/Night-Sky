@@ -85,7 +85,7 @@ class CheckServ {
     }
   }
 
-  public function fetchRemote($ip,$port,$checkIP,$checkPort,$type = 'tcp',$timeout = 1,$connect = 1,$statusCodes) {
+  public function fetchRemote($ip,$port,$checkIP,$checkPort,$type,$timeout = 1,$connect = 1,$statusCodes) {
     $url = "https://".$ip.":".$port."/check.php";
     $payload = json_encode(array('ip' => $checkIP,'port' => $checkPort,'type' => $type,'timeout' => $timeout,'connect' => $connect));
     $result = array();
