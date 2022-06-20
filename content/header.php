@@ -10,7 +10,7 @@
 
 <?php
 
-if ($_SERVER['REMOTE_ADDR'] != '127.0.0.1') {
+if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
   //CSS
   echo '<link href="css/raleway.css" rel="stylesheet" type="text/css">';
   echo '<link rel="stylesheet" href="content/font-awesome-4.7.0/css/font-awesome.min.css">';
