@@ -24,7 +24,9 @@ class Night {
     for ($i_out = 1; $i_out <= 6; $i_out++) {
 
       $connection = false;
-      $probes = array('google.com', 'wikipedia.org', 'facebook.com');
+      $probes = array('google.com', 'wikipedia.org', 'reddit.com');
+      //should be randomized
+      shuffle($probes);
       foreach($probes as $probe) {
         if(Page::check_page($probe)) {
           $connection = true;
