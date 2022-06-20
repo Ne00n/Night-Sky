@@ -42,7 +42,7 @@ if (isset($_GET["p"])) {
   $k = $_GET["key"];
 }
 
-include 'content/header.html';
+include 'content/header.php';
 
 if ($p == "login") {
   include 'content/login.php';
