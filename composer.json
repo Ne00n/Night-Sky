@@ -1,5 +1,6 @@
 {
-    "require": {
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
         "matthiasmullie/minify": "^1.3"
     }
 }
