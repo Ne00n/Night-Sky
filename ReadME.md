@@ -40,7 +40,7 @@ Also you need curl + mtr installed on all machines.
 ```
 composer install
 ```
-This will generate night.css and night.js plus install minify, bootstrap-select<br />
+This will generate night.css and night.js plus install minify, jquery and bootstrap-select<br />
 6. Deploy the file check.php on some remote servers and add them to the table remote.<br />
 - You can find the file for that in content/remote/<br />
 - The Field IP can be also contain a URL like "check.domain.com", make sure the Domain is reachable over TLS, plain wont work.<br>
