@@ -36,7 +36,12 @@ Also you need curl + mtr installed on all machines.
 - Make sure to use TLS on your Domain otherwise cookies will not apply on Plain.
 - The rest can be edited on your needs.
 4. Put cron/night.php and cron/remote.php into Crontab to run every 60 seconds, use a non privileged user for that. => cron.example
-5. Deploy the file check.php on some remote servers and add them to the table remote.<br />
+5. Run composer<br />
+```
+composer install
+```
+This will generate night.css and night.js plus install minify, bootstrap-select<br />
+6. Deploy the file check.php on some remote servers and add them to the table remote.<br />
 - You can find the file for that in content/remote/<br />
 - The Field IP can be also contain a URL like "check.domain.com", make sure the Domain is reachable over TLS, plain wont work.<br>
 - The Field IP should not contain "https://" or "/check.php"
