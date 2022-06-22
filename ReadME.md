@@ -38,7 +38,7 @@ Also you need curl + mtr installed on all machines.
 4. Put cron/night.php and cron/remote.php into Crontab to run every 60 seconds, use a non privileged user for that. => cron.example
 5. Run composer<br />
 ```
-composer install
+composer install --no-dev
 ```
 This will generate night.css and night.js plus install minify, jquery and bootstrap-select<br />
 6. Deploy the file check.php on some remote servers and add them to the table remote.<br />
