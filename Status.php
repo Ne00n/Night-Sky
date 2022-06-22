@@ -16,7 +16,7 @@ if (isset($_GET["token"])) {
 }
 $servers = $SP->getServersbyToken($token);
 
-include 'content/header.html';
+include 'content/header.php';
 echo '<body><div class="container">';
 ?>
   <?php
