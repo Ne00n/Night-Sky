@@ -96,8 +96,11 @@
       if (strlen($new_pw) > _max_Password) {$this->error = "Passwords are to long."; }
       if ($new_pw != $new_pw_2) {$this->error = "Passwords not equal."; }
 
+      //Get userID
+      $userID = $this->Verify->getUserID();
+      //Fetch Password from User
       $stmt = $this->DB->GetConnection()->prepare("SELECT Password FROM users WHERE ID = ?");
-      $stmt->bind_param('i', $this->Verify->getUserID());
+      $stmt->bind_param('i', $userID);
       $rc = $stmt->execute();
       if ( false===$rc ) { $this->error = "MySQL Error"; }
       $stmt->bind_result($password_db);
