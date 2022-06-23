@@ -20,7 +20,7 @@ if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
   echo '<link href="css/bootstrap-select.min.css" rel="stylesheet">';
   //JS
   echo '<script src="js/jquery.min.js"></script>';
-  echo '<script src="js/bootstrap.min.js"></script>';
+  echo '<script src="js/bootstrap.bundle.min.js"></script>';
   echo '<script src="js/bootstrap-select.min.js"></script>';
 } else {
   echo '<link href="css/night.css" rel="stylesheet">';
