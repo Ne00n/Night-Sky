@@ -1,11 +1,15 @@
-<div class="container">
+<main class="form-signin">
+  <form action="index.php?p=login" method="post">
+    <h1 class="h3 mb-3 fw-normal">Night-Sky Monitoring</h1>
 
-   <h2 class="form-signin-heading"><center>Night Sky Monitoring</center></h2>
-  <form class="form-signin" action="index.php?p=login" method="post">
-    <label class="sr-only">Username</label>
-    <input type="text" class="form-control" placeholder="Username" name="username" required>
-    <label class="sr-only">Password</label>
-    <input type="password" class="form-control" placeholder="Password" name="password" required>
+    <div class="form-floating">
+      <input type="input" class="form-control" id="floatingInput" placeholder="Username">
+      <label for="floatingInput">Username</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+      <label for="floatingPassword">Password</label>
+    </div>
     <input type="hidden" name ="Token" value="<?php echo Page::escape($_SESSION['Token']); ?>">
       <?php
 
@@ -59,8 +63,7 @@
         }
 
        ?>
-    <button type="submit" class="btn btn-lg btn-primary btn-block">Sign in</button>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+    <div class="text-center pt-2"><a href="index.php?p=register">Register</a> - <a href="index.php?p=tos">Terms of Service</a> - <a href="index.php?p=privacy">Privacy</a></div>
   </form>
-  <center><a href="index.php?p=register">Register</a> - <a href="index.php?p=tos">Terms of Service</a> - <a href="index.php?p=privacy">Privacy</a></center>
-
-</div>
+</main>
