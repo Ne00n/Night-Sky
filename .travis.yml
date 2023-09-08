@@ -4,6 +4,7 @@ services:
   - mysql
 
 before_install:
+  - php -v
   - composer --version
 
 before_script:
@@ -21,5 +22,13 @@ php:
 matrix:
   allow_failures:
     - php: nightly
+  include:
+    - php: 8.2
+      env: PHPUNIT_VERSION=9.6.7
+      dist: jammy # Version 8.2 is not available in the "bionic", newer version is required.
+      addons:
+        apt:
+          packages:
+            - "libonig5" # This library is required, since Travis fails to properly install & run the PHP 8.2
 
 script: phpunit content/tests/TestsMain.php
