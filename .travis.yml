@@ -3,6 +3,9 @@ language: php
 services:
   - mysql
 
+before_install:
+  - composer --version
+
 before_script:
   - mysql -u root -e "CREATE DATABASE night;"
   - mysql -u root -e "CREATE USER 'night'@'localhost' IDENTIFIED BY 'night';"
