@@ -16,7 +16,6 @@ before_script:
 php:
   - '7.4'
   - '8.1'
-  - '8.2'
   - nightly
 
 matrix:
@@ -24,7 +23,6 @@ matrix:
     - php: nightly
   include:
     - php: 8.2
-      env: PHPUNIT_VERSION=9.6.7
       dist: jammy # Version 8.2 is not available in the "bionic", newer version is required.
       addons:
         apt:
