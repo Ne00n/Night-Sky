@@ -24,9 +24,5 @@ matrix:
   include:
     - php: 8.2
       dist: jammy # Version 8.2 is not available in the "bionic", newer version is required.
-      addons:
-        apt:
-          packages:
-            - "libonig5" # This library is required, since Travis fails to properly install & run the PHP 8.2
 
 script: phpunit content/tests/TestsMain.php
